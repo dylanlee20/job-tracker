@@ -15,6 +15,7 @@ from scrapers.blackstone_scraper import BlackstoneScraper
 from scrapers.piper_sandler_scraper import PiperSandlerScraper
 from scrapers.jefferies_scraper import JefferiesScraper
 from scrapers.mizuho_scraper import MizuhoScraper
+from scrapers.barclays_scraper import BarclaysScraper
 import logging
 
 logger = logging.getLogger(__name__)
@@ -40,7 +41,8 @@ class ScraperService:
         'Blackstone': BlackstoneScraper,
         'Piper Sandler': PiperSandlerScraper,
         'Jefferies': JefferiesScraper,
-        'Mizuho': MizuhoScraper
+        'Mizuho': MizuhoScraper,
+        'Barclays': BarclaysScraper
     }
 
     @staticmethod
