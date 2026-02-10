@@ -1,6 +1,7 @@
 # Job Tracker - Claude Context
 
 > Auto-push enabled: Every commit automatically syncs to GitHub
+> GitHub: https://github.com/dylanlee20/job-tracker
 
 ## Project Overview
 
