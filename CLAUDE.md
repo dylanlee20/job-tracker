@@ -1,5 +1,7 @@
 # Job Tracker - Claude Context
 
+> Auto-push enabled: Every commit automatically syncs to GitHub
+
 ## Project Overview
 
 Automated job scraping system for financial companies. Tracks job postings from 9+ banks, detects changes, exports to Excel, and provides a web interface.
