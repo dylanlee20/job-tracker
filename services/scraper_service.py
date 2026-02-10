@@ -238,26 +238,46 @@ class ScraperService:
         return overall_results
 
     @classmethod
-    def run_all_scrapers_async(cls):
+    def run_all_scrapers_async(cls, app=None):
         """Run all scrapers in a background thread with progress tracking"""
         if cls.is_running():
-            return False
+            logger.warning("Scraping already in progress, resetting...")
+            cls._reset_progress()
+
+        # Initialize progress immediately
+        total = len(cls.SCRAPERS)
+        cls._update_progress(
+            is_running=True,
+            total_companies=total,
+            current_index=0,
+            current_company='Initializing...',
+            start_time=datetime.now().isoformat(),
+            completed_companies=[],
+            failed_companies=[],
+            results=None
+        )
+        logger.info(f"Progress initialized: {total} companies")
 
         def run():
             try:
+                logger.info("Background scraping thread started")
                 cls.run_all_scrapers(with_progress=True)
                 # Auto export Excel after scraping
                 try:
                     from services.excel_service import ExcelService
                     ExcelService.auto_sync_excel()
+                    logger.info("Excel auto-sync completed")
                 except Exception as e:
                     logger.warning(f"Error auto-syncing Excel after scrape: {e}")
             except Exception as e:
                 logger.error(f"Error in async scraping: {e}")
+                import traceback
+                traceback.print_exc()
                 cls._update_progress(is_running=False, current_company=None)
 
         thread = threading.Thread(target=run, daemon=True)
         thread.start()
+        logger.info("Background thread started successfully")
         return True
 
     @staticmethod
