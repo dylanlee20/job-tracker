@@ -43,7 +43,17 @@ class ScraperService:
     def get_progress(cls):
         """Get current scraping progress"""
         with cls._lock:
-            return cls._progress.copy()
+            # Deep copy to avoid race conditions with lists
+            return {
+                'is_running': cls._progress['is_running'],
+                'current_company': cls._progress['current_company'],
+                'current_index': cls._progress['current_index'],
+                'total_companies': cls._progress['total_companies'],
+                'completed_companies': list(cls._progress['completed_companies']),
+                'failed_companies': list(cls._progress['failed_companies']),
+                'start_time': cls._progress['start_time'],
+                'results': cls._progress['results']
+            }
 
     @classmethod
     def is_running(cls):
@@ -56,6 +66,18 @@ class ScraperService:
         """Update progress state"""
         with cls._lock:
             cls._progress.update(kwargs)
+
+    @classmethod
+    def _add_completed(cls, company_name):
+        """Thread-safe add to completed list"""
+        with cls._lock:
+            cls._progress['completed_companies'].append(company_name)
+
+    @classmethod
+    def _add_failed(cls, company_name):
+        """Thread-safe add to failed list"""
+        with cls._lock:
+            cls._progress['failed_companies'].append(company_name)
 
     @classmethod
     def _reset_progress(cls):
@@ -166,8 +188,7 @@ class ScraperService:
                     overall_results['summary']['successful_companies'] += 1
 
                     if with_progress:
-                        completed = cls._progress['completed_companies'] + [company_name]
-                        cls._update_progress(completed_companies=completed)
+                        cls._add_completed(company_name)
 
                     logger.info(
                         f"{company_name}: Scraped {stats['total_scraped']} jobs, "
@@ -182,8 +203,7 @@ class ScraperService:
                     overall_results['summary']['failed_companies'] += 1
 
                     if with_progress:
-                        failed = cls._progress['failed_companies'] + [company_name]
-                        cls._update_progress(failed_companies=failed)
+                        cls._add_failed(company_name)
 
                     logger.warning(f"{company_name}: No jobs scraped")
 
@@ -197,8 +217,7 @@ class ScraperService:
                 overall_results['summary']['failed_companies'] += 1
 
                 if with_progress:
-                    failed = cls._progress['failed_companies'] + [company_name]
-                    cls._update_progress(failed_companies=failed)
+                    cls._add_failed(company_name)
 
         if with_progress:
             cls._update_progress(
