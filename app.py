@@ -1,9 +1,13 @@
 from flask import Flask
+from flask_login import LoginManager
 from models.database import db, init_db
 from models.job import Job
 from models.job_snapshot import JobSnapshot
+from models.user import User, create_admin_user
 from routes.api import api_bp
 from routes.web import web_bp
+from routes.auth import auth_bp
+from routes.admin import admin_bp
 from scheduler.job_scheduler import JobScheduler
 from config import Config
 import logging
@@ -45,9 +49,26 @@ def create_app():
     # 初始化数据库
     init_db(app)
 
+    # 初始化 Flask-Login
+    login_manager = LoginManager()
+    login_manager.init_app(app)
+    login_manager.login_view = 'auth.login'
+    login_manager.login_message = 'Please log in to access this page.'
+    login_manager.login_message_category = 'info'
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(int(user_id))
+
+    # 创建默认管理员账号
+    with app.app_context():
+        create_admin_user('admin', 'admin123')
+
     # 注册蓝图
     app.register_blueprint(api_bp)
     app.register_blueprint(web_bp)
+    app.register_blueprint(auth_bp)
+    app.register_blueprint(admin_bp)
 
     # 初始化并启动定时任务调度器
     scheduler = JobScheduler(app)

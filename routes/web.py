@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, abort
+from flask_login import login_required
 from services.job_service import JobService
 from services.snapshot_service import SnapshotService
 import logging
@@ -10,6 +11,7 @@ web_bp = Blueprint('web', __name__)
 
 
 @web_bp.route('/')
+@login_required
 def index():
     """Homepage - Job listings"""
     try:
@@ -35,6 +37,7 @@ def index():
 
 
 @web_bp.route('/job/<int:job_id>')
+@login_required
 def job_detail(job_id):
     """Job detail page"""
     try:
@@ -51,6 +54,7 @@ def job_detail(job_id):
 
 
 @web_bp.route('/settings')
+@login_required
 def settings():
     """Settings page"""
     try:
@@ -75,6 +79,7 @@ def settings():
 
 
 @web_bp.route('/trends')
+@login_required
 def trends():
     """Historical trends and year-over-year analysis page"""
     try:

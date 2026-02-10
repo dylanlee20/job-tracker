@@ -44,13 +44,28 @@
                         </a>
                     </li>
                 </ul>
-                <div class="d-flex gap-2">
+                <div class="d-flex gap-2 align-items-center">
                     <button class="btn btn-light btn-sm" onclick="triggerScrape()" title="Trigger immediate scraping">
                         <i class="bi bi-arrow-repeat me-1"></i> Scrape Now
                     </button>
                     <button class="btn btn-warning btn-sm" onclick="exportExcel()" title="Export to Excel">
                         <i class="bi bi-file-earmark-excel me-1"></i> Export
                     </button>
+                    {% if current_user.is_authenticated %}
+                    <div class="dropdown ms-2">
+                        <button class="btn btn-outline-light btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle me-1"></i> {{ current_user.username }}
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            {% if current_user.is_admin %}
+                            <li><a class="dropdown-item" href="{{ url_for('admin.users') }}"><i class="bi bi-people me-2"></i>Manage Users</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            {% endif %}
+                            <li><a class="dropdown-item" href="{{ url_for('auth.change_password') }}"><i class="bi bi-key me-2"></i>Change Password</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}"><i class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
+                        </ul>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
