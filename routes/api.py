@@ -161,6 +161,7 @@ def trigger_scrape():
 
     请求体（可选）：
         - company: 公司名称（如果指定，只爬取该公司）
+        - async: 是否异步执行（默认 false）
     """
     try:
         data = {}
@@ -170,12 +171,37 @@ def trigger_scrape():
             except:
                 data = {}
         company = data.get('company')
+        run_async = data.get('async', False)
 
         if company:
-            # 爬取单个公司
+            # 爬取单个公司（同步）
             result = ScraperService.run_single_scraper(company)
+            return jsonify({
+                'success': True,
+                'data': result
+            })
+        elif run_async:
+            # 异步爬取所有公司
+            if ScraperService.is_running():
+                return jsonify({
+                    'success': False,
+                    'error': 'Scraping is already in progress'
+                }), 400
+
+            started = ScraperService.run_all_scrapers_async()
+            if started:
+                return jsonify({
+                    'success': True,
+                    'message': 'Scraping started in background',
+                    'async': True
+                })
+            else:
+                return jsonify({
+                    'success': False,
+                    'error': 'Failed to start scraping'
+                }), 500
         else:
-            # 爬取所有公司
+            # 同步爬取所有公司
             result = ScraperService.run_all_scrapers()
 
             # 自动导出 Excel
@@ -184,13 +210,30 @@ def trigger_scrape():
             except Exception as e:
                 logger.warning(f"Error auto-syncing Excel after scrape: {e}")
 
-        return jsonify({
-            'success': True,
-            'data': result
-        })
+            return jsonify({
+                'success': True,
+                'data': result
+            })
 
     except Exception as e:
         logger.error(f"Error in trigger_scrape: {e}")
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+
+@api_bp.route('/scrape/progress', methods=['GET'])
+def get_scrape_progress():
+    """Get current scraping progress"""
+    try:
+        progress = ScraperService.get_progress()
+        return jsonify({
+            'success': True,
+            'data': progress
+        })
+    except Exception as e:
+        logger.error(f"Error getting scrape progress: {e}")
         return jsonify({
             'success': False,
             'error': str(e)

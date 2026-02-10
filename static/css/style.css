@@ -521,3 +521,28 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 1.25rem;
     letter-spacing: 0.5px;
 }
+
+/* Spinning animation for scrape progress */
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.spin {
+    display: inline-block;
+    animation: spin 1s linear infinite;
+}
+
+/* Scrape progress modal */
+#scrapeProgressModal .progress-bar {
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+#scrapeCompanyList {
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 0.5rem;
+    background: var(--bg-primary);
+}
+

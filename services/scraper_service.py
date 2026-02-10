@@ -1,5 +1,7 @@
 from services.job_service import JobService
 from scrapers.jpmorgan_scraper import JPMorganScraper
+import threading
+from datetime import datetime
 from scrapers.jpmorgan_australia_scraper import JPMorganAustraliaScraper
 from scrapers.jpmorgan_hongkong_scraper import JPMorganHongKongScraper
 from scrapers.goldman_scraper import GoldmanSachsScraper
@@ -24,6 +26,52 @@ logger = logging.getLogger(__name__)
 class ScraperService:
     """爬虫调度服务"""
 
+    # Progress tracking
+    _progress = {
+        'is_running': False,
+        'current_company': None,
+        'current_index': 0,
+        'total_companies': 0,
+        'completed_companies': [],
+        'failed_companies': [],
+        'start_time': None,
+        'results': None
+    }
+    _lock = threading.Lock()
+
+    @classmethod
+    def get_progress(cls):
+        """Get current scraping progress"""
+        with cls._lock:
+            return cls._progress.copy()
+
+    @classmethod
+    def is_running(cls):
+        """Check if scraping is in progress"""
+        with cls._lock:
+            return cls._progress['is_running']
+
+    @classmethod
+    def _update_progress(cls, **kwargs):
+        """Update progress state"""
+        with cls._lock:
+            cls._progress.update(kwargs)
+
+    @classmethod
+    def _reset_progress(cls):
+        """Reset progress state"""
+        with cls._lock:
+            cls._progress = {
+                'is_running': False,
+                'current_company': None,
+                'current_index': 0,
+                'total_companies': 0,
+                'completed_companies': [],
+                'failed_companies': [],
+                'start_time': None,
+                'results': None
+            }
+
     # 所有爬虫类的映射
     SCRAPERS = {
         'JPMorgan - US': JPMorganScraper,
@@ -45,10 +93,13 @@ class ScraperService:
         'Barclays': BarclaysScraper
     }
 
-    @staticmethod
-    def run_all_scrapers():
+    @classmethod
+    def run_all_scrapers(cls, with_progress=False):
         """
         执行所有爬虫
+
+        Args:
+            with_progress: If True, update progress tracking
 
         Returns:
             dict: 包含每个公司爬取结果的字典
@@ -65,9 +116,30 @@ class ScraperService:
             }
         }
 
+        company_list = list(cls.SCRAPERS.keys())
+        total = len(company_list)
+
+        if with_progress:
+            cls._update_progress(
+                is_running=True,
+                total_companies=total,
+                current_index=0,
+                start_time=datetime.now().isoformat(),
+                completed_companies=[],
+                failed_companies=[]
+            )
+
         logger.info("Starting scraping for all companies...")
 
-        for company_name, scraper_class in ScraperService.SCRAPERS.items():
+        for idx, company_name in enumerate(company_list):
+            scraper_class = cls.SCRAPERS[company_name]
+
+            if with_progress:
+                cls._update_progress(
+                    current_company=company_name,
+                    current_index=idx + 1
+                )
+
             try:
                 logger.info(f"Running scraper for {company_name}...")
 
@@ -93,6 +165,10 @@ class ScraperService:
                     overall_results['summary']['total_scraped'] += stats['total_scraped']
                     overall_results['summary']['successful_companies'] += 1
 
+                    if with_progress:
+                        completed = cls._progress['completed_companies'] + [company_name]
+                        cls._update_progress(completed_companies=completed)
+
                     logger.info(
                         f"{company_name}: Scraped {stats['total_scraped']} jobs, "
                         f"{stats['new_jobs']} new, {stats['updated_jobs']} updated, "
@@ -105,6 +181,10 @@ class ScraperService:
                     }
                     overall_results['summary']['failed_companies'] += 1
 
+                    if with_progress:
+                        failed = cls._progress['failed_companies'] + [company_name]
+                        cls._update_progress(failed_companies=failed)
+
                     logger.warning(f"{company_name}: No jobs scraped")
 
             except Exception as e:
@@ -116,6 +196,17 @@ class ScraperService:
                 }
                 overall_results['summary']['failed_companies'] += 1
 
+                if with_progress:
+                    failed = cls._progress['failed_companies'] + [company_name]
+                    cls._update_progress(failed_companies=failed)
+
+        if with_progress:
+            cls._update_progress(
+                is_running=False,
+                current_company=None,
+                results=overall_results
+            )
+
         logger.info(
             f"Scraping completed. Summary: "
             f"{overall_results['summary']['total_new']} new jobs, "
@@ -126,6 +217,29 @@ class ScraperService:
         )
 
         return overall_results
+
+    @classmethod
+    def run_all_scrapers_async(cls):
+        """Run all scrapers in a background thread with progress tracking"""
+        if cls.is_running():
+            return False
+
+        def run():
+            try:
+                cls.run_all_scrapers(with_progress=True)
+                # Auto export Excel after scraping
+                try:
+                    from services.excel_service import ExcelService
+                    ExcelService.auto_sync_excel()
+                except Exception as e:
+                    logger.warning(f"Error auto-syncing Excel after scrape: {e}")
+            except Exception as e:
+                logger.error(f"Error in async scraping: {e}")
+                cls._update_progress(is_running=False, current_company=None)
+
+        thread = threading.Thread(target=run, daemon=True)
+        thread.start()
+        return True
 
     @staticmethod
     def run_single_scraper(company_name):
