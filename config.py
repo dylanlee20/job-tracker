@@ -37,8 +37,8 @@ class Config:
     # Flask 配置
     SECRET_KEY = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-production')
     DEBUG = os.environ.get('FLASK_DEBUG', 'False').lower() == 'true'
-    HOST = os.environ.get('FLASK_HOST', '127.0.0.1')
-    PORT = int(os.environ.get('FLASK_PORT', 5000))
+    HOST = os.environ.get('HOST', '0.0.0.0')  # 0.0.0.0 for cloud deployment
+    PORT = int(os.environ.get('PORT', os.environ.get('FLASK_PORT', 5000)))  # Railway uses PORT
 
     # 新职位定义（天数）
     NEW_JOB_DAYS = 7  # 7 天内的职位视为新职位

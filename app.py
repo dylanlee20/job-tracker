@@ -10,15 +10,20 @@ import logging
 import os
 
 # 配置日志
-os.makedirs(os.path.dirname(Config.LOG_FILE), exist_ok=True)
+try:
+    os.makedirs(os.path.dirname(Config.LOG_FILE), exist_ok=True)
+    handlers = [
+        logging.FileHandler(Config.LOG_FILE, encoding='utf-8'),
+        logging.StreamHandler()
+    ]
+except (OSError, PermissionError):
+    # Cloud environment - file logging may not work
+    handlers = [logging.StreamHandler()]
 
 logging.basicConfig(
     level=getattr(logging, Config.LOG_LEVEL),
     format=Config.LOG_FORMAT,
-    handlers=[
-        logging.FileHandler(Config.LOG_FILE, encoding='utf-8'),
-        logging.StreamHandler()
-    ]
+    handlers=handlers
 )
 
 logger = logging.getLogger(__name__)
@@ -47,11 +52,15 @@ def create_app():
     # 初始化并启动定时任务调度器
     scheduler = JobScheduler(app)
 
-    try:
-        scheduler.start()
-        logger.info("Job scheduler started successfully")
-    except Exception as e:
-        logger.error(f"Failed to start job scheduler: {e}")
+    # Only start scheduler if not disabled (cloud mode doesn't have Chrome for scraping)
+    if os.environ.get('DISABLE_SCHEDULER', 'false').lower() != 'true':
+        try:
+            scheduler.start()
+            logger.info("Job scheduler started successfully")
+        except Exception as e:
+            logger.error(f"Failed to start job scheduler: {e}")
+    else:
+        logger.info("Scheduler disabled (cloud mode - set DISABLE_SCHEDULER=false to enable)")
 
     # 添加关闭时的清理
     @app.teardown_appcontext
