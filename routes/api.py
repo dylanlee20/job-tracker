@@ -182,12 +182,7 @@ def trigger_scrape():
             })
         elif run_async:
             # 异步爬取所有公司
-            if ScraperService.is_running():
-                return jsonify({
-                    'success': False,
-                    'error': 'Scraping is already in progress'
-                }), 400
-
+            # Note: run_all_scrapers_async handles stuck states internally
             started = ScraperService.run_all_scrapers_async()
             if started:
                 return jsonify({
