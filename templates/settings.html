@@ -1,0 +1,174 @@
+{% extends "layout.html" %}
+
+{% block title %}Settings - NewWhale Career{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-4 py-4">
+    <div class="row">
+        <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2">
+            <h2 class="mb-4 fw-bold" style="color: var(--primary-color);">
+                <i class="bi bi-gear me-2"></i>System Settings
+            </h2>
+
+            <!-- Scheduled Tasks -->
+            <div class="card mb-4 border-0 shadow">
+                <div class="card-header text-white" style="background: var(--gradient-primary);">
+                    <h5 class="mb-0"><i class="bi bi-clock me-2"></i>Scheduled Tasks</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Execution Time</label>
+                            <div class="input-group">
+                                <span class="input-group-text">Daily at</span>
+                                <input type="number" class="form-control" value="{{ config.schedule_hour }}" min="0" max="23" readonly>
+                                <span class="input-group-text">:</span>
+                                <input type="number" class="form-control" value="{{ config.schedule_minute }}" min="0" max="59" readonly>
+                            </div>
+                            <small class="text-muted">Automatic job scraping runs at this time every day</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Excel Export Settings -->
+            <div class="card mb-4 border-0 shadow">
+                <div class="card-header text-white" style="background: var(--gradient-primary);">
+                    <h5 class="mb-0"><i class="bi bi-file-earmark-excel me-2"></i>Excel Export Settings</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Export Path</label>
+                        <input type="text" class="form-control" value="{{ config.excel_path }}" readonly>
+                        <small class="text-muted">Excel files are automatically saved to this location</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scraper Configuration -->
+            <div class="card mb-4 border-0 shadow">
+                <div class="card-header text-white" style="background: var(--gradient-primary);">
+                    <h5 class="mb-0"><i class="bi bi-robot me-2"></i>Scraper Configuration</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Headless Mode</label>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" {% if config.headless_mode %}checked{% endif %} disabled>
+                                <label class="form-check-label">
+                                    {{ 'Enabled' if config.headless_mode else 'Disabled' }}
+                                </label>
+                            </div>
+                            <small class="text-muted">Headless mode hides browser window to save resources</small>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">New Job Definition</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" value="{{ config.new_job_days }}" readonly>
+                                <span class="input-group-text">days</span>
+                            </div>
+                            <small class="text-muted">Jobs discovered within this timeframe are marked as "new"</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Delay Range</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" value="{{ config.scraper_delay_min }}" readonly>
+                                <span class="input-group-text">-</span>
+                                <input type="number" class="form-control" value="{{ config.scraper_delay_max }}" readonly>
+                                <span class="input-group-text">seconds</span>
+                            </div>
+                            <small class="text-muted">Random delay between requests to avoid detection</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card mb-4 border-0 shadow">
+                <div class="card-header text-white" style="background: var(--gradient-primary);">
+                    <h5 class="mb-0"><i class="bi bi-lightning me-2"></i>Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-3">
+                        <button class="btn btn-lg text-white" style="background: var(--gradient-primary);" onclick="runScrapeNow()">
+                            <i class="bi bi-play-circle me-2"></i>Run Scraper Now
+                        </button>
+                        <button class="btn btn-success btn-lg" onclick="exportExcelNow()">
+                            <i class="bi bi-file-earmark-excel me-2"></i>Export to Excel Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Help Information -->
+            <div class="alert alert-info border-0 shadow-sm" style="border-left: 4px solid var(--accent-blue) !important;">
+                <h5 class="fw-bold"><i class="bi bi-info-circle me-2"></i>Information</h5>
+                <ul class="mb-0">
+                    <li>System configuration is stored in the <code>config.py</code> file. Edit that file to modify settings.</li>
+                    <li>Scheduled tasks automatically scrape job data daily at the specified time.</li>
+                    <li>You can manually trigger scraping anytime using the "Run Scraper Now" button.</li>
+                    <li>Duplicate jobs are automatically detected and existing jobs are updated.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Run scraper immediately
+function runScrapeNow() {
+    if (!confirm('Are you sure you want to run the scraper now? This may take a few minutes.')) {
+        return;
+    }
+
+    showNotification('Scraping task started, please wait...', 'info');
+
+    $.ajax({
+        url: '/api/scrape',
+        method: 'POST',
+        contentType: 'application/json',
+        success: function(response) {
+            if (response.success) {
+                const summary = response.data.summary;
+                showNotification(
+                    `Scraping complete! Added ${summary.total_new} new jobs, updated ${summary.total_updated} jobs`,
+                    'success'
+                );
+            } else {
+                showNotification('Scraping failed: ' + response.error, 'error');
+            }
+        },
+        error: function() {
+            showNotification('Scraping failed, please try again later', 'error');
+        }
+    });
+}
+
+// Export to Excel immediately
+function exportExcelNow() {
+    showNotification('Exporting to Excel...', 'info');
+
+    $.ajax({
+        url: '/api/export',
+        method: 'GET',
+        success: function(response) {
+            if (response.success) {
+                showNotification('Excel export successful!', 'success');
+                // Auto download
+                window.location.href = response.download_url;
+            } else {
+                showNotification('Export failed: ' + response.error, 'error');
+            }
+        },
+        error: function() {
+            showNotification('Export failed, please try again later', 'error');
+        }
+    });
+}
+</script>
+{% endblock %}

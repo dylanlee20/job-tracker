@@ -1,0 +1,305 @@
+{% extends "layout.html" %}
+
+{% block title %}Market Trends - NewWhale Career{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-4 py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="mb-1 fw-bold" style="color: var(--primary-color);">
+                <i class="bi bi-graph-up me-2"></i>Market Intelligence & Trends
+            </h2>
+            <p class="text-muted mb-0">Historical job market data and year-over-year analysis</p>
+        </div>
+    </div>
+
+    <!-- Year-over-Year Comparison Card -->
+    {% if yoy_comparison.available %}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow" style="border-left: 4px solid var(--accent-gold) !important;">
+                <div class="card-body p-4">
+                    <h5 class="card-title mb-3" style="color: var(--primary-color);">
+                        <i class="bi bi-calendar-range me-2"></i>Year-over-Year Comparison
+                    </h5>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="text-center p-3">
+                                <div class="display-4 fw-bold" style="color: var(--primary-color);">
+                                    {{ yoy_comparison.current_total }}
+                                </div>
+                                <div class="text-muted small">Jobs This Year ({{ yoy_comparison.current_year }})</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="text-center p-3">
+                                <div class="display-4 fw-bold text-secondary">
+                                    {{ yoy_comparison.last_year_total }}
+                                </div>
+                                <div class="text-muted small">Jobs Last Year ({{ yoy_comparison.current_year - 1 }})</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="text-center p-3">
+                                <div class="display-4 fw-bold {% if yoy_comparison.change > 0 %}text-success{% else %}text-danger{% endif %}">
+                                    {% if yoy_comparison.change > 0 %}+{% endif %}{{ yoy_comparison.change }}
+                                </div>
+                                <div class="text-muted small">Net Change</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="text-center p-3">
+                                <div class="display-4 fw-bold {% if yoy_comparison.change_percent > 0 %}text-success{% else %}text-danger{% endif %}">
+                                    {% if yoy_comparison.change_percent > 0 %}+{% endif %}{{ yoy_comparison.change_percent|round(1) }}%
+                                </div>
+                                <div class="text-muted small">Percentage Change</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% if yoy_comparison.categories_comparison %}
+                    <hr class="my-4">
+                    <h6 class="mb-3" style="color: var(--primary-color);">Category Breakdown</h6>
+                    <div class="row">
+                        {% for category, data in yoy_comparison.categories_comparison.items() %}
+                        <div class="col-md-6 col-lg-4 mb-3">
+                            <div class="p-3 rounded" style="background-color: var(--bg-primary);">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>{{ category }}</strong>
+                                        <div class="small text-muted">
+                                            {{ data.current }} jobs ({{ data.last_year }} last year)
+                                        </div>
+                                    </div>
+                                    <div class="{% if data.change > 0 %}text-success{% elif data.change < 0 %}text-danger{% else %}text-muted{% endif %} fw-bold">
+                                        {% if data.change > 0 %}+{% endif %}{{ data.change }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="alert alert-info">
+                <i class="bi bi-info-circle me-2"></i>
+                <strong>Building Historical Data</strong> - Year-over-year comparisons will be available after one year of data collection.
+                Keep the system running and check back in {{ 12 - ((yoy_comparison.message or '')|length % 12) }} months!
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Historical Snapshots -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow">
+                <div class="card-header" style="background: var(--gradient-primary); color: white;">
+                    <h5 class="mb-0"><i class="bi bi-clock-history me-2"></i>Historical Snapshots</h5>
+                </div>
+                <div class="card-body">
+                    {% if snapshots %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead style="background-color: var(--bg-primary);">
+                                <tr>
+                                    <th>Week</th>
+                                    <th>Date</th>
+                                    <th class="text-end">Total Jobs</th>
+                                    <th class="text-end">Companies</th>
+                                    <th class="text-end">New Jobs</th>
+                                    <th class="text-end">Closed Jobs</th>
+                                    <th class="text-end">Net Change</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for snapshot in snapshots[:10] %}
+                                <tr>
+                                    <td><strong>{{ snapshot.week }}</strong></td>
+                                    <td>{{ snapshot.date[:10] }}</td>
+                                    <td class="text-end"><strong>{{ snapshot.total_jobs }}</strong></td>
+                                    <td class="text-end">{{ snapshot.total_companies }}</td>
+                                    <td class="text-end"><span class="badge bg-success">+{{ snapshot.new_jobs or 0 }}</span></td>
+                                    <td class="text-end"><span class="badge bg-danger">-{{ snapshot.closed_jobs or 0 }}</span></td>
+                                    <td class="text-end">
+                                        {% set net_change = (snapshot.new_jobs or 0) - (snapshot.closed_jobs or 0) %}
+                                        <span class="fw-bold {% if net_change > 0 %}text-success{% elif net_change < 0 %}text-danger{% else %}text-muted{% endif %}">
+                                            {% if net_change > 0 %}+{% endif %}{{ net_change }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% if snapshots|length > 10 %}
+                    <div class="text-center mt-3">
+                        <small class="text-muted">Showing 10 most recent snapshots ({{ snapshots|length }} total)</small>
+                    </div>
+                    {% endif %}
+                    {% else %}
+                    <div class="text-center py-5">
+                        <i class="bi bi-inbox" style="font-size: 3rem; color: var(--text-secondary); opacity: 0.3;"></i>
+                        <p class="text-muted mt-3">No historical snapshots yet. First snapshot captured today!</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Trends Chart Data -->
+    {% if trend_data %}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow">
+                <div class="card-header" style="background: var(--gradient-primary); color: white;">
+                    <h5 class="mb-0"><i class="bi bi-graph-up-arrow me-2"></i>12-Week Trend</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="trendChart" height="80"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Insights & Recommendations -->
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card border-0 shadow h-100">
+                <div class="card-body">
+                    <h5 class="card-title" style="color: var(--primary-color);">
+                        <i class="bi bi-lightbulb me-2"></i>Key Insights
+                    </h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-3">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            <strong>Automated Tracking:</strong> Weekly snapshots capture market state every Sunday
+                        </li>
+                        <li class="mb-3">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            <strong>Long-term Value:</strong> Data becomes more valuable over time
+                        </li>
+                        <li class="mb-3">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            <strong>Competitive Advantage:</strong> Proprietary market intelligence
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card border-0 shadow h-100">
+                <div class="card-body">
+                    <h5 class="card-title" style="color: var(--primary-color);">
+                        <i class="bi bi-info-circle me-2"></i>How It Works
+                    </h5>
+                    <ol class="small">
+                        <li class="mb-2">System captures job market snapshot every Sunday at 2:00 AM</li>
+                        <li class="mb-2">Tracks totals by category, company, and location</li>
+                        <li class="mb-2">Calculates week-over-week changes (new vs closed positions)</li>
+                        <li class="mb-2"><strong>Note:</strong> First 4 weeks reflect baseline building, not market changes</li>
+                        <li class="mb-2">After 52 weeks, enables year-over-year comparisons</li>
+                        <li class="mb-2">Historical data reveals hiring trends invisible to others</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{% if trend_data %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+// Prepare chart data
+const trendData = {{ trend_data|tojson }};
+
+const labels = trendData.map(d => d.week);
+const totalJobs = trendData.map(d => d.total_jobs);
+const newJobs = trendData.map(d => d.new_jobs || 0);
+const closedJobs = trendData.map(d => d.closed_jobs || 0);
+
+// Create chart
+const ctx = document.getElementById('trendChart').getContext('2d');
+new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: labels,
+        datasets: [
+            {
+                label: 'Total Jobs',
+                data: totalJobs,
+                borderColor: '#003865',
+                backgroundColor: 'rgba(0, 56, 101, 0.1)',
+                borderWidth: 3,
+                tension: 0.4,
+                fill: true
+            },
+            {
+                label: 'New Jobs',
+                data: newJobs,
+                borderColor: '#0B7A41',
+                backgroundColor: 'rgba(11, 122, 65, 0.1)',
+                borderWidth: 2,
+                tension: 0.4
+            },
+            {
+                label: 'Closed Jobs',
+                data: closedJobs,
+                borderColor: '#C41E3A',
+                backgroundColor: 'rgba(196, 30, 58, 0.1)',
+                borderWidth: 2,
+                tension: 0.4
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+            legend: {
+                position: 'top',
+                labels: {
+                    font: {
+                        family: "'Segoe UI', sans-serif",
+                        size: 12,
+                        weight: 'bold'
+                    }
+                }
+            },
+            title: {
+                display: false
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    font: {
+                        family: "'Segoe UI', sans-serif"
+                    }
+                }
+            },
+            x: {
+                ticks: {
+                    font: {
+                        family: "'Segoe UI', sans-serif"
+                    }
+                }
+            }
+        }
+    }
+});
+</script>
+{% endif %}
+{% endblock %}

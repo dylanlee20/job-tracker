@@ -1,0 +1,184 @@
+from services.job_service import JobService
+from scrapers.jpmorgan_scraper import JPMorganScraper
+from scrapers.jpmorgan_australia_scraper import JPMorganAustraliaScraper
+from scrapers.jpmorgan_hongkong_scraper import JPMorganHongKongScraper
+from scrapers.goldman_scraper import GoldmanSachsScraper
+from scrapers.goldman_sachs_international_scraper import GoldmanSachsInternationalScraper
+from scrapers.morgan_stanley_scraper import MorganStanleyScraper
+from scrapers.citi_scraper import CitiScraper
+from scrapers.deutsche_bank_scraper import DeutscheBankScraper
+from scrapers.ubs_scraper import UBSScraper
+from scrapers.bnp_paribas_scraper import BNPParibasScraper
+from scrapers.nomura_scraper import NomuraScraper
+from scrapers.evercore_scraper import EvercoreScraper
+from scrapers.blackstone_scraper import BlackstoneScraper
+from scrapers.piper_sandler_scraper import PiperSandlerScraper
+from scrapers.jefferies_scraper import JefferiesScraper
+from scrapers.mizuho_scraper import MizuhoScraper
+import logging
+
+logger = logging.getLogger(__name__)
+
+
+class ScraperService:
+    """爬虫调度服务"""
+
+    # 所有爬虫类的映射
+    SCRAPERS = {
+        'JPMorgan - US': JPMorganScraper,
+        'JPMorgan - Australia': JPMorganAustraliaScraper,
+        'JPMorgan - Hong Kong': JPMorganHongKongScraper,
+        'Goldman Sachs - US': GoldmanSachsScraper,
+        'Goldman Sachs - International': GoldmanSachsInternationalScraper,
+        'Morgan Stanley': MorganStanleyScraper,
+        'Citi': CitiScraper,
+        'Deutsche Bank': DeutscheBankScraper,
+        'UBS': UBSScraper,
+        'BNP Paribas': BNPParibasScraper,
+        'Nomura': NomuraScraper,
+        'Evercore': EvercoreScraper,
+        'Blackstone': BlackstoneScraper,
+        'Piper Sandler': PiperSandlerScraper,
+        'Jefferies': JefferiesScraper,
+        'Mizuho': MizuhoScraper
+    }
+
+    @staticmethod
+    def run_all_scrapers():
+        """
+        执行所有爬虫
+
+        Returns:
+            dict: 包含每个公司爬取结果的字典
+        """
+        overall_results = {
+            'companies': {},
+            'summary': {
+                'total_new': 0,
+                'total_updated': 0,
+                'total_inactive': 0,
+                'total_scraped': 0,
+                'successful_companies': 0,
+                'failed_companies': 0
+            }
+        }
+
+        logger.info("Starting scraping for all companies...")
+
+        for company_name, scraper_class in ScraperService.SCRAPERS.items():
+            try:
+                logger.info(f"Running scraper for {company_name}...")
+
+                # 创建爬虫实例
+                scraper = scraper_class()
+
+                # 执行爬取（带重试机制）
+                jobs = scraper.scrape_with_retry()
+
+                if jobs:
+                    # 处理爬取的职位数据
+                    stats = JobService.process_scraped_jobs(jobs, company_name)
+
+                    overall_results['companies'][company_name] = {
+                        'success': True,
+                        'stats': stats
+                    }
+
+                    # 更新总体统计
+                    overall_results['summary']['total_new'] += stats['new_jobs']
+                    overall_results['summary']['total_updated'] += stats['updated_jobs']
+                    overall_results['summary']['total_inactive'] += stats['inactive_jobs']
+                    overall_results['summary']['total_scraped'] += stats['total_scraped']
+                    overall_results['summary']['successful_companies'] += 1
+
+                    logger.info(
+                        f"{company_name}: Scraped {stats['total_scraped']} jobs, "
+                        f"{stats['new_jobs']} new, {stats['updated_jobs']} updated, "
+                        f"{stats['inactive_jobs']} inactive"
+                    )
+                else:
+                    overall_results['companies'][company_name] = {
+                        'success': False,
+                        'error': 'No jobs scraped'
+                    }
+                    overall_results['summary']['failed_companies'] += 1
+
+                    logger.warning(f"{company_name}: No jobs scraped")
+
+            except Exception as e:
+                logger.error(f"Error scraping {company_name}: {e}")
+
+                overall_results['companies'][company_name] = {
+                    'success': False,
+                    'error': str(e)
+                }
+                overall_results['summary']['failed_companies'] += 1
+
+        logger.info(
+            f"Scraping completed. Summary: "
+            f"{overall_results['summary']['total_new']} new jobs, "
+            f"{overall_results['summary']['total_updated']} updated, "
+            f"{overall_results['summary']['total_inactive']} inactive, "
+            f"{overall_results['summary']['successful_companies']} companies successful, "
+            f"{overall_results['summary']['failed_companies']} failed"
+        )
+
+        return overall_results
+
+    @staticmethod
+    def run_single_scraper(company_name):
+        """
+        执行单个公司的爬虫
+
+        Args:
+            company_name: 公司名称
+
+        Returns:
+            dict: 爬取结果
+        """
+        if company_name not in ScraperService.SCRAPERS:
+            return {
+                'success': False,
+                'error': f'Unknown company: {company_name}'
+            }
+
+        try:
+            logger.info(f"Running scraper for {company_name}...")
+
+            scraper_class = ScraperService.SCRAPERS[company_name]
+            scraper = scraper_class()
+
+            # 执行爬取
+            jobs = scraper.scrape_with_retry()
+
+            if jobs:
+                # 处理爬取的职位数据
+                stats = JobService.process_scraped_jobs(jobs, company_name)
+
+                logger.info(
+                    f"{company_name}: Scraped {stats['total_scraped']} jobs, "
+                    f"{stats['new_jobs']} new, {stats['updated_jobs']} updated, "
+                    f"{stats['inactive_jobs']} inactive"
+                )
+
+                return {
+                    'success': True,
+                    'stats': stats
+                }
+            else:
+                return {
+                    'success': False,
+                    'error': 'No jobs scraped'
+                }
+
+        except Exception as e:
+            logger.error(f"Error scraping {company_name}: {e}")
+            return {
+                'success': False,
+                'error': str(e)
+            }
+
+    @staticmethod
+    def get_available_companies():
+        """获取所有可用的公司列表"""
+        return list(ScraperService.SCRAPERS.keys())

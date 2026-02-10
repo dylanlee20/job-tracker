@@ -1,0 +1,394 @@
+{% extends "layout.html" %}
+
+{% block title %}NewWhale Career - Finance Industry Intelligence{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-4 py-4">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 class="mb-1 fw-bold" style="color: var(--primary-color);">Finance Industry Career Opportunities</h2>
+                    <p class="text-muted mb-0">Track trends, analyze markets, build competitive advantage</p>
+                </div>
+                <div>
+                    <span class="badge fs-6 px-3 py-2" style="background: var(--gradient-primary); color: white;" id="total-count">
+                        <i class="bi bi-briefcase me-1"></i>Loading...
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-3 col-sm-6">
+            <div class="stat-card">
+                <div class="stat-icon bg-primary-subtle">
+                    <i class="bi bi-briefcase text-primary"></i>
+                </div>
+                <div>
+                    <div class="stat-value">{{ stats.total_active_jobs }}</div>
+                    <div class="stat-label">Total Jobs</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <div class="stat-card">
+                <div class="stat-icon bg-success-subtle">
+                    <i class="bi bi-calendar-week text-success"></i>
+                </div>
+                <div>
+                    <div class="stat-value">{{ stats.new_this_week }}</div>
+                    <div class="stat-label">New This Week</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <div class="stat-card">
+                <div class="stat-icon bg-warning-subtle">
+                    <i class="bi bi-star-fill text-warning"></i>
+                </div>
+                <div>
+                    <div class="stat-value">{{ stats.important_jobs }}</div>
+                    <div class="stat-label">Starred</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <div class="stat-card">
+                <div class="stat-icon bg-info-subtle">
+                    <i class="bi bi-building text-info"></i>
+                </div>
+                <div>
+                    <div class="stat-value">{{ stats.companies }}</div>
+                    <div class="stat-label">Companies</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Filters Sidebar -->
+        <div class="col-lg-3">
+            <div class="filter-panel">
+                <div class="filter-header">
+                    <i class="bi bi-sliders me-2"></i>Filters
+                </div>
+                <div class="filter-body">
+                    <!-- Search -->
+                    <div class="filter-group">
+                        <label class="filter-label">
+                            <i class="bi bi-search me-1"></i>Search
+                        </label>
+                        <input type="text" class="filter-input" id="filter-keyword" placeholder="Job title or description...">
+                    </div>
+
+                    <!-- Category -->
+                    <div class="filter-group">
+                        <label class="filter-label">
+                            <i class="bi bi-grid me-1"></i>Category
+                        </label>
+                        <select class="filter-select" id="filter-category">
+                            <option value="">All Categories</option>
+                            {% for category in categories %}
+                            <option value="{{ category }}">{{ category }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Company -->
+                    <div class="filter-group">
+                        <label class="filter-label">
+                            <i class="bi bi-building me-1"></i>Company
+                        </label>
+                        <select class="filter-select" id="filter-company">
+                            <option value="">All Companies</option>
+                            {% for company in companies %}
+                            <option value="{{ company }}">{{ company }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Location -->
+                    <div class="filter-group">
+                        <label class="filter-label">
+                            <i class="bi bi-geo-alt me-1"></i>Location
+                        </label>
+                        <select class="filter-select" id="filter-location">
+                            <option value="">All Locations</option>
+                            {% for location in locations %}
+                            <option value="{{ location }}">{{ location }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Time Range -->
+                    <div class="filter-group">
+                        <label class="filter-label">
+                            <i class="bi bi-calendar me-1"></i>Posted
+                        </label>
+                        <select class="filter-select" id="filter-time">
+                            <option value="">All Time</option>
+                            <option value="this_week">This Week</option>
+                            <option value="this_month">This Month</option>
+                        </select>
+                    </div>
+
+                    <!-- Important Only -->
+                    <div class="filter-group">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="filter-important">
+                            <label class="form-check-label" for="filter-important">
+                                <i class="bi bi-star-fill text-warning me-1"></i>Starred only
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="filter-actions">
+                        <button class="btn btn-primary w-100 mb-2" onclick="applyFilters()">
+                            <i class="bi bi-check-lg me-1"></i>Apply Filters
+                        </button>
+                        <button class="btn btn-outline-secondary w-100" onclick="resetFilters()">
+                            <i class="bi bi-arrow-counterclockwise me-1"></i>Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Jobs List -->
+        <div class="col-lg-9">
+            <!-- Loading Indicator -->
+            <div id="loading" class="text-center py-5" style="display: none;">
+                <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-3 text-muted">Loading opportunities...</p>
+            </div>
+
+            <!-- Jobs Container -->
+            <div id="jobs-container">
+                <!-- Jobs will be loaded here dynamically -->
+            </div>
+
+            <!-- Pagination -->
+            <nav id="pagination-container" class="mt-4">
+                <!-- Pagination will be loaded here -->
+            </nav>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Initialize on page load
+$(document).ready(function() {
+    loadJobs(1);
+});
+
+// Current state
+let currentPage = 1;
+let currentFilters = {};
+
+// Category colors
+const categoryColors = {
+    'Investment Banking': '#1e40af',
+    'Sales & Trading': '#16a34a',
+    'Structuring': '#9333ea',
+    'Quant': '#dc2626',
+    'Research': '#ea580c',
+    'Technology': '#0891b2',
+    'Other': '#6b7280'
+};
+
+// Load jobs
+function loadJobs(page) {
+    currentPage = page;
+    $('#loading').show();
+    $('#jobs-container').hide();
+
+    let params = { page: page, per_page: 20 };
+    if (currentFilters.company) params.company = currentFilters.company;
+    if (currentFilters.location) params.location = currentFilters.location;
+    if (currentFilters.category) params.category = currentFilters.category;
+    if (currentFilters.keyword) params.keyword = currentFilters.keyword;
+    if (currentFilters.time_range) params.time_range = currentFilters.time_range;
+    if (currentFilters.is_important) params.is_important = 'true';
+
+    $.ajax({
+        url: '/api/jobs',
+        method: 'GET',
+        data: params,
+        success: function(response) {
+            if (response.success) {
+                renderJobs(response.data.jobs);
+                renderPagination(response.data.pagination);
+                $('#total-count').html(`<i class="bi bi-briefcase me-1"></i>${response.data.pagination.total} Jobs`);
+            } else {
+                showNotification('Failed to load: ' + response.error, 'error');
+            }
+        },
+        error: function() {
+            showNotification('Failed to load jobs', 'error');
+        },
+        complete: function() {
+            $('#loading').hide();
+            $('#jobs-container').show();
+        }
+    });
+}
+
+// Render jobs
+function renderJobs(jobs) {
+    let html = '';
+
+    if (jobs.length === 0) {
+        html = `
+            <div class="empty-state">
+                <i class="bi bi-inbox"></i>
+                <p>No jobs found matching your criteria</p>
+            </div>
+        `;
+    } else {
+        jobs.forEach(function(job) {
+            const categoryColor = categoryColors[job.category] || '#6b7280';
+
+            html += `
+                <div class="job-card">
+                    <div class="job-card-header">
+                        <div>
+                            <div class="job-title">
+                                <a href="/job/${job.id}" class="text-decoration-none text-dark">${job.title}</a>
+                            </div>
+                            <div class="job-meta">
+                                <span class="me-3">
+                                    <i class="bi bi-building me-1"></i>${job.company}
+                                </span>
+                                <span class="me-3">
+                                    <i class="bi bi-geo-alt me-1"></i>${job.location}
+                                </span>
+                                <span class="category-badge" style="background-color: ${categoryColor}20; color: ${categoryColor};">
+                                    ${job.category || 'Other'}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="job-badges">
+                            ${job.is_new ? '<span class="badge bg-success">New</span>' : ''}
+                            ${job.is_updated ? '<span class="badge bg-warning">Updated</span>' : ''}
+                        </div>
+                    </div>
+                    <div class="job-card-footer">
+                        <div class="job-date">
+                            <i class="bi bi-calendar me-1"></i>
+                            ${new Date(job.first_seen).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                        </div>
+                        <div class="job-actions">
+                            <button class="btn-icon ${job.is_important ? 'active' : ''}"
+                                    onclick="toggleImportant(${job.id}, ${!job.is_important})"
+                                    title="${job.is_important ? 'Remove from starred' : 'Add to starred'}">
+                                <i class="bi bi-star${job.is_important ? '-fill' : ''}"></i>
+                            </button>
+                            <a href="${job.job_url}" target="_blank" class="btn-icon" title="View job posting">
+                                <i class="bi bi-box-arrow-up-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    $('#jobs-container').html(html);
+}
+
+// Render pagination
+function renderPagination(pagination) {
+    if (pagination.pages <= 1) {
+        $('#pagination-container').html('');
+        return;
+    }
+
+    let html = '<ul class="pagination justify-content-center">';
+
+    html += `
+        <li class="page-item ${!pagination.has_prev ? 'disabled' : ''}">
+            <a class="page-link" href="#" onclick="loadJobs(${currentPage - 1}); return false;">Previous</a>
+        </li>
+    `;
+
+    for (let i = 1; i <= pagination.pages; i++) {
+        if (i === 1 || i === pagination.pages || (i >= currentPage - 2 && i <= currentPage + 2)) {
+            html += `
+                <li class="page-item ${i === currentPage ? 'active' : ''}">
+                    <a class="page-link" href="#" onclick="loadJobs(${i}); return false;">${i}</a>
+                </li>
+            `;
+        } else if (i === currentPage - 3 || i === currentPage + 3) {
+            html += '<li class="page-item disabled"><span class="page-link">...</span></li>';
+        }
+    }
+
+    html += `
+        <li class="page-item ${!pagination.has_next ? 'disabled' : ''}">
+            <a class="page-link" href="#" onclick="loadJobs(${currentPage + 1}); return false;">Next</a>
+        </li>
+    `;
+
+    html += '</ul>';
+    $('#pagination-container').html(html);
+}
+
+// Apply filters
+function applyFilters() {
+    currentFilters = {
+        company: $('#filter-company').val(),
+        location: $('#filter-location').val(),
+        category: $('#filter-category').val(),
+        keyword: $('#filter-keyword').val(),
+        time_range: $('#filter-time').val(),
+        is_important: $('#filter-important').is(':checked')
+    };
+    loadJobs(1);
+}
+
+// Reset filters
+function resetFilters() {
+    $('#filter-company, #filter-location, #filter-category, #filter-keyword, #filter-time').val('');
+    $('#filter-important').prop('checked', false);
+    currentFilters = {};
+    loadJobs(1);
+}
+
+// Toggle important
+function toggleImportant(jobId, isImportant) {
+    $.ajax({
+        url: `/api/jobs/${jobId}/important`,
+        method: 'PUT',
+        contentType: 'application/json',
+        data: JSON.stringify({ is_important: isImportant }),
+        success: function(response) {
+            if (response.success) {
+                showNotification(isImportant ? 'Added to starred' : 'Removed from starred', 'success');
+                loadJobs(currentPage);
+            } else {
+                showNotification('Operation failed: ' + response.error, 'error');
+            }
+        },
+        error: function() {
+            showNotification('Operation failed', 'error');
+        }
+    });
+}
+
+// Enter to search
+$('#filter-keyword').on('keypress', function(e) {
+    if (e.which === 13) {
+        applyFilters();
+    }
+});
+</script>
+{% endblock %}
