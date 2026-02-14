@@ -22,9 +22,9 @@ class Config:
     HEADLESS_MODE = True       # 无头模式
 
     # 定时任务配置
-    SCHEDULE_HOUR = 9          # 每天执行的小时
+    SCHEDULE_HOUR = 16         # 每天执行的小时 (4pm ET)
     SCHEDULE_MINUTE = 0        # 每天执行的分钟
-    TIMEZONE = 'Asia/Shanghai' # 时区
+    TIMEZONE = 'America/New_York'  # Eastern Time
 
     # Excel 导出配置
     EXCEL_EXPORT_PATH = os.path.join(BASE_DIR, 'data', 'exports', 'jobs_export.xlsx')
