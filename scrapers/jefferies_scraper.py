@@ -10,7 +10,7 @@ class JefferiesScraper(BaseScraper):
     def __init__(self):
         super().__init__(
             company_name='Jefferies',
-            source_url='https://jefferies.tal.net/vx/lang-en-GB/mobile-0/appcentre-ext/brand-4/xf-c9012ad8d386/candidate/jobboard/vacancy/2'
+            source_url='https://jefferies.tal.net/vx/lang-en-GB/mobile-0/appcentre-ext/brand-4/xf-5d566aeb2688/candidate/jobboard/vacancy/2/adv/?f_Item_Opportunity_84825_lk=749&f_Item_Opportunity_84825_lk=765'
         )
 
     def scrape_jobs(self):

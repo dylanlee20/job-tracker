@@ -18,6 +18,8 @@ from scrapers.piper_sandler_scraper import PiperSandlerScraper
 from scrapers.jefferies_scraper import JefferiesScraper
 from scrapers.mizuho_scraper import MizuhoScraper
 from scrapers.barclays_scraper import BarclaysScraper
+from scrapers.bofa_scraper import BofAScraper
+from scrapers.hsbc_scraper import HSBCScraper
 import logging
 
 logger = logging.getLogger(__name__)
@@ -112,7 +114,9 @@ class ScraperService:
         'Piper Sandler': PiperSandlerScraper,
         'Jefferies': JefferiesScraper,
         'Mizuho': MizuhoScraper,
-        'Barclays': BarclaysScraper
+        'Barclays': BarclaysScraper,
+        'Bank of America': BofAScraper,
+        'HSBC': HSBCScraper
     }
 
     @classmethod

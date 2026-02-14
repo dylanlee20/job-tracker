@@ -1,149 +1,89 @@
 from scrapers.base_scraper import BaseScraper
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 import time
 
 
 class BarclaysScraper(BaseScraper):
-    """Barclays scraper - Intern positions in US, Singapore, and Canada"""
+    """Barclays scraper - US positions"""
 
     def __init__(self):
         super().__init__(
             company_name='Barclays',
-            source_url='https://search.jobs.barclays/search-jobs'
+            source_url='https://search.jobs.barclays/search-jobs?alcpm=6252001'
         )
 
     def scrape_jobs(self):
-        """Scrape Barclays job listings with filters for Intern positions"""
+        """Scrape Barclays job listings"""
         all_jobs = []
 
         try:
             self.logger.info(f"Loading {self.source_url}")
             self.driver.get(self.source_url)
-            time.sleep(10)
+            time.sleep(8)
+
+            # Dismiss any popups/alerts blocking the page
+            try:
+                # Try to close system-ialert popup
+                alert_close = self.driver.find_elements(By.CSS_SELECTOR, '#system-ialert .system-ialert-close-button, .system-ialert-remove-button, [class*="ialert"] button')
+                for btn in alert_close:
+                    try:
+                        self.driver.execute_script("arguments[0].click();", btn)
+                        self.logger.info("Dismissed system alert")
+                        time.sleep(1)
+                    except:
+                        pass
+
+                # Also try to remove the element entirely via JS
+                self.driver.execute_script("var el = document.getElementById('system-ialert'); if(el) el.remove();")
+                time.sleep(1)
+            except:
+                pass
 
             # Dismiss cookie banner if present
             try:
-                cookie_buttons = self.driver.find_elements(By.CSS_SELECTOR, '[id*="cookie"] button, [class*="cookie"] button, .onetrust-close-btn-handler')
-                for btn in cookie_buttons:
+                cookie_selectors = ['#onetrust-accept-btn-handler', '.onetrust-close-btn-handler', '[id*="cookie"] button.accept', '.cookie-accept']
+                for selector in cookie_selectors:
                     try:
-                        btn.click()
+                        btn = self.driver.find_element(By.CSS_SELECTOR, selector)
+                        self.driver.execute_script("arguments[0].click();", btn)
                         self.logger.info("Cookie banner dismissed")
                         time.sleep(2)
                         break
                     except:
                         continue
-            except Exception as e:
-                self.logger.info(f"No cookie banner or already dismissed: {e}")
+            except:
+                pass
 
-            # Apply Country filter: United States
-            self.logger.info("Applying country filters...")
-            try:
-                # Click on Country filter toggle
-                country_toggle = self.driver.find_element(By.ID, 'country-toggle')
-                self.driver.execute_script("arguments[0].scrollIntoView(true);", country_toggle)
-                time.sleep(1)
-                country_toggle.click()
-                time.sleep(2)
-
-                # Try to find and click United States checkbox
-                # The ID pattern is typically country-filter-{id}
-                country_checkboxes = self.driver.find_elements(By.CSS_SELECTOR, 'input[id^="country-filter-"]')
-                for checkbox in country_checkboxes:
-                    try:
-                        label = checkbox.find_element(By.XPATH, './following-sibling::label | ../label')
-                        label_text = label.text.lower()
-                        if 'united states' in label_text or 'usa' in label_text:
-                            if not checkbox.is_selected():
-                                checkbox.click()
-                                self.logger.info("Selected United States")
-                                time.sleep(2)
-                            break
-                    except:
-                        continue
-
-                # Try to find and click Singapore checkbox
-                for checkbox in country_checkboxes:
-                    try:
-                        label = checkbox.find_element(By.XPATH, './following-sibling::label | ../label')
-                        label_text = label.text.lower()
-                        if 'singapore' in label_text:
-                            if not checkbox.is_selected():
-                                checkbox.click()
-                                self.logger.info("Selected Singapore")
-                                time.sleep(2)
-                            break
-                    except:
-                        continue
-
-                # Try to find and click Canada checkbox
-                for checkbox in country_checkboxes:
-                    try:
-                        label = checkbox.find_element(By.XPATH, './following-sibling::label | ../label')
-                        label_text = label.text.lower()
-                        if 'canada' in label_text:
-                            if not checkbox.is_selected():
-                                checkbox.click()
-                                self.logger.info("Selected Canada")
-                                time.sleep(2)
-                            break
-                    except:
-                        continue
-
-                time.sleep(3)
-                self.logger.info("Country filters applied")
-
-            except Exception as e:
-                self.logger.warning(f"Could not apply country filters: {e}")
-
-            # Apply Job Type filter: Intern
-            self.logger.info("Applying job type filter for Intern...")
-            try:
-                # Look for job type/level filter toggle
-                job_type_selectors = [
-                    'job-type-toggle',
-                    'jobtype-toggle',
-                    'custom_fields.jobtype-toggle',
-                    'custom_fields.employmenttype-toggle',
-                    'employment-type-toggle'
-                ]
-
-                job_type_toggle = None
-                for selector_id in job_type_selectors:
-                    try:
-                        job_type_toggle = self.driver.find_element(By.ID, selector_id)
-                        break
-                    except:
-                        continue
-
-                if job_type_toggle:
-                    self.driver.execute_script("arguments[0].scrollIntoView(true);", job_type_toggle)
-                    time.sleep(1)
-                    job_type_toggle.click()
+            # Add Singapore and Hong Kong filters (US is already in URL)
+            countries_to_add = ['singapore', 'hong kong']
+            for country in countries_to_add:
+                try:
+                    # Click country filter toggle
+                    country_toggle = self.driver.find_element(By.ID, 'country-toggle')
+                    self.driver.execute_script("arguments[0].click();", country_toggle)
                     time.sleep(2)
 
-                    # Find and click Intern checkbox
-                    job_type_checkboxes = self.driver.find_elements(By.CSS_SELECTOR, 'input[id*="jobtype-filter"], input[id*="employment"]')
-                    for checkbox in job_type_checkboxes:
+                    # Re-fetch checkboxes each time to avoid stale elements
+                    country_checkboxes = self.driver.find_elements(By.CSS_SELECTOR, 'input[id^="country-filter-"]')
+                    for checkbox in country_checkboxes:
                         try:
                             label = checkbox.find_element(By.XPATH, './following-sibling::label | ../label')
                             label_text = label.text.lower()
-                            if 'intern' in label_text:
+                            if country in label_text:
                                 if not checkbox.is_selected():
-                                    checkbox.click()
-                                    self.logger.info("Selected Intern job type")
-                                    time.sleep(3)
+                                    self.driver.execute_script("arguments[0].click();", checkbox)
+                                    self.logger.info(f"Selected: {label.text}")
+                                    time.sleep(2)
                                 break
                         except:
                             continue
 
-                self.logger.info("Job type filter applied")
-
-            except Exception as e:
-                self.logger.warning(f"Could not apply job type filter: {e}")
-
-            time.sleep(5)
+                    # Close filter dropdown and wait for page to update
+                    country_toggle = self.driver.find_element(By.ID, 'country-toggle')
+                    self.driver.execute_script("arguments[0].click();", country_toggle)
+                    time.sleep(3)
+                except Exception as e:
+                    self.logger.warning(f"Could not add {country} filter: {e}")
 
             # Get total pages
             try:
@@ -157,82 +97,111 @@ class BarclaysScraper(BaseScraper):
 
             # Scrape all pages
             current_page = 1
-            max_pages = min(total_pages, 50)  # Safety limit
+            max_pages = min(total_pages, 20)  # Safety limit
 
             while current_page <= max_pages:
                 self.logger.info(f"Scraping page {current_page}/{max_pages}...")
                 time.sleep(3)
 
-                # Get job cards on current page
-                job_cards = self.driver.find_elements(By.CSS_SELECTOR, 'li[data-job-id], .job-tile, .search-results-item')
+                # Get job cards - try multiple selectors
+                job_cards = []
+                selectors = [
+                    '#search-results-list > ul > li',
+                    'section#search-results ul li',
+                    'ul.search-results-list > li',
+                    'li[data-job-id]',
+                    '.search-results li a[href*="/job/"]'
+                ]
+
+                for selector in selectors:
+                    job_cards = self.driver.find_elements(By.CSS_SELECTOR, selector)
+                    if job_cards:
+                        self.logger.info(f"Found {len(job_cards)} job cards using: {selector}")
+                        break
 
                 if not job_cards:
-                    # Alternative selectors
-                    job_cards = self.driver.find_elements(By.CSS_SELECTOR, 'section.search-results li')
+                    self.logger.warning(f"No job cards found on page {current_page}")
+                    # Try getting links directly
+                    job_links = self.driver.find_elements(By.CSS_SELECTOR, 'a[href*="/job/"]')
+                    self.logger.info(f"Found {len(job_links)} job links directly")
 
-                self.logger.info(f"Found {len(job_cards)} job cards on page {current_page}")
-
-                for idx, job_card in enumerate(job_cards):
-                    try:
-                        # Extract job link and title
+                    for link in job_links:
                         try:
-                            link_elem = job_card.find_element(By.CSS_SELECTOR, 'a[href*="/job/"]')
-                            job_url = link_elem.get_attribute('href')
-                            title = link_elem.text.strip()
+                            job_url = link.get_attribute('href')
+                            title = link.text.strip()
 
-                            if not title:
-                                title = job_card.find_element(By.CSS_SELECTOR, 'h2, h3, .job-title').text.strip()
+                            if not title or not job_url or '/job/' not in job_url:
+                                continue
 
-                            if not job_url.startswith('http'):
-                                job_url = f"https://search.jobs.barclays{job_url}"
-                        except Exception as e:
-                            self.logger.warning(f"Could not extract link/title for job {idx + 1}: {e}")
+                            # Skip duplicate URLs
+                            if any(j['job_url'] == job_url for j in all_jobs):
+                                continue
+
+                            job = {
+                                'company': self.company_name,
+                                'title': title,
+                                'location': 'United States',
+                                'description': '',
+                                'post_date': None,
+                                'deadline': None,
+                                'source_website': self.source_url,
+                                'job_url': job_url
+                            }
+                            all_jobs.append(job)
+                        except:
                             continue
-
-                        # Extract location
+                else:
+                    for idx, job_card in enumerate(job_cards):
                         try:
-                            location = job_card.find_element(By.CSS_SELECTOR, '.job-location, .location, [class*="location"]').text.strip()
-                        except:
-                            location = ""
+                            # Extract job link and title
+                            try:
+                                link_elem = job_card.find_element(By.CSS_SELECTOR, 'a[href*="/job/"]')
+                                job_url = link_elem.get_attribute('href')
+                                title = link_elem.text.strip()
 
-                        # Extract date if available
-                        try:
-                            date_elem = job_card.find_element(By.CSS_SELECTOR, '.job-date, [class*="date"]')
-                            post_date = date_elem.text.strip()
-                        except:
-                            post_date = None
+                                if not title:
+                                    title = job_card.find_element(By.CSS_SELECTOR, 'h2, h3, .job-title').text.strip()
+                            except:
+                                continue
 
-                        job = {
-                            'company': self.company_name,
-                            'title': title,
-                            'location': location,
-                            'description': 'Intern position - US/Singapore/Canada',
-                            'post_date': post_date,
-                            'deadline': None,
-                            'source_website': self.source_url,
-                            'job_url': job_url
-                        }
+                            if not title or not job_url:
+                                continue
 
-                        all_jobs.append(job)
-                        self.logger.info(f"Page {current_page}, Job {idx + 1}: {title[:50]}...")
+                            # Extract location
+                            try:
+                                location = job_card.find_element(By.CSS_SELECTOR, '.job-location, .location, span[class*="location"]').text.strip()
+                            except:
+                                location = "United States"
 
-                    except Exception as e:
-                        self.logger.warning(f"Error scraping job {idx + 1} on page {current_page}: {e}")
-                        continue
+                            job = {
+                                'company': self.company_name,
+                                'title': title,
+                                'location': location,
+                                'description': '',
+                                'post_date': None,
+                                'deadline': None,
+                                'source_website': self.source_url,
+                                'job_url': job_url
+                            }
+
+                            # Skip duplicates
+                            if any(j['job_url'] == job_url for j in all_jobs):
+                                continue
+
+                            all_jobs.append(job)
+                            self.logger.info(f"Job {len(all_jobs)}: {title[:50]}...")
+
+                        except Exception as e:
+                            continue
 
                 # Go to next page
                 if current_page < max_pages:
                     try:
-                        next_button = self.driver.find_element(By.CSS_SELECTOR, 'a.next, button.next, [aria-label="Next"]')
-                        if next_button.is_enabled() and next_button.is_displayed():
-                            self.driver.execute_script("arguments[0].scrollIntoView(true);", next_button)
-                            time.sleep(1)
-                            next_button.click()
-                            self.logger.info(f"Navigating to page {current_page + 1}")
-                            time.sleep(5)
-                        else:
-                            self.logger.info(f"Next button not available, stopping at page {current_page}")
-                            break
+                        # Use JavaScript to click next to avoid popup blocking
+                        next_button = self.driver.find_element(By.CSS_SELECTOR, 'a.next')
+                        self.driver.execute_script("arguments[0].click();", next_button)
+                        self.logger.info(f"Navigating to page {current_page + 1}")
+                        time.sleep(5)
                     except Exception as e:
                         self.logger.warning(f"Could not navigate to next page: {e}")
                         break

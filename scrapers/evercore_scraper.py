@@ -10,7 +10,7 @@ class EvercoreScraper(BaseScraper):
     def __init__(self):
         super().__init__(
             company_name='Evercore',
-            source_url='https://evercore.tal.net/vx/lang-en-GB/mobile-0/channel-1/appcentre-ext/brand-6/candidate/jobboard/vacancy/2/adv/?f_Item_Opportunity_84825_lk=749'
+            source_url='https://evercore.tal.net/vx/lang-en-GB/mobile-0/channel-1/appcentre-ext/brand-6/candidate/jobboard/vacancy/2/adv/'
         )
 
     def scrape_jobs(self):
