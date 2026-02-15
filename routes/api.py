@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, send_file
+from flask import Blueprint, request, jsonify, send_file, current_app
 from services.job_service import JobService
 from services.scraper_service import ScraperService
 from services.excel_service import ExcelService
@@ -183,7 +183,8 @@ def trigger_scrape():
         elif run_async:
             # 异步爬取所有公司
             # Note: run_all_scrapers_async handles stuck states internally
-            started = ScraperService.run_all_scrapers_async()
+            # Pass app context for database operations in background thread
+            started = ScraperService.run_all_scrapers_async(app=current_app._get_current_object())
             if started:
                 return jsonify({
                     'success': True,

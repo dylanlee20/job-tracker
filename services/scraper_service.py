@@ -265,14 +265,20 @@ class ScraperService:
         def run():
             try:
                 logger.info("Background scraping thread started")
-                cls.run_all_scrapers(with_progress=True)
-                # Auto export Excel after scraping
-                try:
-                    from services.excel_service import ExcelService
-                    ExcelService.auto_sync_excel()
-                    logger.info("Excel auto-sync completed")
-                except Exception as e:
-                    logger.warning(f"Error auto-syncing Excel after scrape: {e}")
+                # Use app context for database operations
+                if app:
+                    with app.app_context():
+                        cls.run_all_scrapers(with_progress=True)
+                        # Auto export Excel after scraping
+                        try:
+                            from services.excel_service import ExcelService
+                            ExcelService.auto_sync_excel()
+                            logger.info("Excel auto-sync completed")
+                        except Exception as e:
+                            logger.warning(f"Error auto-syncing Excel after scrape: {e}")
+                else:
+                    # Fallback without app context (will fail on DB operations)
+                    cls.run_all_scrapers(with_progress=True)
             except Exception as e:
                 logger.error(f"Error in async scraping: {e}")
                 import traceback
