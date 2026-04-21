@@ -61,33 +61,44 @@ class BaseScraper(ABC):
             # 使用 webdriver-manager 自动管理 ChromeDriver
             try:
                 driver_path = ChromeDriverManager().install()
-                
-                # 修复：webdriver-manager 可能返回错误的文件路径
+
+                # webdriver-manager 4.x 有时返回 THIRD_PARTY_NOTICES.chromedriver
+                # 文件而不是 chromedriver 二进制。此时优先取同目录下的 chromedriver
+                # 兄弟文件（就是刚下载好、版本匹配的那个），其次才按最高版本目录回退。
                 if 'THIRD_PARTY_NOTICES' in driver_path or not os.path.exists(driver_path):
-                    # 获取缓存目录
-                    cache_base = os.path.expanduser('~/.wdm/drivers/chromedriver')
-                    
-                    # 查找真正的 chromedriver 可执行文件
-                    found = False
-                    for root, dirs, files in os.walk(cache_base):
-                        if 'chromedriver' in files:
-                            potential_path = os.path.join(root, 'chromedriver')
-                            # 检查是否是可执行文件（不是文本文件）
-                            try:
-                                # 给予执行权限
-                                os.chmod(potential_path, 0o755)
-                                # 验证是否是二进制文件
-                                if os.path.getsize(potential_path) > 1000000:  # 大于1MB
-                                    driver_path = potential_path
+                    sibling = os.path.join(os.path.dirname(driver_path), 'chromedriver')
+                    if os.path.exists(sibling) and os.path.getsize(sibling) > 1_000_000:
+                        os.chmod(sibling, 0o755)
+                        driver_path = sibling
+                        self.logger.info(f"Corrected chromedriver path to sibling: {driver_path}")
+                    else:
+                        # 回退：按版本号降序扫描缓存，取最新版本，而不是 os.walk 的第一个结果
+                        cache_base = os.path.expanduser('~/.wdm/drivers/chromedriver/mac64')
+                        found = False
+                        if os.path.isdir(cache_base):
+                            def _ver_key(name):
+                                try:
+                                    return tuple(int(x) for x in name.split('.'))
+                                except Exception:
+                                    return (0,)
+                            version_dirs = sorted(
+                                (d for d in os.listdir(cache_base)
+                                 if os.path.isdir(os.path.join(cache_base, d))),
+                                key=_ver_key, reverse=True,
+                            )
+                            for vd in version_dirs:
+                                candidate = os.path.join(
+                                    cache_base, vd, 'chromedriver-mac-x64', 'chromedriver'
+                                )
+                                if os.path.exists(candidate) and os.path.getsize(candidate) > 1_000_000:
+                                    os.chmod(candidate, 0o755)
+                                    driver_path = candidate
                                     self.logger.info(f"Found chromedriver at: {driver_path}")
                                     found = True
                                     break
-                            except:
-                                continue
-                    
-                    if not found:
-                        raise Exception("Could not find valid chromedriver executable")
-                
+                        if not found:
+                            raise Exception("Could not find valid chromedriver executable")
+
                 service = Service(driver_path)
             except Exception as e:
                 self.logger.error(f"ChromeDriver setup failed: {e}")
