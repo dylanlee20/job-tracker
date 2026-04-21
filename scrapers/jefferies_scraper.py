@@ -1,138 +1,144 @@
-from scrapers.base_scraper import BaseScraper
-from selenium.webdriver.common.by import By
+"""Jefferies scraper — Atom feed (pure HTTP).
+
+Old scraper opened the Taleo SPA URL in Selenium, waited 25s for JS to
+render `tr.search_res` rows, then failed to find any. The URL also
+embedded a stale `xf-5d566aeb2688` token; live links use `xf-db4aa60af11c`.
+Result: "No jobs found" on every run since ~Feb 2026.
+
+Taleo exposes an Atom feed at /vx/mobile-0/appcentre-1/brand-4/candidate/
+jobboard/vacancy/2/feed titled "Campus Opportunities". Static XML, parses
+cleanly, no browser needed.
+"""
 import time
-from datetime import datetime
+import re
+import requests
+import xml.etree.ElementTree as ET
+
+from scrapers.base_scraper import BaseScraper
+from config import Config
+
+
+_FEED_URL = (
+    "https://jefferies.tal.net/vx/mobile-0/appcentre-1/brand-4/"
+    "candidate/jobboard/vacancy/2/feed"
+)
+_ATOM_NS = {"a": "http://www.w3.org/2005/Atom"}
+_HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/147.0.0.0 Safari/537.36"
+    ),
+    "Accept": "application/atom+xml,application/xml;q=0.9,*/*;q=0.8",
+}
+
+
+def _extract_location(title: str) -> str:
+    """Jefferies titles end with ' - <Location>' (sometimes multi-segment).
+
+    Conservative: take the last dash-separated segment, but only if it
+    looks like a place (letters/spaces, no words like 'Analyst' or 'Program').
+    """
+    if " - " not in title:
+        return ""
+    tail = title.rsplit(" - ", 1)[-1].strip()
+    # reject obviously non-location tails
+    if re.search(r"\b(analyst|program|internship|intern|summer|off-cycle|full-time|associate)\b",
+                 tail, re.IGNORECASE):
+        return ""
+    return tail
 
 
 class JefferiesScraper(BaseScraper):
-    """Jefferies scraper - Taleo platform"""
+    """Jefferies — campus opportunities via Taleo Atom feed."""
 
     def __init__(self):
         super().__init__(
-            company_name='Jefferies',
-            source_url='https://jefferies.tal.net/vx/lang-en-GB/mobile-0/appcentre-ext/brand-4/xf-5d566aeb2688/candidate/jobboard/vacancy/2/adv/?f_Item_Opportunity_84825_lk=749&f_Item_Opportunity_84825_lk=765'
+            company_name="Jefferies",
+            source_url=(
+                "https://jefferies.tal.net/vx/mobile-0/appcentre-1/brand-4/"
+                "candidate/jobboard/vacancy/2"
+            ),
         )
+        self.session = requests.Session()
+        self.session.headers.update(_HEADERS)
+
+    def scrape_with_retry(self, max_retries=None):
+        if max_retries is None:
+            max_retries = Config.SCRAPER_RETRY_COUNT
+        for attempt in range(max_retries):
+            try:
+                self.logger.info(
+                    f"Starting scrape for {self.company_name} "
+                    f"(attempt {attempt + 1}/{max_retries})"
+                )
+                jobs = self.scrape_jobs()
+                self.logger.info(
+                    f"Successfully scraped {len(jobs)} jobs from {self.company_name}"
+                )
+                return jobs
+            except Exception as e:
+                self.logger.error(
+                    f"Scrape failed for {self.company_name} "
+                    f"(attempt {attempt + 1}/{max_retries}): {e}"
+                )
+                if attempt < max_retries - 1:
+                    time.sleep(5)
+        return []
 
     def scrape_jobs(self):
-        """Scrape Jefferies job listings"""
-        all_jobs = []
+        resp = self.session.get(_FEED_URL, timeout=Config.SCRAPER_TIMEOUT)
+        resp.raise_for_status()
 
         try:
-            self.logger.info(f"Loading {self.source_url}")
-            self.driver.get(self.source_url)
+            root = ET.fromstring(resp.content)
+        except ET.ParseError as e:
+            self.logger.error(f"Jefferies feed XML parse failed: {e}")
+            return []
 
-            # Wait for the job table to appear
-            time.sleep(25)  # Give more time for JavaScript to load
+        entries = root.findall("a:entry", _ATOM_NS)
+        self.logger.info(f"Jefferies feed: {len(entries)} entries")
 
-            # Scroll down to trigger lazy loading
-            self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-            time.sleep(3)
-            self.driver.execute_script("window.scrollTo(0, 0);")
-            time.sleep(2)
-
-            # Try the standard Taleo selector first
-            job_rows = self.driver.find_elements(By.CSS_SELECTOR, 'tr.search_res.details_row')
-
-            if len(job_rows) == 0:
-                self.logger.info("Standard selector didn't work, trying alternatives...")
-                # Try alternative selectors
-                selectors = [
-                    'tr.search_res',
-                    'table tbody tr',
-                    'tr[class*="details"]',
-                ]
-
-                for selector in selectors:
-                    job_rows = self.driver.find_elements(By.CSS_SELECTOR, selector)
-                    if len(job_rows) > 5:  # More than 5 to avoid header rows
-                        self.logger.info(f"Found {len(job_rows)} rows using selector: {selector}")
-                        break
-
-            self.logger.info(f"Found {len(job_rows)} job rows")
-
-            if len(job_rows) == 0:
-                self.logger.warning("No jobs found")
-                return all_jobs
-
-            for idx, row in enumerate(job_rows):
-                try:
-                    # Extract job title and link - try multiple selectors
-                    title = None
-                    job_url = None
-                    link_selectors = ['a.subject', 'a', 'h3 a', 'div.job-title a', '[data-automation-id="jobTitle"]']
-
-                    for link_selector in link_selectors:
-                        try:
-                            link_elem = row.find_element(By.CSS_SELECTOR, link_selector)
-                            title = link_elem.text.strip()
-                            job_url = link_elem.get_attribute('href')
-                            if title and job_url:
-                                break
-                        except:
-                            continue
-
-                    if not title or not job_url:
-                        # Try getting text directly from the row
-                        try:
-                            title = row.text.strip().split('\n')[0] if row.text else None
-                            # Try to find any link in the row
-                            links = row.find_elements(By.TAG_NAME, 'a')
-                            if links:
-                                job_url = links[0].get_attribute('href')
-                        except:
-                            pass
-
-                    if not title or not job_url:
-                        self.logger.warning(f"Could not extract title/link for job {idx + 1}")
-                        continue
-
-                    # Extract location
-                    try:
-                        tds = row.find_elements(By.TAG_NAME, 'td')
-                        if len(tds) >= 2:
-                            location = tds[1].text.strip()
-                        else:
-                            location = "United States"
-                    except:
-                        location = "United States"
-
-                    # Extract deadline
-                    try:
-                        if len(tds) >= 3:
-                            deadline_str = tds[2].text.strip()
-                            # Try to parse date format "30 Jan 2026"
-                            try:
-                                deadline = datetime.strptime(deadline_str, "%d %b %Y")
-                            except:
-                                deadline = None
-                        else:
-                            deadline = None
-                    except:
-                        deadline = None
-
-                    job = {
-                        'company': self.company_name,
-                        'title': title,
-                        'location': location,
-                        'description': '',
-                        'post_date': None,
-                        'deadline': deadline,
-                        'source_website': self.source_url,
-                        'job_url': job_url
-                    }
-
-                    all_jobs.append(job)
-                    self.logger.info(f"Job {idx + 1}: {title[:50]}...")
-
-                except Exception as e:
-                    self.logger.warning(f"Error scraping job {idx + 1}: {e}")
+        jobs = []
+        for e in entries:
+            try:
+                title_elem = e.find("a:title", _ATOM_NS)
+                title = (title_elem.text or "").strip() if title_elem is not None else ""
+                if not title:
                     continue
 
-            self.logger.info(f"Completed scraping {len(all_jobs)} jobs")
+                # Prefer the entry's html link (first alternate); fall back to id.
+                job_url = ""
+                for link in e.findall("a:link", _ATOM_NS):
+                    href = link.get("href") or ""
+                    if href and link.get("rel", "alternate") == "alternate":
+                        job_url = href
+                        break
+                if not job_url:
+                    id_elem = e.find("a:id", _ATOM_NS)
+                    job_url = id_elem.text.strip() if id_elem is not None and id_elem.text else ""
 
-        except Exception as e:
-            self.logger.error(f"Error scraping Jefferies jobs: {e}")
-            import traceback
-            traceback.print_exc()
+                published_elem = e.find("a:published", _ATOM_NS)
+                post_date = (
+                    (published_elem.text or "").strip()
+                    if published_elem is not None else None
+                )
 
-        return all_jobs
+                location = _extract_location(title)
+
+                jobs.append({
+                    "company": self.company_name,
+                    "title": title,
+                    "location": location,
+                    "description": "Campus Opportunities (Taleo feed)",
+                    "post_date": post_date,
+                    "deadline": None,
+                    "source_website": self.source_url,
+                    "job_url": job_url,
+                })
+            except Exception as ex:
+                self.logger.warning(f"Error parsing Jefferies entry: {ex}")
+                continue
+
+        self.logger.info(f"Completed scraping {len(jobs)} Jefferies jobs")
+        return jobs
