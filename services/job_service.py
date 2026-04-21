@@ -96,6 +96,21 @@ class JobService:
                             logger.info(f"Updated job: {job_data['title']} at {job_data['company']}")
 
                     else:
+                        # Not in our scoped view (company+source_website); check
+                        # globally to avoid UNIQUE(job_hash) collision when two
+                        # regional scrapers surface the same (company,title,location)
+                        # under different source_websites (e.g. Goldman US + Intl).
+                        cross_region_existing = Job.query.filter_by(job_hash=job_hash).first()
+                        if cross_region_existing is not None:
+                            cross_region_existing.last_seen = datetime.utcnow()
+                            if cross_region_existing.status != 'active':
+                                cross_region_existing.status = 'active'
+                            logger.debug(
+                                f"Job exists under another source_website, "
+                                f"refreshed last_seen: {job_data['title']}"
+                            )
+                            continue
+
                         # 新职位，插入数据库
                         new_job = Job(
                             job_hash=job_hash,

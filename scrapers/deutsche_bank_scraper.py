@@ -11,9 +11,44 @@ campus-track roles (Interns / Graduate Trainees / Apprentices) directly.
 """
 import time
 import requests
+from datetime import datetime, timedelta
 
 from scrapers.base_scraper import BaseScraper
 from config import Config
+
+
+def _parse_workday_posted(text):
+    """Workday returns strings like 'Posted Today', 'Posted 2 Days Ago',
+    'Posted 30+ Days Ago', or ISO dates. Best-effort to a datetime."""
+    if not text:
+        return None
+    t = text.strip()
+    if t.lower().startswith("posted "):
+        t = t[len("posted "):].strip()
+    low = t.lower()
+    if low in ("today", "just posted"):
+        return datetime.utcnow().replace(hour=0, minute=0, second=0, microsecond=0)
+    if low == "yesterday":
+        return (datetime.utcnow() - timedelta(days=1)).replace(
+            hour=0, minute=0, second=0, microsecond=0
+        )
+    import re
+    m = re.match(r"(\d+)\+?\s*days?\s*ago", low)
+    if m:
+        return (datetime.utcnow() - timedelta(days=int(m.group(1)))).replace(
+            hour=0, minute=0, second=0, microsecond=0
+        )
+    m = re.match(r"(\d+)\+?\s*month(?:s)?\s*ago", low)
+    if m:
+        return (datetime.utcnow() - timedelta(days=30 * int(m.group(1)))).replace(
+            hour=0, minute=0, second=0, microsecond=0
+        )
+    for fmt in ("%Y-%m-%d", "%Y-%m-%dT%H:%M:%S", "%Y-%m-%dT%H:%M:%SZ"):
+        try:
+            return datetime.strptime(t, fmt)
+        except ValueError:
+            continue
+    return None
 
 
 _CXS_URL = "https://db.wd3.myworkdayjobs.com/wday/cxs/db/DBWebsite/jobs"
@@ -114,7 +149,7 @@ class DeutscheBankScraper(BaseScraper):
                     location = (p.get("locationsText") or "").strip()
                     ext_path = p.get("externalPath") or ""
                     job_url = _SITE_BASE + ext_path if ext_path else ""
-                    post_date = p.get("postedOn") or None
+                    post_date = _parse_workday_posted(p.get("postedOn"))
 
                     all_jobs.append({
                         "company": self.company_name,

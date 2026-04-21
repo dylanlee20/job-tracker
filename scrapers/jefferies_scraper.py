@@ -13,9 +13,28 @@ import time
 import re
 import requests
 import xml.etree.ElementTree as ET
+from datetime import datetime
 
 from scrapers.base_scraper import BaseScraper
 from config import Config
+
+
+def _parse_atom_published(text):
+    """Atom <published> is RFC3339: 2026-04-22T10:15:00Z or with offset.
+    Strip timezone and parse; return None on any failure."""
+    if not text:
+        return None
+    t = text.strip()
+    if t.endswith("Z"):
+        t = t[:-1]
+    # drop a trailing timezone like +01:00 or -0500
+    t = re.sub(r"[+-]\d{2}:?\d{2}$", "", t)
+    for fmt in ("%Y-%m-%dT%H:%M:%S.%f", "%Y-%m-%dT%H:%M:%S", "%Y-%m-%d"):
+        try:
+            return datetime.strptime(t, fmt)
+        except ValueError:
+            continue
+    return None
 
 
 _FEED_URL = (
@@ -119,9 +138,8 @@ class JefferiesScraper(BaseScraper):
                     job_url = id_elem.text.strip() if id_elem is not None and id_elem.text else ""
 
                 published_elem = e.find("a:published", _ATOM_NS)
-                post_date = (
-                    (published_elem.text or "").strip()
-                    if published_elem is not None else None
+                post_date = _parse_atom_published(
+                    published_elem.text if published_elem is not None else None
                 )
 
                 location = _extract_location(title)
