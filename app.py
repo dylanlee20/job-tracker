@@ -8,6 +8,7 @@ from routes.api import api_bp
 from routes.web import web_bp
 from routes.auth import auth_bp
 from routes.admin import admin_bp
+from routes.slides import slides_bp
 from scheduler.job_scheduler import JobScheduler
 from config import Config
 import logging
@@ -69,6 +70,7 @@ def create_app():
     app.register_blueprint(web_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(admin_bp)
+    app.register_blueprint(slides_bp)
 
     # 初始化并启动定时任务调度器
     scheduler = JobScheduler(app)
