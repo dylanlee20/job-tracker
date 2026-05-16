@@ -1,0 +1,502 @@
+{% extends "layout.html" %}
+
+{% block title %}Competition Calendar - NewWhale Career{% endblock %}
+
+{% block extra_css %}
+<style>
+:root {
+    --cal-border: #dee2e6;
+    --cal-bg-alt: #f8f9fa;
+    --cal-today: rgba(184, 134, 11, 0.15);
+    --cal-weekend: #fafafa;
+}
+
+.comp-header {
+    background: var(--gradient-primary);
+    color: var(--text-light);
+    padding: 1.5rem 2rem;
+    border-radius: 8px;
+    margin-bottom: 1.25rem;
+}
+.comp-header h2 { margin: 0; color: white; font-weight: 700; }
+.comp-header p { margin: 0.25rem 0 0 0; color: rgba(255,255,255,0.85); font-size: 0.95rem; }
+
+.toolbar {
+    background: white;
+    padding: 1rem 1.25rem;
+    border-radius: 8px;
+    box-shadow: var(--shadow-md);
+    margin-bottom: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+    justify-content: space-between;
+}
+.industry-toggles { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.industry-pill {
+    border: 2px solid;
+    background: white;
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+.industry-pill .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+}
+.industry-pill.off {
+    opacity: 0.35;
+    background: white !important;
+    color: #888 !important;
+}
+.industry-pill:hover { transform: translateY(-1px); }
+
+.month-nav { display: flex; align-items: center; gap: 0.5rem; }
+.month-nav button {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.4rem 0.75rem;
+    cursor: pointer;
+    font-weight: 600;
+}
+.month-nav button:hover { background: var(--primary-dark); }
+.month-nav .label { font-weight: 700; min-width: 140px; text-align: center; }
+
+.calendar-container {
+    background: white;
+    border-radius: 8px;
+    box-shadow: var(--shadow-md);
+    padding: 1rem;
+    overflow-x: auto;
+}
+.calendar-grid {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 0;
+    min-width: 1100px;
+}
+.cal-header-row, .cal-row {
+    display: contents;
+}
+.cal-name-cell, .cal-track-cell {
+    border-bottom: 1px solid var(--cal-border);
+    padding: 0;
+}
+.cal-name-cell {
+    padding: 0.6rem 0.75rem;
+    border-right: 1px solid var(--cal-border);
+    font-size: 0.85rem;
+    line-height: 1.3;
+    background: white;
+    position: sticky;
+    left: 0;
+    z-index: 2;
+}
+.cal-name-cell .comp-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.15rem;
+}
+.cal-name-cell .comp-meta {
+    color: var(--text-secondary);
+    font-size: 0.72rem;
+}
+.cal-track-cell {
+    position: relative;
+    height: 56px;
+}
+.cal-header-cell {
+    padding: 0.5rem;
+    background: var(--cal-bg-alt);
+    border-bottom: 2px solid var(--primary-color);
+    border-right: 1px solid var(--cal-border);
+    font-weight: 700;
+    font-size: 0.85rem;
+    position: sticky;
+    top: 0;
+    z-index: 3;
+}
+.cal-track-header {
+    display: grid;
+    background: var(--cal-bg-alt);
+    border-bottom: 2px solid var(--primary-color);
+    position: sticky;
+    top: 0;
+    z-index: 3;
+}
+.month-cell {
+    text-align: center;
+    padding: 0.4rem 0.25rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    border-right: 1px solid var(--cal-border);
+}
+.month-cell.current { background: var(--cal-today); color: var(--primary-dark); }
+
+.cal-track-cell-inner {
+    position: relative;
+    height: 100%;
+    display: grid;
+}
+.month-divider {
+    border-right: 1px solid var(--cal-border);
+    height: 100%;
+}
+.month-divider:nth-child(even) { background: var(--cal-bg-alt); }
+
+.comp-bar {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 26px;
+    border-radius: 6px;
+    color: white;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 0 0.6rem;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    transition: all 0.15s ease;
+    z-index: 1;
+}
+.comp-bar:hover {
+    transform: translateY(-50%) scale(1.02);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    z-index: 5;
+}
+.comp-bar .dur { opacity: 0.85; margin-left: 0.4rem; font-weight: 400; }
+
+.detail-modal-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1040;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+.detail-modal-backdrop.show { display: flex; }
+.detail-modal {
+    background: white;
+    border-radius: 8px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+.detail-modal-header {
+    padding: 1.25rem 1.5rem;
+    color: white;
+    border-radius: 8px 8px 0 0;
+}
+.detail-modal-header h4 { margin: 0; font-weight: 700; }
+.detail-modal-header .industry-tag {
+    display: inline-block;
+    margin-top: 0.25rem;
+    background: rgba(255,255,255,0.25);
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+.detail-modal-body { padding: 1.25rem 1.5rem; }
+.detail-row {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px dashed var(--cal-border);
+    font-size: 0.92rem;
+}
+.detail-row:last-of-type { border-bottom: none; }
+.detail-row .label { font-weight: 600; color: var(--text-secondary); }
+.detail-row .value { color: var(--text-primary); }
+.detail-modal-footer {
+    padding: 0.75rem 1.5rem 1.25rem 1.5rem;
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text-secondary);
+}
+.empty-state i { font-size: 3rem; opacity: 0.4; }
+
+.toggle-all-row { display: flex; gap: 0.4rem; align-items: center; }
+.toggle-all-row button {
+    background: white;
+    border: 1px solid var(--cal-border);
+    border-radius: 6px;
+    padding: 0.3rem 0.7rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+.toggle-all-row button:hover { background: var(--cal-bg-alt); }
+
+.year-summary {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    margin-left: auto;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="comp-header">
+    <h2><i class="bi bi-trophy-fill me-2"></i>Competition Calendar</h2>
+    <p>Non-school-specific finance competitions open to undergraduates. Toggle industries to filter; click any bar for details and recruiting outcomes.</p>
+</div>
+
+<div class="toolbar">
+    <div class="industry-toggles" id="industryToggles"></div>
+    <div class="toggle-all-row">
+        <button onclick="toggleAll(true)">All on</button>
+        <button onclick="toggleAll(false)">All off</button>
+    </div>
+    <div class="month-nav">
+        <button onclick="changeYear(-1)"><i class="bi bi-chevron-left"></i></button>
+        <span class="label" id="yearLabel">2026</span>
+        <button onclick="changeYear(1)"><i class="bi bi-chevron-right"></i></button>
+    </div>
+    <div class="year-summary" id="yearSummary"></div>
+</div>
+
+<div class="calendar-container">
+    <div id="calendar"></div>
+</div>
+
+<div class="detail-modal-backdrop" id="detailModal" onclick="if(event.target===this)closeDetail()">
+    <div class="detail-modal" id="detailModalBody"></div>
+</div>
+
+<script>
+const MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+let DATA = null;
+let activeIndustries = new Set();
+let currentYear = 2026;
+
+async function loadData() {
+    const res = await fetch('/api/competitions');
+    DATA = await res.json();
+    DATA.industries.forEach(i => activeIndustries.add(i.key));
+    renderToggles();
+    render();
+}
+
+function renderToggles() {
+    const html = DATA.industries.map(i => `
+        <span class="industry-pill" data-key="${i.key}"
+              style="border-color:${i.color}; color:${i.color}; background:${hexToRgba(i.color,0.08)}"
+              onclick="toggleIndustry('${i.key}')">
+            <span class="dot" style="background:${i.color}"></span>${i.label}
+        </span>
+    `).join('');
+    document.getElementById('industryToggles').innerHTML = html;
+}
+
+function toggleIndustry(key) {
+    if (activeIndustries.has(key)) activeIndustries.delete(key);
+    else activeIndustries.add(key);
+    refreshTogglesUI();
+    render();
+}
+
+function toggleAll(on) {
+    activeIndustries.clear();
+    if (on) DATA.industries.forEach(i => activeIndustries.add(i.key));
+    refreshTogglesUI();
+    render();
+}
+
+function refreshTogglesUI() {
+    document.querySelectorAll('.industry-pill').forEach(el => {
+        el.classList.toggle('off', !activeIndustries.has(el.dataset.key));
+    });
+}
+
+function changeYear(delta) {
+    currentYear += delta;
+    document.getElementById('yearLabel').textContent = currentYear;
+    render();
+}
+
+function hexToRgba(hex, alpha) {
+    const h = hex.replace('#','');
+    const r = parseInt(h.substr(0,2),16);
+    const g = parseInt(h.substr(2,2),16);
+    const b = parseInt(h.substr(4,2),16);
+    return `rgba(${r},${g},${b},${alpha})`;
+}
+
+function getIndustryMeta(key) {
+    return DATA.industries.find(i => i.key === key);
+}
+
+function dayOfYear(dateStr) {
+    const d = new Date(dateStr + 'T00:00:00Z');
+    const start = Date.UTC(d.getUTCFullYear(), 0, 0);
+    return Math.floor((d - start) / (1000 * 60 * 60 * 24));
+}
+
+function isLeap(y) { return (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0; }
+function yearDays(y) { return isLeap(y) ? 366 : 365; }
+
+function clipToYear(start, end, year) {
+    const yearStart = new Date(Date.UTC(year, 0, 1));
+    const yearEnd = new Date(Date.UTC(year, 11, 31));
+    const s = new Date(start + 'T00:00:00Z');
+    const e = new Date(end + 'T00:00:00Z');
+    if (e < yearStart || s > yearEnd) return null;
+    const clipS = s < yearStart ? yearStart : s;
+    const clipE = e > yearEnd ? yearEnd : e;
+    return {
+        startDay: Math.floor((clipS - yearStart) / 86400000),
+        endDay: Math.floor((clipE - yearStart) / 86400000),
+        crossesStart: s < yearStart,
+        crossesEnd: e > yearEnd,
+    };
+}
+
+function render() {
+    const total = yearDays(currentYear);
+    const visible = DATA.competitions.filter(c => {
+        if (!activeIndustries.has(c.industry)) return false;
+        return clipToYear(c.start_date, c.end_date, currentYear) !== null;
+    });
+
+    document.getElementById('yearSummary').textContent =
+        `${visible.length} competition${visible.length === 1 ? '' : 's'} shown`;
+
+    if (visible.length === 0) {
+        document.getElementById('calendar').innerHTML = `
+            <div class="empty-state">
+                <i class="bi bi-calendar-x"></i>
+                <p class="mt-2">No competitions match your filters.</p>
+            </div>`;
+        return;
+    }
+
+    visible.sort((a,b) => a.start_date.localeCompare(b.start_date));
+
+    const monthOffsets = [];
+    let acc = 0;
+    for (let m = 0; m < 12; m++) {
+        const days = new Date(Date.UTC(currentYear, m + 1, 0)).getUTCDate();
+        monthOffsets.push({ start: acc, days });
+        acc += days;
+    }
+
+    const today = new Date();
+    const todayYear = today.getUTCFullYear();
+    const todayMonth = today.getUTCMonth();
+
+    const monthHeader = `
+        <div class="cal-track-header" style="grid-template-columns: repeat(12, 1fr);">
+            ${MONTH_NAMES.map((m, i) => `
+                <div class="month-cell ${todayYear === currentYear && todayMonth === i ? 'current' : ''}">${m}</div>
+            `).join('')}
+        </div>`;
+
+    const rows = visible.map(c => {
+        const clip = clipToYear(c.start_date, c.end_date, currentYear);
+        const leftPct = (clip.startDay / total) * 100;
+        const widthPct = Math.max(((clip.endDay - clip.startDay + 1) / total) * 100, 0.7);
+        const meta = getIndustryMeta(c.industry);
+        const durationDays = (new Date(c.end_date) - new Date(c.start_date)) / 86400000 + 1;
+        const fmt = (d) => {
+            const dt = new Date(d + 'T00:00:00Z');
+            return `${MONTH_NAMES[dt.getUTCMonth()]} ${dt.getUTCDate()}`;
+        };
+        const dateLabel = c.start_date === c.end_date
+            ? fmt(c.start_date)
+            : `${fmt(c.start_date)}–${fmt(c.end_date)}`;
+        const showText = widthPct > 4;
+
+        return `
+            <div class="cal-name-cell">
+                <div class="comp-name">${c.name}</div>
+                <div class="comp-meta">${meta.label} · ${c.region}</div>
+            </div>
+            <div class="cal-track-cell">
+                <div class="cal-track-cell-inner" style="grid-template-columns: repeat(12, 1fr);">
+                    ${Array.from({length: 12}).map(() => '<div class="month-divider"></div>').join('')}
+                </div>
+                <div class="comp-bar"
+                     style="left:${leftPct}%; width:${widthPct}%; background:${meta.color}"
+                     onclick='showDetail(${JSON.stringify(c).replace(/'/g, "&#39;")})'
+                     title="${c.name} (${dateLabel})">
+                    ${showText ? `${dateLabel}<span class="dur">· ${durationDays}d</span>` : ''}
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    document.getElementById('calendar').innerHTML = `
+        <div class="calendar-grid">
+            <div class="cal-header-cell">Competition</div>
+            <div style="border-bottom: 2px solid var(--primary-color);">${monthHeader}</div>
+            ${rows}
+        </div>`;
+}
+
+function showDetail(c) {
+    const meta = getIndustryMeta(c.industry);
+    const html = `
+        <div class="detail-modal-header" style="background:${meta.color}">
+            <h4>${c.name}</h4>
+            <span class="industry-tag">${meta.label}</span>
+        </div>
+        <div class="detail-modal-body">
+            <div class="detail-row"><span class="label">Region</span><span class="value">${c.region}</span></div>
+            <div class="detail-row"><span class="label">Host</span><span class="value">${c.host}</span></div>
+            <div class="detail-row"><span class="label">Founded</span><span class="value">${c.founded} (${c.edition} edition)</span></div>
+            <div class="detail-row"><span class="label">Dates (2026)</span><span class="value">${c.start_date} → ${c.end_date}</span></div>
+            <div class="detail-row"><span class="label">Format</span><span class="value">${c.format}</span></div>
+            <div class="detail-row"><span class="label">Prize</span><span class="value">${c.prize}</span></div>
+            <div class="detail-row"><span class="label">Sponsors</span><span class="value">${c.sponsors}</span></div>
+            <div class="detail-row"><span class="label">Career value</span><span class="value"><strong>${c.career_value}</strong></span></div>
+        </div>
+        <div class="detail-modal-footer">
+            <a href="${c.url}" target="_blank" rel="noopener" class="btn btn-primary btn-sm">
+                <i class="bi bi-box-arrow-up-right me-1"></i>Official site
+            </a>
+            <button class="btn btn-secondary btn-sm" onclick="closeDetail()">Close</button>
+        </div>`;
+    document.getElementById('detailModalBody').innerHTML = html;
+    document.getElementById('detailModal').classList.add('show');
+}
+function closeDetail() {
+    document.getElementById('detailModal').classList.remove('show');
+}
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeDetail();
+});
+
+loadData();
+</script>
+{% endblock %}
