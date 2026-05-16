@@ -1,10 +1,8 @@
-from flask import Blueprint, render_template, abort, jsonify
+from flask import Blueprint, render_template, abort
 from flask_login import login_required
 from services.job_service import JobService
 from services.snapshot_service import SnapshotService
-import json
 import logging
-import os
 
 logger = logging.getLogger(__name__)
 
@@ -112,13 +110,6 @@ def trends():
         return str(e), 500
 
 
-@web_bp.route('/competitions')
-@login_required
-def competitions():
-    """Finance competition calendar"""
-    return render_template('competitions.html')
-
-
 @web_bp.route('/release-radar')
 @login_required
 def release_radar():
@@ -175,20 +166,3 @@ def release_radar():
         fresh_count=len(fresh),
         wave_count=len(wave),
     )
-
-
-@web_bp.route('/api/competitions')
-@login_required
-def api_competitions():
-    """Return competition calendar data"""
-    try:
-        data_path = os.path.join(
-            os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-            'data',
-            'competitions.json',
-        )
-        with open(data_path, 'r', encoding='utf-8') as f:
-            return jsonify(json.load(f))
-    except Exception as e:
-        logger.error(f"Error loading competitions data: {e}")
-        return jsonify({'error': str(e)}), 500
