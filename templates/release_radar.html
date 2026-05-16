@@ -1,0 +1,247 @@
+{% extends "layout.html" %}
+
+{% block title %}Release Radar - NewWhale Career{% endblock %}
+
+{% block extra_css %}
+<style>
+.radar-header {
+    background: var(--gradient-primary);
+    color: var(--text-light);
+    padding: 1.5rem 2rem;
+    border-radius: 8px;
+    margin-bottom: 1.25rem;
+}
+.radar-header h2 { margin: 0; color: white; font-weight: 700; }
+.radar-header p { margin: 0.25rem 0 0 0; color: rgba(255,255,255,0.85); font-size: 0.95rem; }
+
+.radar-toolbar {
+    background: white;
+    padding: 1rem 1.25rem;
+    border-radius: 8px;
+    box-shadow: var(--shadow-md);
+    margin-bottom: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+}
+.radar-toolbar label { font-size: 0.85rem; color: #6c757d; margin-bottom: 0; margin-right: 0.25rem; }
+.radar-toolbar select { font-size: 0.9rem; }
+
+.radar-tabs .nav-link {
+    color: #495057;
+    border: 1px solid transparent;
+    font-weight: 500;
+}
+.radar-tabs .nav-link.active {
+    background: white;
+    border-color: #dee2e6 #dee2e6 white;
+    color: #1a73e8;
+}
+
+.radar-section { margin-bottom: 2rem; }
+.radar-section-header {
+    background: #f8f9fa;
+    padding: 0.6rem 1rem;
+    border-left: 4px solid #1a73e8;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.radar-section-header .badge { font-weight: 500; }
+
+.radar-region-block {
+    margin-left: 1rem;
+    margin-bottom: 1.25rem;
+}
+.radar-region-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #6c757d;
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+}
+
+.radar-table { font-size: 0.9rem; }
+.radar-table th { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.03em; color: #6c757d; }
+.radar-table td { vertical-align: middle; }
+.radar-table .firm-cell { font-weight: 600; }
+.radar-table .program-cell { color: #495057; }
+
+.confidence-verified { color: #198754; }
+.confidence-needs_verification { color: #fd7e14; }
+.confidence-predicted { color: #6c757d; font-style: italic; }
+
+.source-badge { font-size: 0.7rem; padding: 0.15rem 0.4rem; border-radius: 3px; }
+.source-curated { background: #e7f1ff; color: #0d6efd; }
+.source-scraped { background: #d1e7dd; color: #198754; }
+
+.empty-state {
+    text-align: center;
+    padding: 2.5rem;
+    color: #6c757d;
+    background: #fafbfc;
+    border-radius: 8px;
+}
+
+.copy-hint {
+    background: #fff3cd;
+    border-left: 4px solid #ffc107;
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+    color: #664d03;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-3">
+
+    <div class="radar-header">
+        <h2><i class="bi bi-broadcast me-2"></i>Release Radar — SA / Summer Intern Pipeline</h2>
+        <p>Feeds the WhaleStreet 公众号 release-radar articles. Two views: <strong>Freshly Opened</strong> (last {{ days_fresh }} days, "申请通道刚开") + <strong>Interview Wave</strong> ({{ min_days_wave }}-{{ max_days_wave }} days old, front office only, "OA + 面试雷达").</p>
+    </div>
+
+    <div class="copy-hint">
+        <i class="bi bi-info-circle me-1"></i>
+        Curated entries (blue badge) are hand-maintained in <code>data/release_radar.json</code>. Scraped entries (green badge) come from the WhaleStreet CSV. <strong>Verify <span class="confidence-needs_verification">orange</span> + <span class="confidence-predicted">gray</span> rows before publishing.</strong>
+    </div>
+
+    <form method="GET" class="radar-toolbar">
+        <label for="region">Region</label>
+        <select name="region" id="region" class="form-select form-select-sm" style="width: auto;">
+            <option value="ALL" {% if region == 'ALL' %}selected{% endif %}>All</option>
+            <option value="US" {% if region == 'US' %}selected{% endif %}>US</option>
+            <option value="UK" {% if region == 'UK' %}selected{% endif %}>UK</option>
+            <option value="HK" {% if region == 'HK' %}selected{% endif %}>HK</option>
+        </select>
+
+        <label for="sector">Sector</label>
+        <select name="sector" id="sector" class="form-select form-select-sm" style="width: auto;">
+            <option value="ALL" {% if sector == 'ALL' %}selected{% endif %}>All</option>
+            <option value="Finance" {% if sector == 'Finance' %}selected{% endif %}>Finance</option>
+            <option value="Consulting" {% if sector == 'Consulting' %}selected{% endif %}>Consulting</option>
+            <option value="Tech" {% if sector == 'Tech' %}selected{% endif %}>Tech</option>
+        </select>
+
+        <label for="days_fresh">Fresh window</label>
+        <select name="days_fresh" id="days_fresh" class="form-select form-select-sm" style="width: auto;">
+            <option value="3" {% if days_fresh == 3 %}selected{% endif %}>≤ 3 days</option>
+            <option value="7" {% if days_fresh == 7 %}selected{% endif %}>≤ 7 days</option>
+            <option value="14" {% if days_fresh == 14 %}selected{% endif %}>≤ 14 days</option>
+        </select>
+
+        <label for="min_days_wave">Wave start</label>
+        <select name="min_days_wave" id="min_days_wave" class="form-select form-select-sm" style="width: auto;">
+            <option value="7" {% if min_days_wave == 7 %}selected{% endif %}>≥ 7 days</option>
+            <option value="10" {% if min_days_wave == 10 %}selected{% endif %}>≥ 10 days</option>
+            <option value="14" {% if min_days_wave == 14 %}selected{% endif %}>≥ 14 days</option>
+        </select>
+
+        <input type="hidden" name="tab" value="{{ tab }}">
+        <button type="submit" class="btn btn-primary btn-sm">
+            <i class="bi bi-funnel me-1"></i>Apply
+        </button>
+    </form>
+
+    <ul class="nav nav-tabs radar-tabs mb-3" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link {% if tab == 'fresh' %}active{% endif %}" href="?tab=fresh&region={{ region }}&sector={{ sector }}&days_fresh={{ days_fresh }}&min_days_wave={{ min_days_wave }}">
+                <i class="bi bi-stars me-1"></i>Freshly Opened
+                <span class="badge bg-primary ms-1">{{ fresh_count }}</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {% if tab == 'wave' %}active{% endif %}" href="?tab=wave&region={{ region }}&sector={{ sector }}&days_fresh={{ days_fresh }}&min_days_wave={{ min_days_wave }}">
+                <i class="bi bi-megaphone me-1"></i>Interview Wave
+                <span class="badge bg-warning text-dark ms-1">{{ wave_count }}</span>
+            </a>
+        </li>
+    </ul>
+
+    {% set grouped = fresh_grouped if tab == 'fresh' else wave_grouped %}
+    {% set events = fresh_events if tab == 'fresh' else wave_events %}
+
+    {% if not events %}
+        <div class="empty-state">
+            <i class="bi bi-inbox" style="font-size: 2rem;"></i>
+            <p class="mb-0 mt-2">No events match these filters. Adjust the filters above, or seed entries in <code>data/release_radar.json</code>.</p>
+        </div>
+    {% else %}
+        {% for sec, regions in grouped.items() %}
+            <div class="radar-section">
+                <div class="radar-section-header">
+                    <span><i class="bi bi-tag me-1"></i>{{ sec }}</span>
+                    <span class="badge bg-secondary">{{ regions.values() | map('length') | sum }}</span>
+                </div>
+
+                {% for reg, rows in regions.items() %}
+                    <div class="radar-region-block">
+                        <div class="radar-region-label">{{ reg }} · {{ rows | length }} {{ 'event' if rows|length == 1 else 'events' }}</div>
+                        <div class="table-responsive">
+                            <table class="table table-hover radar-table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 16%;">Firm</th>
+                                        <th style="width: 12%;">Subsector</th>
+                                        <th>Program</th>
+                                        <th style="width: 8%;">Role</th>
+                                        <th style="width: 10%;">Post Date</th>
+                                        <th style="width: 9%;">Confidence</th>
+                                        <th style="width: 8%;">Source</th>
+                                        <th style="width: 7%;">Apply</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for e in rows %}
+                                    <tr>
+                                        <td class="firm-cell">
+                                            {{ e.firm_cn }}
+                                            {% if e.firm != e.firm_cn %}
+                                            <div class="text-muted small">{{ e.firm }}</div>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ e.subsector or '—' }}</td>
+                                        <td class="program-cell">{{ e.program_name or '—' }}</td>
+                                        <td>
+                                            {{ e.role or '—' }}
+                                            {% if e.front_office %}<span class="badge bg-success" style="font-size: 0.65rem;">FO</span>{% endif %}
+                                        </td>
+                                        <td>{{ e.post_date or '—' }}</td>
+                                        <td class="confidence-{{ e.confidence }}">{{ e.confidence }}</td>
+                                        <td>
+                                            <span class="source-badge source-{{ e.source }}">{{ e.source }}</span>
+                                        </td>
+                                        <td>
+                                            {% if e.application_url %}
+                                            <a href="{{ e.application_url }}" target="_blank" rel="noopener" class="btn btn-sm btn-outline-primary py-0">
+                                                <i class="bi bi-box-arrow-up-right"></i>
+                                            </a>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% if e.notes %}
+                                    <tr>
+                                        <td colspan="8" class="text-muted small" style="border-top: 0; padding-top: 0;">
+                                            <i class="bi bi-sticky me-1"></i>{{ e.notes }}
+                                        </td>
+                                    </tr>
+                                    {% endif %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+</div>
+{% endblock %}

@@ -119,6 +119,64 @@ def competitions():
     return render_template('competitions.html')
 
 
+@web_bp.route('/release-radar')
+@login_required
+def release_radar():
+    """SA / Summer Intern release radar — two tabs feeding the 公众号 pipeline.
+
+    Query params:
+      tab: 'fresh' (default) | 'wave'
+      region: 'US' | 'UK' | 'HK' | 'ALL' (default)
+      sector: 'Finance' | 'Consulting' | 'Tech' | 'ALL' (default)
+      days_fresh: int (default 3) — fresh-window in days
+      min_days_wave: int (default 10) — wave lower bound in days
+      max_days_wave: int (default 60) — wave upper bound in days
+    """
+    from flask import request
+    from services.release_radar_service import (
+        get_freshly_opened,
+        get_interview_wave,
+        group_by_sector_then_region,
+    )
+
+    tab = request.args.get('tab', 'fresh')
+    region = request.args.get('region', 'ALL')
+    sector = request.args.get('sector', 'ALL')
+    days_fresh = int(request.args.get('days_fresh', 3))
+    min_days_wave = int(request.args.get('min_days_wave', 10))
+    max_days_wave = int(request.args.get('max_days_wave', 60))
+
+    try:
+        fresh = get_freshly_opened(days=days_fresh, region=region, sector=sector)
+        wave = get_interview_wave(
+            min_days=min_days_wave,
+            max_days=max_days_wave,
+            region=region,
+            sector=sector,
+        )
+    except Exception as e:
+        logger.error(f"Error loading release radar data: {e}")
+        import traceback
+        traceback.print_exc()
+        return str(e), 500
+
+    return render_template(
+        'release_radar.html',
+        tab=tab,
+        region=region,
+        sector=sector,
+        days_fresh=days_fresh,
+        min_days_wave=min_days_wave,
+        max_days_wave=max_days_wave,
+        fresh_events=fresh,
+        fresh_grouped=group_by_sector_then_region(fresh),
+        wave_events=wave,
+        wave_grouped=group_by_sector_then_region(wave),
+        fresh_count=len(fresh),
+        wave_count=len(wave),
+    )
+
+
 @web_bp.route('/api/competitions')
 @login_required
 def api_competitions():
