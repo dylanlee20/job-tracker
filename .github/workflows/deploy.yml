@@ -1,0 +1,43 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:  # allow manual trigger from GitHub UI
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Deploy to VPS via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: 22
+          command_timeout: 4m
+          script: |
+            set -e
+            cd /opt/job-tracker
+            echo "==> Pulling latest from GitHub"
+            git fetch origin master
+            git reset --hard origin/master
+            echo "==> Installing any new dependencies"
+            pip3 install -q -r requirements.txt --break-system-packages || pip3 install -q -r requirements.txt
+            echo "==> Restarting Flask app"
+            pkill -f "python.*app.py" || true
+            sleep 2
+            nohup python3 app.py > output.log 2>&1 &
+            sleep 4
+            echo "==> Health check"
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:5000/login || echo "000")
+            echo "HTTP status: $STATUS"
+            if [ "$STATUS" = "200" ] || [ "$STATUS" = "302" ]; then
+              echo "Deployment successful"
+            else
+              echo "Deployment failed — check /opt/job-tracker/output.log on VPS"
+              tail -20 output.log
+              exit 1
+            fi
