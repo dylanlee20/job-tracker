@@ -3,6 +3,7 @@ from models.job import Job
 from datetime import datetime, timedelta
 from sqlalchemy import or_, and_
 from utils.job_utils import normalize_location, categorize_job
+from industries import get_industry_for_company
 import logging
 
 logger = logging.getLogger(__name__)
@@ -56,10 +57,12 @@ class JobService:
                     # Normalize location and categorize job
                     normalized_location = normalize_location(job_data.get('location', ''))
                     job_category = categorize_job(job_data.get('title', ''), job_data.get('description', ''))
+                    job_industry = get_industry_for_company(job_data['company'])
 
                     # Update job_data with normalized values
                     job_data['location'] = normalized_location
                     job_data['category'] = job_category
+                    job_data['industry'] = job_industry
 
                     # 生成职位哈希
                     job_hash = Job.generate_job_hash(
@@ -118,6 +121,7 @@ class JobService:
                             title=job_data['title'],
                             location=job_data['location'],
                             category=job_data.get('category', 'Other'),
+                            industry=job_data.get('industry', 'Other'),
                             description=job_data.get('description', ''),
                             description_hash=description_hash,
                             post_date=job_data.get('post_date'),
@@ -166,10 +170,13 @@ class JobService:
             filters: 筛选条件字典
                 - company: 公司名称
                 - location: 地点
+                - category: 职位类别
+                - industry: 行业
                 - keyword: 关键词搜索
                 - is_important: 是否只显示重点职位
                 - time_range: 时间范围 (this_week, this_month, all)
                 - status: 状态 (active, inactive)
+                - sponsorship_required: 是否需要工作签证赞助 (True/False/None)
             page: 页码
             per_page: 每页数量
 
@@ -183,13 +190,34 @@ class JobService:
             if filters.get('company'):
                 query = query.filter(Job.company == filters['company'])
 
-            # 地点筛选
+            # 国家筛选
+            if filters.get('country'):
+                # Location format is "Country, City", so filter by start of string
+                query = query.filter(Job.location.like(f"{filters['country']}%"))
+
+            # 城市筛选
+            if filters.get('city'):
+                # Location format is "Country, City", so filter by end of string
+                query = query.filter(Job.location.like(f"%, {filters['city']}"))
+
+            # 地点筛选 (kept for backwards compatibility)
             if filters.get('location'):
                 query = query.filter(Job.location.like(f"%{filters['location']}%"))
 
             # 类别筛选
             if filters.get('category'):
                 query = query.filter(Job.category == filters['category'])
+
+            # 行业筛选
+            if filters.get('industry'):
+                query = query.filter(Job.industry == filters['industry'])
+
+            # 签证赞助筛选
+            if 'sponsorship_required' in filters:
+                sponsorship = filters['sponsorship_required']
+                if sponsorship is not None:
+                    if isinstance(sponsorship, bool):
+                        query = query.filter(Job.sponsorship_required == sponsorship)
 
             # 关键词搜索（搜索标题和描述）
             if filters.get('keyword'):
@@ -210,12 +238,21 @@ class JobService:
                 time_range = filters['time_range']
                 now = datetime.utcnow()
 
-                if time_range == 'this_week':
-                    week_ago = now - timedelta(days=7)
-                    query = query.filter(Job.first_seen >= week_ago)
+                if time_range == '24h':
+                    cutoff = now - timedelta(hours=24)
+                    query = query.filter(Job.first_seen >= cutoff)
+                elif time_range == '3d':
+                    cutoff = now - timedelta(days=3)
+                    query = query.filter(Job.first_seen >= cutoff)
+                elif time_range == '7d':
+                    cutoff = now - timedelta(days=7)
+                    query = query.filter(Job.first_seen >= cutoff)
+                elif time_range == 'this_week':
+                    cutoff = now - timedelta(days=7)
+                    query = query.filter(Job.first_seen >= cutoff)
                 elif time_range == 'this_month':
-                    month_ago = now - timedelta(days=30)
-                    query = query.filter(Job.first_seen >= month_ago)
+                    cutoff = now - timedelta(days=30)
+                    query = query.filter(Job.first_seen >= cutoff)
 
             # 状态筛选（默认只显示 active）
             status = filters.get('status', 'active')
@@ -320,7 +357,147 @@ class JobService:
         return sorted([l[0] for l in locations if l[0]])
 
     @staticmethod
+    def get_all_countries():
+        """获取所有国家列表"""
+        locations = db.session.query(Job.location).filter_by(status='active').distinct().all()
+        countries = set()
+
+        # List of valid country names (exclude generic/placeholder values)
+        exclude_list = {'Multiple Locations', 'Unknown', 'Multiple US Locations', ''}
+
+        for loc_tuple in locations:
+            location = loc_tuple[0]
+            if not location or location in exclude_list:
+                continue
+
+            if ', ' in location:
+                # Format is "Country, City"
+                country = location.split(',')[0].strip()
+                if country and country not in exclude_list:
+                    countries.add(country)
+            else:
+                # Single location entry - should be a country name only
+                if location and location not in exclude_list:
+                    countries.add(location)
+
+        return sorted(list(countries))
+
+    @staticmethod
+    def get_all_cities():
+        """获取所有城市列表"""
+        locations = db.session.query(Job.location).filter_by(status='active').distinct().all()
+        cities = set()
+
+        # Exclude placeholder/generic values
+        exclude_list = {'Multiple Locations', 'Unknown', 'Multiple US Locations', ''}
+
+        for loc_tuple in locations:
+            location = loc_tuple[0]
+            if not location or location in exclude_list:
+                continue
+
+            if ', ' in location:
+                # Format is "Country, City"
+                city = location.split(',')[1].strip()
+                if city and city not in exclude_list:
+                    cities.add(city)
+            # Locations without commas are country-only, so no city to extract
+
+        return sorted(list(cities))
+
+    @staticmethod
     def get_all_categories():
         """获取所有职位类别列表"""
         categories = db.session.query(Job.category).filter_by(status='active').distinct().all()
         return sorted([c[0] for c in categories if c[0]])
+
+    @staticmethod
+    def get_all_industries():
+        """获取所有行业列表"""
+        industries = db.session.query(Job.industry).filter(
+            and_(Job.status == 'active', Job.industry.isnot(None))
+        ).distinct().all()
+        return sorted([i[0] for i in industries if i[0]])
+
+    @staticmethod
+    def update_application_status(job_id, submitted, application_date=None):
+        """
+        更新申请提交状态
+
+        Args:
+            job_id: 职位ID
+            submitted: 是否已提交申请
+            application_date: 申请日期
+
+        Returns:
+            bool: 成功返回True，失败返回False
+        """
+        try:
+            job = Job.query.get(job_id)
+            if job:
+                job.application_submitted = submitted
+                job.application_date = application_date
+                if not submitted:
+                    # If unmarking as applied, clear result data
+                    job.application_result = None
+                    job.result_date = None
+                db.session.commit()
+                return True
+            return False
+        except Exception as e:
+            db.session.rollback()
+            logger.error(f"Error updating application status: {e}")
+            return False
+
+    @staticmethod
+    def update_application_result(job_id, result, result_date=None, notes=None):
+        """
+        更新申请结果
+
+        Args:
+            job_id: 职位ID
+            result: 申请结果 ('pending', 'accepted', 'rejected', 'no_response')
+            result_date: 结果日期
+            notes: 备注
+
+        Returns:
+            bool: 成功返回True，失败返回False
+        """
+        try:
+            job = Job.query.get(job_id)
+            if job:
+                job.application_result = result
+                job.result_date = result_date
+                if notes is not None:
+                    job.result_notes = notes
+                db.session.commit()
+                return True
+            return False
+        except Exception as e:
+            db.session.rollback()
+            logger.error(f"Error updating application result: {e}")
+            return False
+
+    @staticmethod
+    def update_sponsorship_status(job_id, sponsorship_required):
+        """
+        更新工作签证赞助需求状态
+
+        Args:
+            job_id: 职位ID
+            sponsorship_required: 是否需要赞助 (True/False/None)
+
+        Returns:
+            bool: 成功返回True，失败返回False
+        """
+        try:
+            job = Job.query.get(job_id)
+            if job:
+                job.sponsorship_required = sponsorship_required
+                db.session.commit()
+                return True
+            return False
+        except Exception as e:
+            db.session.rollback()
+            logger.error(f"Error updating sponsorship status: {e}")
+            return False

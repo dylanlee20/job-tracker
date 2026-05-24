@@ -98,6 +98,19 @@
                         </select>
                     </div>
 
+                    <!-- Industry -->
+                    <div class="filter-group">
+                        <label class="filter-label">
+                            <i class="bi bi-building-gear me-1"></i>Industry
+                        </label>
+                        <select class="filter-select" id="filter-industry">
+                            <option value="">All Industries</option>
+                            {% for industry in industries %}
+                            <option value="{{ industry }}">{{ industry }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
                     <!-- Company -->
                     <div class="filter-group">
                         <label class="filter-label">
@@ -111,15 +124,28 @@
                         </select>
                     </div>
 
-                    <!-- Location -->
+                    <!-- Country -->
                     <div class="filter-group">
                         <label class="filter-label">
-                            <i class="bi bi-geo-alt me-1"></i>Location
+                            <i class="bi bi-globe me-1"></i>Country
                         </label>
-                        <select class="filter-select" id="filter-location">
-                            <option value="">All Locations</option>
-                            {% for location in locations %}
-                            <option value="{{ location }}">{{ location }}</option>
+                        <select class="filter-select" id="filter-country">
+                            <option value="">All Countries</option>
+                            {% for country in countries %}
+                            <option value="{{ country }}">{{ country }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- City -->
+                    <div class="filter-group">
+                        <label class="filter-label">
+                            <i class="bi bi-geo-alt me-1"></i>City
+                        </label>
+                        <select class="filter-select" id="filter-city">
+                            <option value="">All Cities</option>
+                            {% for city in cities %}
+                            <option value="{{ city }}">{{ city }}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -131,8 +157,9 @@
                         </label>
                         <select class="filter-select" id="filter-time">
                             <option value="">All Time</option>
-                            <option value="this_week">This Week</option>
-                            <option value="this_month">This Month</option>
+                            <option value="24h">Last 24 Hours</option>
+                            <option value="3d">Last 3 Days</option>
+                            <option value="7d">Last 7 Days</option>
                         </select>
                     </div>
 
@@ -142,6 +169,16 @@
                             <input class="form-check-input" type="checkbox" id="filter-important">
                             <label class="form-check-label" for="filter-important">
                                 <i class="bi bi-star-fill text-warning me-1"></i>Starred only
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Sponsorship -->
+                    <div class="filter-group">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="filter-no-sponsorship">
+                            <label class="form-check-label" for="filter-no-sponsorship">
+                                <i class="bi bi-check-circle text-success me-1"></i>No sponsorship required
                             </label>
                         </div>
                     </div>
@@ -202,6 +239,10 @@ const categoryColors = {
     'Quant': '#dc2626',
     'Research': '#ea580c',
     'Technology': '#0891b2',
+    'Risk Management': '#f59e0b',
+    'Operations': '#8b5cf6',
+    'Compliance': '#ec4899',
+    'Finance & Accounting': '#14b8a6',
     'Other': '#6b7280'
 };
 
@@ -213,11 +254,14 @@ function loadJobs(page) {
 
     let params = { page: page, per_page: 20 };
     if (currentFilters.company) params.company = currentFilters.company;
-    if (currentFilters.location) params.location = currentFilters.location;
+    if (currentFilters.country) params.country = currentFilters.country;
+    if (currentFilters.city) params.city = currentFilters.city;
     if (currentFilters.category) params.category = currentFilters.category;
+    if (currentFilters.industry) params.industry = currentFilters.industry;
     if (currentFilters.keyword) params.keyword = currentFilters.keyword;
     if (currentFilters.time_range) params.time_range = currentFilters.time_range;
     if (currentFilters.is_important) params.is_important = 'true';
+    if (currentFilters.sponsorship_required) params.sponsorship_required = currentFilters.sponsorship_required;
 
     $.ajax({
         url: '/api/jobs',
@@ -297,6 +341,32 @@ function renderJobs(jobs) {
                             </a>
                         </div>
                     </div>
+                    <div class="application-status mt-2 p-2 bg-light rounded" style="border-top: 1px solid #e5e7eb;">
+                        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                            <div class="form-check form-check-inline mb-0">
+                                <input class="form-check-input" type="checkbox"
+                                       id="app-${job.id}"
+                                       ${job.application_submitted ? 'checked' : ''}
+                                       onchange="updateApplicationStatus(${job.id}, this.checked)">
+                                <label class="form-check-label" for="app-${job.id}">
+                                    <small><i class="bi bi-check-circle me-1"></i>Applied</small>
+                                </label>
+                            </div>
+                            ${job.application_submitted ? `
+                                <select class="form-select form-select-sm" style="width: auto; min-width: 140px;"
+                                        onchange="updateApplicationResult(${job.id}, this.value)"
+                                        aria-label="Application result">
+                                    <option value="">Result...</option>
+                                    <option value="pending" ${job.application_result === 'pending' ? 'selected' : ''}>⏳ Pending</option>
+                                    <option value="accepted" ${job.application_result === 'accepted' ? 'selected' : ''}>✓ Accepted</option>
+                                    <option value="rejected" ${job.application_result === 'rejected' ? 'selected' : ''}>✗ Rejected</option>
+                                    <option value="no_response" ${job.application_result === 'no_response' ? 'selected' : ''}>⊘ No Response</option>
+                                </select>
+                            ` : ''}
+                            ${job.sponsorship_required === false ? '<span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>No Sponsorship</span>' : ''}
+                            ${job.sponsorship_required === true ? '<span class="badge bg-warning text-dark"><i class="bi bi-exclamation-circle me-1"></i>Sponsorship Required</span>' : ''}
+                        </div>
+                    </div>
                 </div>
             `;
         });
@@ -346,19 +416,22 @@ function renderPagination(pagination) {
 function applyFilters() {
     currentFilters = {
         company: $('#filter-company').val(),
-        location: $('#filter-location').val(),
+        country: $('#filter-country').val(),
+        city: $('#filter-city').val(),
         category: $('#filter-category').val(),
+        industry: $('#filter-industry').val(),
         keyword: $('#filter-keyword').val(),
         time_range: $('#filter-time').val(),
-        is_important: $('#filter-important').is(':checked')
+        is_important: $('#filter-important').is(':checked'),
+        sponsorship_required: $('#filter-no-sponsorship').is(':checked') ? 'false' : ''
     };
     loadJobs(1);
 }
 
 // Reset filters
 function resetFilters() {
-    $('#filter-company, #filter-location, #filter-category, #filter-keyword, #filter-time').val('');
-    $('#filter-important').prop('checked', false);
+    $('#filter-company, #filter-country, #filter-city, #filter-category, #filter-industry, #filter-keyword, #filter-time').val('');
+    $('#filter-important, #filter-no-sponsorship').prop('checked', false);
     currentFilters = {};
     loadJobs(1);
 }
@@ -366,20 +439,101 @@ function resetFilters() {
 // Toggle important
 function toggleImportant(jobId, isImportant) {
     $.ajax({
-        url: `/api/jobs/${jobId}/important`,
-        method: 'PUT',
-        contentType: 'application/json',
-        data: JSON.stringify({ is_important: isImportant }),
-        success: function(response) {
-            if (response.success) {
-                showNotification(isImportant ? 'Added to starred' : 'Removed from starred', 'success');
-                loadJobs(currentPage);
-            } else {
-                showNotification('Operation failed: ' + response.error, 'error');
-            }
-        },
-        error: function() {
-            showNotification('Operation failed', 'error');
+        url: '/api/csrf-token',
+        method: 'GET',
+        success: function(tokenResponse) {
+            $.ajax({
+                url: `/api/jobs/${jobId}/important`,
+                method: 'PUT',
+                contentType: 'application/json',
+                headers: { 'X-CSRFToken': tokenResponse.csrf_token },
+                data: JSON.stringify({ is_important: isImportant }),
+                success: function(response) {
+                    if (response.success) {
+                        showNotification(isImportant ? 'Added to starred' : 'Removed from starred', 'success');
+                        loadJobs(currentPage);
+                    } else {
+                        showNotification('Operation failed: ' + response.error, 'error');
+                    }
+                },
+                error: function() {
+                    showNotification('Operation failed', 'error');
+                }
+            });
+        }
+    });
+}
+
+// Update application status
+function updateApplicationStatus(jobId, submitted) {
+    const data = {
+        submitted: submitted,
+        application_date: submitted ? new Date().toISOString() : null
+    };
+
+    $.ajax({
+        url: '/api/csrf-token',
+        method: 'GET',
+        success: function(tokenResponse) {
+            $.ajax({
+                url: `/api/jobs/${jobId}/application-status`,
+                method: 'PUT',
+                contentType: 'application/json',
+                headers: { 'X-CSRFToken': tokenResponse.csrf_token },
+                data: JSON.stringify(data),
+                success: function(response) {
+                    if (response.success) {
+                        showNotification(submitted ? 'Marked as applied' : 'Unmarked as applied', 'success');
+                        loadJobs(currentPage);
+                    } else {
+                        showNotification('Failed to update: ' + (response.error || 'Unknown error'), 'error');
+                    }
+                },
+                error: function() {
+                    showNotification('Failed to update application status', 'error');
+                }
+            });
+        }
+    });
+}
+
+// Update application result
+function updateApplicationResult(jobId, result) {
+    if (!result) return;
+
+    const data = {
+        result: result,
+        result_date: new Date().toISOString()
+    };
+
+    $.ajax({
+        url: '/api/csrf-token',
+        method: 'GET',
+        success: function(tokenResponse) {
+            $.ajax({
+                url: `/api/jobs/${jobId}/application-result`,
+                method: 'PUT',
+                contentType: 'application/json',
+                headers: { 'X-CSRFToken': tokenResponse.csrf_token },
+                data: JSON.stringify(data),
+                success: function(response) {
+                    if (response.success) {
+                        const resultLabels = {
+                            'pending': 'Pending',
+                            'accepted': 'Accepted',
+                            'rejected': 'Rejected',
+                            'no_response': 'No Response'
+                        };
+                        showNotification('Result updated to: ' + resultLabels[result], 'success');
+                        loadJobs(currentPage);
+                    } else {
+                        showNotification('Failed to update: ' + (response.error || 'Unknown error'), 'error');
+                    }
+                },
+                error: function() {
+                    showNotification('Failed to update result', 'error');
+                }
+            });
         }
     });
 }
