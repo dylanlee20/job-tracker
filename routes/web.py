@@ -2,12 +2,60 @@ from flask import Blueprint, render_template, abort
 from flask_login import login_required
 from services.job_service import JobService
 from services.snapshot_service import SnapshotService
+from models.job import Job
 import logging
 
 logger = logging.getLogger(__name__)
 
 # Create Web Blueprint
 web_bp = Blueprint('web', __name__)
+
+_MONTH_ORDER = {
+    'Jan': 1, 'Feb': 2, 'Mar': 3, 'Apr': 4, 'May': 5, 'Jun': 6,
+    'Jul': 7, 'Aug': 8, 'Sep': 9, 'Oct': 10, 'Nov': 11, 'Dec': 12,
+}
+
+
+@web_bp.route('/megasheet')
+@login_required
+def megasheet():
+    """Curated full-time-program megasheet: 6-column table with deadline
+    status, expiry notifications, and the annual recruiting timeline."""
+    try:
+        jobs = (Job.query
+                .filter_by(source_website='megasheet')
+                .order_by(Job.is_rolling.asc(), Job.deadline.asc(), Job.post_date.desc())
+                .all())
+
+        closing_soon = [j for j in jobs if j.deadline_status == 'closing_soon']
+        expired = [j for j in jobs if j.deadline_status == 'expired']
+
+        # Annual recruiting timeline — one row per firm, ordered by the month
+        # its 2027-class role was first observed opening.
+        timeline = {}
+        for j in jobs:
+            if j.company in timeline:
+                continue
+            month_key = j.post_date.month if j.post_date else 13
+            timeline[j.company] = {
+                'company': j.company,
+                'sector': j.industry or 'Other',
+                'window': j.recruiting_window or '—',
+                'order': month_key,
+            }
+        timeline_rows = sorted(timeline.values(), key=lambda r: r['order'])
+
+        return render_template(
+            'megasheet.html',
+            jobs=jobs,
+            total=len(jobs),
+            closing_soon=closing_soon,
+            expired=expired,
+            timeline_rows=timeline_rows,
+        )
+    except Exception as e:
+        logger.error(f"Error rendering megasheet page: {e}")
+        return str(e), 500
 
 
 @web_bp.route('/')

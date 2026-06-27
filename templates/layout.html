@@ -34,6 +34,11 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'web.megasheet' %}active{% endif %}" href="{{ url_for('web.megasheet') }}">
+                            <i class="bi bi-table me-1"></i> Megasheet
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link {% if request.endpoint == 'web.settings' %}active{% endif %}" href="/settings">
                             <i class="bi bi-gear me-1"></i> Settings
                         </a>

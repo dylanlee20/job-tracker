@@ -41,6 +41,24 @@ class Job(db.Model):
     is_important = db.Column(db.Boolean, default=False, nullable=False, index=True)
     user_notes = db.Column(db.Text, nullable=True)
 
+    # 行业分类
+    industry = db.Column(db.String(100), nullable=True, index=True)
+
+    # 申请状态追踪
+    application_submitted = db.Column(db.Boolean, default=False, nullable=False)
+    application_date = db.Column(db.DateTime, nullable=True)
+    application_result = db.Column(db.String(20), nullable=True)  # 'pending', 'accepted', 'rejected', 'no_response'
+    result_date = db.Column(db.DateTime, nullable=True)
+    result_notes = db.Column(db.Text, nullable=True)
+
+    # 工作签证赞助
+    sponsorship_required = db.Column(db.Boolean, nullable=True)  # NULL = unknown, False = no sponsorship, True = sponsorship required
+
+    # Megasheet（精选全职项目清单）字段
+    external_id = db.Column(db.String(30), nullable=True, index=True)  # 来源 megasheet 的职位编号，例如 "24764"
+    is_rolling = db.Column(db.Boolean, default=False, nullable=False)  # "Rolling ASAP" 滚动招聘（无固定截止日）
+    recruiting_window = db.Column(db.String(120), nullable=True)  # 该公司该岗位每年通常开放的时间窗口
+
     # 时间戳
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
@@ -49,6 +67,7 @@ class Job(db.Model):
     __table_args__ = (
         Index('idx_company_location', 'company', 'location'),
         Index('idx_status_first_seen', 'status', 'first_seen'),
+        Index('idx_industry', 'industry'),
     )
 
     @property
@@ -62,6 +81,27 @@ class Job(db.Model):
         """判断是否最近更新过（3天内）"""
         from config import Config
         return (datetime.utcnow() - self.last_updated).days < Config.UPDATED_JOB_DAYS
+
+    @property
+    def deadline_status(self):
+        """职位截止状态：'rolling' / 'open' / 'closing_soon'(<=14天) / 'expired'。"""
+        if self.is_rolling:
+            return 'rolling'
+        if not self.deadline:
+            return 'open'
+        days_left = (self.deadline - datetime.utcnow()).days
+        if days_left < 0:
+            return 'expired'
+        if days_left <= 14:
+            return 'closing_soon'
+        return 'open'
+
+    @property
+    def days_until_deadline(self):
+        """距离截止日的天数；rolling 或无截止日返回 None。"""
+        if self.is_rolling or not self.deadline:
+            return None
+        return (self.deadline - datetime.utcnow()).days
 
     @staticmethod
     def generate_job_hash(company, title, location):
@@ -97,6 +137,18 @@ class Job(db.Model):
             'is_updated': self.is_updated,
             'is_important': self.is_important,
             'user_notes': self.user_notes,
+            'industry': self.industry,
+            'application_submitted': self.application_submitted,
+            'application_date': self.application_date.isoformat() if self.application_date else None,
+            'application_result': self.application_result,
+            'result_date': self.result_date.isoformat() if self.result_date else None,
+            'result_notes': self.result_notes,
+            'sponsorship_required': self.sponsorship_required,
+            'external_id': self.external_id,
+            'is_rolling': self.is_rolling,
+            'recruiting_window': self.recruiting_window,
+            'deadline_status': self.deadline_status,
+            'days_until_deadline': self.days_until_deadline,
             'created_at': self.created_at.isoformat(),
             'updated_at': self.updated_at.isoformat()
         }

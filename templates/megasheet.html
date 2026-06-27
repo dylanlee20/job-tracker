@@ -1,0 +1,202 @@
+{% extends "layout.html" %}
+
+{% block title %}Full-Time Megasheet - NewWhale Career{% endblock %}
+
+{% block extra_css %}
+<style>
+    .ms-wrap { max-width: 1280px; margin: 0 auto; }
+    .ms-table { font-size: 0.92rem; }
+    .ms-table thead th {
+        position: sticky; top: 0; z-index: 2;
+        background: var(--gradient-primary, #1e3a8a);
+        color: #fff; font-weight: 600; white-space: nowrap;
+        border: none;
+    }
+    .ms-table td { vertical-align: middle; }
+    .ms-id { font-variant-numeric: tabular-nums; color: #6b7280; font-size: 0.82rem; }
+    .ms-bank { font-weight: 600; color: #111827; }
+    .ms-sector { font-size: 0.74rem; color: #6b7280; }
+    .ms-pos { color: #1f2937; }
+    .ms-dates { font-variant-numeric: tabular-nums; white-space: nowrap; font-size: 0.84rem; }
+    .ms-dates .added { color: #6b7280; }
+    .ms-dates .arrow { color: #9ca3af; margin: 0 4px; }
+    .ms-status { font-size: 0.7rem; font-weight: 600; padding: 2px 8px; border-radius: 999px; display: inline-block; margin-top: 3px; }
+    .st-open        { background:#dcfce7; color:#166534; }
+    .st-rolling     { background:#dbeafe; color:#1e40af; }
+    .st-closing_soon{ background:#fef9c3; color:#854d0e; }
+    .st-expired     { background:#fee2e2; color:#991b1b; }
+    tr.row-expired { opacity: 0.55; }
+    .ms-view { white-space: nowrap; }
+    .timeline-firm { font-weight: 600; }
+    .timeline-window { color:#1e40af; font-variant-numeric: tabular-nums; }
+    .ms-check { width: 1.15rem; height: 1.15rem; cursor: pointer; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-4 py-4 ms-wrap">
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
+        <div>
+            <h2 class="mb-1 fw-bold" style="color: var(--primary-color, #1e3a8a);">
+                <i class="bi bi-table me-2"></i>2026–2027 Full-Time Megasheet
+            </h2>
+            <p class="text-muted mb-0">Curated full-time analyst &amp; graduate programs — hedge funds, PE, banks &amp; boutiques you won't find in the auto-scraper.</p>
+        </div>
+        <span class="badge bg-primary fs-6 align-self-start mt-2"><i class="bi bi-briefcase me-1"></i>{{ total }} roles</span>
+    </div>
+
+    <!-- Expiry notifications -->
+    {% if expired or closing_soon %}
+    <div class="row g-2 mb-3">
+        {% if closing_soon %}
+        <div class="col-md-6">
+            <div class="alert alert-warning d-flex align-items-center mb-0 py-2">
+                <i class="bi bi-alarm-fill me-2 fs-5"></i>
+                <div><strong>{{ closing_soon|length }} closing within 14 days.</strong>
+                    {% for j in closing_soon[:4] %}<span class="badge bg-warning text-dark me-1">{{ j.company }} ({{ j.days_until_deadline }}d)</span>{% endfor %}
+                    {% if closing_soon|length > 4 %}<span class="text-muted small">+{{ closing_soon|length - 4 }} more</span>{% endif %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% if expired %}
+        <div class="col-md-6">
+            <div class="alert alert-danger d-flex align-items-center mb-0 py-2">
+                <i class="bi bi-x-octagon-fill me-2 fs-5"></i>
+                <div><strong>{{ expired|length }} expired.</strong>
+                    <span class="text-muted small">Shown greyed-out below; deadline has passed.</span>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- Main megasheet table -->
+    <div class="card shadow-sm mb-4">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0 ms-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th class="text-center">Applied?</th>
+                        <th>Bank</th>
+                        <th>Added &rarr; Deadline</th>
+                        <th>Position</th>
+                        <th class="text-center">View</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for j in jobs %}
+                    <tr class="{{ 'row-expired' if j.deadline_status == 'expired' else '' }}">
+                        <td class="ms-id">{{ j.external_id or j.id }}</td>
+                        <td class="text-center">
+                            <input class="form-check-input ms-check" type="checkbox"
+                                   id="app-{{ j.id }}"
+                                   {{ 'checked' if j.application_submitted else '' }}
+                                   onchange="msToggleApplied({{ j.id }}, this.checked)"
+                                   title="Mark as applied">
+                        </td>
+                        <td>
+                            <div class="ms-bank">{{ j.company }}</div>
+                            <div class="ms-sector">{{ j.industry }}</div>
+                        </td>
+                        <td class="ms-dates">
+                            <span class="added">{{ j.post_date.strftime('%m/%d/%Y') if j.post_date else '—' }}</span>
+                            <span class="arrow">&rarr;</span>
+                            {% if j.is_rolling %}
+                                <span>Rolling ASAP</span>
+                            {% elif j.deadline %}
+                                <span>{{ j.deadline.strftime('%m/%d/%Y') }}</span>
+                            {% else %}
+                                <span>—</span>
+                            {% endif %}
+                            <br>
+                            <span class="ms-status st-{{ j.deadline_status }}">
+                                {% if j.deadline_status == 'rolling' %}Rolling
+                                {% elif j.deadline_status == 'open' %}Open
+                                {% elif j.deadline_status == 'closing_soon' %}Closing in {{ j.days_until_deadline }}d
+                                {% else %}Expired{% endif %}
+                            </span>
+                        </td>
+                        <td class="ms-pos">
+                            {{ j.title }}
+                            {% if j.location and j.location != 'Various' %}<span class="text-muted small">· {{ j.location }}</span>{% endif %}
+                        </td>
+                        <td class="ms-view text-center">
+                            <a href="{{ j.job_url }}" target="_blank" rel="noopener" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-box-arrow-up-right"></i> View
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Annual recruiting timeline -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-light fw-bold">
+            <i class="bi bi-calendar3 me-2"></i>Annual Recruiting Timeline
+            <span class="text-muted fw-normal small">— roughly when each firm's full-time class opens each year (ordered earliest &rarr; latest)</span>
+        </div>
+        <div class="card-body py-2">
+            <div class="table-responsive">
+                <table class="table table-sm mb-0">
+                    <thead><tr><th>Firm</th><th>Sector</th><th>Typical opening</th></tr></thead>
+                    <tbody>
+                        {% for r in timeline_rows %}
+                        <tr>
+                            <td class="timeline-firm">{{ r.company }}</td>
+                            <td class="text-muted small">{{ r.sector }}</td>
+                            <td class="timeline-window">{{ r.window }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Self-contained applied-toggle for the megasheet table (no full-page reload).
+function msToggleApplied(jobId, submitted) {
+    const payload = { submitted: submitted, application_date: submitted ? new Date().toISOString() : null };
+    $.ajax({
+        url: '/api/csrf-token', method: 'GET',
+        success: function (tokenResponse) {
+            $.ajax({
+                url: `/api/jobs/${jobId}/application-status`,
+                method: 'PUT',
+                contentType: 'application/json',
+                headers: { 'X-CSRFToken': tokenResponse.csrf_token },
+                data: JSON.stringify(payload),
+                success: function (response) {
+                    if (response.success) {
+                        if (typeof showNotification === 'function') {
+                            showNotification(submitted ? 'Marked as applied' : 'Unmarked as applied', 'success');
+                        }
+                    } else {
+                        document.getElementById('app-' + jobId).checked = !submitted;
+                        if (typeof showNotification === 'function') showNotification('Failed to update: ' + (response.error || 'Unknown error'), 'error');
+                    }
+                },
+                error: function () {
+                    document.getElementById('app-' + jobId).checked = !submitted;
+                    if (typeof showNotification === 'function') showNotification('Failed to update application status', 'error');
+                }
+            });
+        },
+        error: function () {
+            document.getElementById('app-' + jobId).checked = !submitted;
+        }
+    });
+}
+</script>
+{% endblock %}
