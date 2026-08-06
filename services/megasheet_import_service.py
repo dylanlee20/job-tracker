@@ -71,26 +71,35 @@ def load_roles() -> List[Dict]:
 
 
 def import_all() -> Dict[str, int]:
-    """Upsert every megasheet role into the jobs table. Returns counts."""
+    """Upsert every megasheet role into the jobs table, then clear DB rows
+    that dropped out of the CSV (their user state migrates to the matching
+    new row by external_id when possible). Returns counts."""
     firms = load_firms()
     roles = load_roles()
 
     created = updated = skipped = 0
     now = datetime.utcnow()
+    seen_hashes = set()
 
     for row in roles:
         company = row["company"].strip()
         position = row["position"].strip()
         location = (row.get("location") or "").strip() or "Various"
+        region = (row.get("region") or "").strip() or "Other"
+        process = (row.get("process") or "").strip() or None
+        current_stage = (row.get("current_stage") or "").strip() or None
+        apply_url = (row.get("apply_url") or "").strip() or None
         firm = firms.get(company, {})
         if not firm:
             logger.warning("megasheet: firm %r missing from firms.json — using fallbacks", company)
 
         job_hash = Job.generate_job_hash(company, position, location)
+        seen_hashes.add(job_hash)
         deadline = _parse_date(row.get("deadline", ""))
         is_rolling = _parse_bool(row.get("is_rolling", ""))
         post_date = _parse_date(row.get("date_added", ""))
-        careers_url = firm.get("careers_url") or "https://www.google.com/search?q=" + \
+        job_url = apply_url or firm.get("careers_url") or \
+            "https://www.google.com/search?q=" + \
             "+".join(f"{company} {position} careers".split())
         recruiting_window = firm.get("recruiting_window")
         industry = firm.get("sector") or "Other"
@@ -101,12 +110,15 @@ def import_all() -> Dict[str, int]:
             # Refresh megasheet-managed fields only; keep user application state.
             existing.title = position
             existing.location = location
+            existing.region = region
+            existing.process = process
+            existing.current_stage = current_stage
             existing.deadline = deadline
             existing.is_rolling = is_rolling
             existing.external_id = external_id
             existing.recruiting_window = recruiting_window
             existing.post_date = post_date
-            existing.job_url = careers_url
+            existing.job_url = job_url
             existing.source_website = SOURCE_TAG
             existing.industry = industry
             existing.status = "active"
@@ -119,6 +131,9 @@ def import_all() -> Dict[str, int]:
                 company=company,
                 title=position,
                 location=location,
+                region=region,
+                process=process,
+                current_stage=current_stage,
                 category="Other",
                 industry=industry,
                 description="",
@@ -128,7 +143,7 @@ def import_all() -> Dict[str, int]:
                 external_id=external_id,
                 recruiting_window=recruiting_window,
                 source_website=SOURCE_TAG,
-                job_url=careers_url,
+                job_url=job_url,
                 status="active",
                 first_seen=post_date or now,
                 last_seen=now,
@@ -136,11 +151,51 @@ def import_all() -> Dict[str, int]:
             ))
             created += 1
 
+    db.session.flush()
+    removed = _clear_dropped_rows(seen_hashes)
+
     db.session.commit()
-    logger.info("megasheet import: %d created, %d updated, %d skipped",
-                created, updated, skipped)
+    logger.info("megasheet import: %d created, %d updated, %d skipped, %d cleared",
+                created, updated, skipped, removed)
     return {"created": created, "updated": updated, "skipped": skipped,
-            "total": len(roles)}
+            "removed": removed, "total": len(roles)}
+
+
+def _clear_dropped_rows(seen_hashes: set) -> int:
+    """Delete megasheet DB rows no longer present in the CSV. Before deleting,
+    migrate any user application state to the replacement row that shares the
+    same external_id (location/title edits on trackr change the job_hash)."""
+    import re
+
+    def norm(s):
+        return re.sub(r"[^a-z0-9]+", " ", (s or "").lower()).strip()
+
+    live = [j for j in Job.query.filter_by(source_website=SOURCE_TAG).all()
+            if j.job_hash in seen_hashes]
+    stale = [j for j in Job.query.filter_by(source_website=SOURCE_TAG).all()
+             if j.job_hash not in seen_hashes]
+    by_key = {(norm(j.company), norm(j.title)): j for j in live}
+    removed = 0
+    for old in stale:
+        heir = None
+        if old.external_id:
+            heir = next((j for j in live if j.external_id == old.external_id), None)
+        if heir is None:
+            heir = by_key.get((norm(old.company), norm(old.title)))
+        if heir is not None:
+            if old.application_submitted and not heir.application_submitted:
+                heir.application_submitted = True
+                heir.application_date = old.application_date
+                heir.application_result = old.application_result
+                heir.result_date = old.result_date
+                heir.result_notes = old.result_notes
+                heir.is_important = heir.is_important or old.is_important
+                heir.user_notes = heir.user_notes or old.user_notes
+        logger.info("megasheet: clearing dropped row %s - %s (%s)",
+                    old.company, old.title, old.location)
+        db.session.delete(old)
+        removed += 1
+    return removed
 
 
 if __name__ == "__main__":

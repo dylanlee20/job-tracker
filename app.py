@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_login import LoginManager
+from flask_wtf.csrf import CSRFProtect
 from models.database import db, init_db
 from models.job import Job
 from models.job_snapshot import JobSnapshot
@@ -50,6 +51,13 @@ def create_app():
     # 初始化数据库
     init_db(app)
 
+    # 初始化 CSRF 保护
+    csrf = CSRFProtect(app)
+
+    # 对于 API 路由，我们将使用自定义 CSRF 验证（通过 X-CSRFToken 头）
+    # Web 表单将自动使用 CSRF tokens
+    logger.info("CSRF protection enabled")
+
     # 初始化 Flask-Login
     login_manager = LoginManager()
     login_manager.init_app(app)
@@ -61,9 +69,9 @@ def create_app():
     def load_user(user_id):
         return User.query.get(int(user_id))
 
-    # 创建默认管理员账号
+    # 创建默认管理员账号 (uses ADMIN_PASSWORD env var or generates secure password)
     with app.app_context():
-        create_admin_user('admin', 'admin123')
+        create_admin_user()
 
     # 注册蓝图
     app.register_blueprint(api_bp)

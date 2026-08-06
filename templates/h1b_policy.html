@@ -1,0 +1,240 @@
+{% extends "layout.html" %}
+
+{% block title %}H1B Visa Policy Information - Job Tracker{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="mb-4">
+                <h1 class="mb-3"><i class="bi bi-passport me-2"></i>H1B Visa Policy Information</h1>
+                <p class="lead text-muted">Comprehensive guide to H-1B visa requirements, process, and policies for finance professionals</p>
+            </div>
+
+            <div class="alert alert-info d-flex align-items-center">
+                <i class="bi bi-info-circle me-2 fs-5"></i>
+                <div>
+                    <strong>Last Updated:</strong> February 2026 | Information is subject to change. Always verify with official sources.
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0"><i class="bi bi-bookmark me-2"></i>Overview</h4>
+                </div>
+                <div class="card-body">
+                    <p>The H-1B visa is a non-immigrant visa that allows U.S. employers to temporarily employ foreign workers in specialty occupations. Investment banking, finance, quantitative analysis, and technology roles commonly qualify for H-1B sponsorship.</p>
+
+                    <h5 class="mt-4"><i class="bi bi-key me-2"></i>Key Points</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Annual Cap:</strong> 85,000 total visas (65,000 regular cap + 20,000 advanced degree exemption)</li>
+                        <li class="list-group-item"><strong>Duration:</strong> Initial period of 3 years, extendable to 6 years total</li>
+                        <li class="list-group-item"><strong>Lottery System:</strong> When applications exceed cap, lottery determines selection</li>
+                        <li class="list-group-item"><strong>Filing Period:</strong> Registration typically opens in March each year</li>
+                        <li class="list-group-item"><strong>Start Date:</strong> October 1st is the earliest employment start date</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0"><i class="bi bi-calendar-check me-2"></i>Application Timeline</h4>
+                </div>
+                <div class="card-body">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-marker bg-primary"></div>
+                            <div class="timeline-content">
+                                <h6 class="fw-bold">March (Early)</h6>
+                                <p class="mb-0">Registration period opens - Employer registers electronically with USCIS</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker bg-info"></div>
+                            <div class="timeline-content">
+                                <h6 class="fw-bold">March (Late) - April</h6>
+                                <p class="mb-0">Lottery conducted - Selected registrations receive notification</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker bg-warning"></div>
+                            <div class="timeline-content">
+                                <h6 class="fw-bold">April - June</h6>
+                                <p class="mb-0">Selected applicants file complete H-1B petitions with supporting documentation</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker bg-success"></div>
+                            <div class="timeline-content">
+                                <h6 class="fw-bold">October 1</h6>
+                                <p class="mb-0">Earliest start date for new H-1B employment (fiscal year begins)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <style>
+                        .timeline {
+                            position: relative;
+                            padding-left: 30px;
+                        }
+                        .timeline::before {
+                            content: '';
+                            position: absolute;
+                            left: 10px;
+                            top: 10px;
+                            bottom: 10px;
+                            width: 2px;
+                            background: #e5e7eb;
+                        }
+                        .timeline-item {
+                            position: relative;
+                            padding-bottom: 20px;
+                        }
+                        .timeline-marker {
+                            position: absolute;
+                            left: -26px;
+                            top: 5px;
+                            width: 20px;
+                            height: 20px;
+                            border-radius: 50%;
+                            border: 3px solid #fff;
+                        }
+                        .timeline-content {
+                            padding-left: 10px;
+                        }
+                    </style>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header bg-warning">
+                    <h4 class="mb-0"><i class="bi bi-lightning me-2"></i>Recent Policy Changes (2024-2026)</h4>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li><strong>2024:</strong> Electronic registration system became mandatory for all H-1B cap-subject petitions</li>
+                        <li><strong>2025:</strong> Increased scrutiny on specialty occupation requirements and beneficiary qualifications</li>
+                        <li><strong>2026:</strong> New wage level requirements implemented to ensure prevailing wage compliance</li>
+                        <li><strong>Ongoing:</strong> Site visit protocols remain in effect for worksite verification</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0"><i class="bi bi-building-check me-2"></i>Cap-Exempt Employers</h4>
+                </div>
+                <div class="card-body">
+                    <p>The following employers are <strong>NOT subject</strong> to the H-1B annual cap:</p>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="text-center p-3 border rounded mb-3">
+                                <i class="bi bi-bank2 fs-1 text-primary"></i>
+                                <p class="mt-2 mb-0"><strong>Higher Education</strong><br><small>Institutions of higher education</small></p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center p-3 border rounded mb-3">
+                                <i class="bi bi-graph-up fs-1 text-success"></i>
+                                <p class="mt-2 mb-0"><strong>Research Orgs</strong><br><small>Nonprofit research organizations</small></p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center p-3 border rounded mb-3">
+                                <i class="bi bi-globe fs-1 text-info"></i>
+                                <p class="mt-2 mb-0"><strong>Government</strong><br><small>Government research organizations</small></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="alert alert-secondary mt-3">
+                        <i class="bi bi-lightbulb me-2"></i>
+                        <strong>Note:</strong> Some financial services firms partner with universities or research institutions, which may provide cap-exempt opportunities.
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header bg-secondary text-white">
+                    <h4 class="mb-0"><i class="bi bi-filter-circle me-2"></i>Finding Jobs Without Sponsorship Requirements</h4>
+                </div>
+                <div class="card-body">
+                    <p>Many financial services firms have varying policies regarding work authorization:</p>
+
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        <strong>Important:</strong> Use the filters on the <a href="{{ url_for('web.index') }}" class="alert-link">main jobs page</a> to identify positions that don't require sponsorship.
+                    </div>
+
+                    <ol>
+                        <li>Navigate to the <strong>Jobs page</strong></li>
+                        <li>Check the <strong>"No sponsorship required"</strong> filter in the sidebar</li>
+                        <li>Jobs with green badges indicate no sponsorship requirement</li>
+                        <li>Jobs with yellow/orange badges indicate sponsorship may be required</li>
+                    </ol>
+
+                    <div class="alert alert-info mt-3">
+                        <i class="bi bi-info-circle me-2"></i>
+                        <strong>Disclaimer:</strong> Sponsorship policies can vary by position, location, and business unit. Always verify current requirements during the application process. Job postings may not always accurately reflect the company's sponsorship policy.
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0"><i class="bi bi-link-45deg me-2"></i>Additional Resources</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6><i class="bi bi-globe text-primary me-2"></i>Official Government Sources</h6>
+                            <ul class="list-unstyled">
+                                <li class="mb-2">
+                                    <a href="https://www.uscis.gov/working-in-the-united-states/h-1b-specialty-occupations" target="_blank" class="text-decoration-none">
+                                        <i class="bi bi-box-arrow-up-right me-1"></i>USCIS Official H-1B Page
+                                    </a>
+                                </li>
+                                <li class="mb-2">
+                                    <a href="https://www.dol.gov/agencies/whd/immigration/h1b" target="_blank" class="text-decoration-none">
+                                        <i class="bi bi-box-arrow-up-right me-1"></i>Department of Labor H-1B Information
+                                    </a>
+                                </li>
+                                <li class="mb-2">
+                                    <a href="https://www.state.gov/bureaus-offices/under-secretary-for-management/bureau-of-consular-affairs/" target="_blank" class="text-decoration-none">
+                                        <i class="bi bi-box-arrow-up-right me-1"></i>U.S. Department of State
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6><i class="bi bi-search text-success me-2"></i>Research & Data</h6>
+                            <ul class="list-unstyled">
+                                <li class="mb-2">
+                                    <a href="https://www.myvisajobs.com/" target="_blank" class="text-decoration-none">
+                                        <i class="bi bi-box-arrow-up-right me-1"></i>H-1B Employer Database
+                                    </a>
+                                </li>
+                                <li class="mb-2">
+                                    <a href="https://h1bdata.info/" target="_blank" class="text-decoration-none">
+                                        <i class="bi bi-box-arrow-up-right me-1"></i>H1B Salary Database
+                                    </a>
+                                </li>
+                                <li class="mb-2">
+                                    <a href="https://www.immihelp.com/h1b-visa/" target="_blank" class="text-decoration-none">
+                                        <i class="bi bi-box-arrow-up-right me-1"></i>H-1B Visa Guide
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <a href="{{ url_for('web.index') }}" class="btn btn-primary btn-lg">
+                    <i class="bi bi-arrow-left me-2"></i>Back to Jobs
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

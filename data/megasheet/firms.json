@@ -1,33 +1,3128 @@
 {
   "_README": "Firm registry for the curated megasheet. careers_url = the firm's organic careers/early-careers page (the 'View' link). recruiting_window = when this firm's 2027-class role was observed opening, used as the annual-timing hint. sector = grouping for the timeline panel. Edit freely; the importer re-reads this file each run.",
-
-  "Wells Fargo":              { "careers_url": "https://www.wellsfargojobs.com/en/career-areas/early-careers/", "sector": "Bank — CIB",                 "recruiting_window": "Opens late June (annual)" },
-  "Capital One":              { "careers_url": "https://www.capitalonecareers.com/",                            "sector": "Bank — Analytics",           "recruiting_window": "Opens late June (annual)" },
-  "Starwood":                 { "careers_url": "https://www.starwoodcapital.com/careers/",                      "sector": "Real Estate / PE",          "recruiting_window": "Opens mid June (annual)" },
-  "Davidson Kempner":         { "careers_url": "https://www.davidsonkempner.com/careers",                       "sector": "Hedge Fund",                "recruiting_window": "Opens mid June (annual)" },
-  "Jane Street":              { "careers_url": "https://www.janestreet.com/join-jane-street/open-roles/",        "sector": "Quant Trading",             "recruiting_window": "Opens Mar (WiSE) & June (FTTP)" },
-  "Baird":                    { "careers_url": "https://www.bairdcareers.com/",                                 "sector": "Boutique IB / Research",    "recruiting_window": "Opens mid June (annual)" },
-  "Morgan Stanley":           { "careers_url": "https://www.morganstanley.com/careers/career-opportunities-search", "sector": "Bank",                  "recruiting_window": "Opens mid June (annual)" },
-  "GIC":                      { "careers_url": "https://www.gic.com.sg/careers/",                               "sector": "Sovereign Wealth",          "recruiting_window": "Opens late May–June (annual)" },
-  "GLC Advisors":             { "careers_url": "https://www.glca.com/",                                         "sector": "Boutique IB (Restructuring)","recruiting_window": "Opens early June (annual)" },
-  "Balyasny":                 { "careers_url": "https://www.bam.com/careers/",                                  "sector": "Hedge Fund (Multi-strat)",  "recruiting_window": "Opens late May (annual)" },
-  "BNP Paribas":              { "careers_url": "https://group.bnpparibas/en/careers",                           "sector": "Bank",                      "recruiting_window": "Opens late May (annual)" },
-  "UBS":                      { "careers_url": "https://www.ubs.com/global/en/careers.html",                    "sector": "Bank",                      "recruiting_window": "Opens late May (annual)" },
-  "Affinius Capital":         { "careers_url": "https://affiniuscapital.com/careers/",                          "sector": "Real Estate PE",            "recruiting_window": "Opens late May (annual)" },
-  "Bain Capital":             { "careers_url": "https://www.baincapital.com/careers",                           "sector": "Private Equity",            "recruiting_window": "Opens late May (annual)" },
-  "Citadel":                  { "careers_url": "https://www.citadel.com/careers/",                              "sector": "Hedge Fund",                "recruiting_window": "Opens mid May (annual)" },
-  "Turn/River Capital":       { "careers_url": "https://turnriver.com/careers/",                                "sector": "Growth Equity / PE",        "recruiting_window": "Opens mid May (annual)" },
-  "Millennium":               { "careers_url": "https://www.mlp.com/careers/",                                  "sector": "Hedge Fund (Multi-strat)",  "recruiting_window": "Opens mid May (annual)" },
-  "Point72":                  { "careers_url": "https://careers.point72.com/",                                  "sector": "Hedge Fund",                "recruiting_window": "Opens early May (annual)" },
-  "Partners Group":           { "careers_url": "https://www.partnersgroup.com/en/careers/",                     "sector": "Private Markets",           "recruiting_window": "Opens early May (annual)" },
-  "Abrams Bison Investments": { "careers_url": "https://www.abramsbison.com/",                                  "sector": "Hedge Fund",                "recruiting_window": "Opens Feb–Apr (annual)" },
-  "Qatalyst":                 { "careers_url": "https://www.qatalyst.com/",                                     "sector": "Boutique IB (Tech M&A)",    "recruiting_window": "Opens late Apr (annual)" },
-  "Trillium":                 { "careers_url": "https://www.trilliumtrading.com/",                              "sector": "Prop Trading",              "recruiting_window": "Opens mid Apr (annual)" },
-  "Agentis Capital":          { "careers_url": "https://www.agentiscapital.com/",                               "sector": "Boutique IB (Infrastructure)","recruiting_window": "Opens late Mar (annual)" },
-  "Apollo":                   { "careers_url": "https://www.apollo.com/careers",                                "sector": "Private Equity / Credit",   "recruiting_window": "Opens late Feb (annual)" },
-  "Insight Partners":         { "careers_url": "https://www.insightpartners.com/careers/",                      "sector": "Growth Equity / VC",        "recruiting_window": "Opens Nov–Jan (annual)" },
-  "Warburg Pincus":           { "careers_url": "https://warburgpincus.com/careers/",                            "sector": "Private Equity",            "recruiting_window": "Opens Oct–Jan (annual)" },
-  "Aeris Partners":           { "careers_url": "https://www.aerispartners.com/",                                "sector": "Boutique IB (Tech M&A)",    "recruiting_window": "Opens Dec (annual)" },
-  "BDO Global":               { "careers_url": "https://careers.bdo.com/",                                      "sector": "Boutique IB (BDO Capital)", "recruiting_window": "Opens Nov (annual)" },
-  "Nomura":                   { "careers_url": "https://www.nomura.com/careers/",                               "sector": "Bank",                      "recruiting_window": "Opens Nov (annual)" }
+  "7IM": {
+    "careers_url": "https://www.7im.co.uk/careers",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "AAB Group": {
+    "careers_url": "https://aab.uk/about/careers/vacancies/",
+    "sector": "Pensions / Insurance",
+    "recruiting_window": null
+  },
+  "ABN AMRO": {
+    "careers_url": "https://www.abnamro.com/en/careers",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "AEW Capital Management": {
+    "careers_url": "https://www.aew.com/about/careers",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "AIA": {
+    "careers_url": "https://www.aia.com/en/careers/overview",
+    "sector": "Pensions / Insurance",
+    "recruiting_window": null
+  },
+  "AIG": {
+    "careers_url": "https://www.aig.co.uk/home/careers",
+    "sector": "Pensions / Insurance",
+    "recruiting_window": null
+  },
+  "AJ Bell": {
+    "careers_url": "https://www.ajbell.co.uk/group/careers",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "AQ Technology Partners": {
+    "careers_url": "https://www.aqtpartners.com/jobs",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "AQR Capital Management": {
+    "careers_url": "https://www.aqr.com/About-Us/Careers",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened May 2026 (2027 cycle)"
+  },
+  "ATKG": {
+    "careers_url": "https://atkg.com/careers",
+    "sector": "Accounting / Audit",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "ATLAS SP Partners": {
+    "careers_url": "https://www.atlas-sp.com/careers.html",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Dec 2025 (2027 cycle)"
+  },
+  "AXA": {
+    "careers_url": "https://careers.axa.com/global/en/early-careers",
+    "sector": "Pensions / Insurance",
+    "recruiting_window": null
+  },
+  "Abdiel Capital": {
+    "careers_url": "https://abdielcapital.com/careers/",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "Aberdeen Group": {
+    "careers_url": "https://www.aberdeenplc.com/en-gb/careers/early-careers",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "Abrams Bison Investments": {
+    "careers_url": "https://www.abramsbison.com/",
+    "sector": "Hedge Fund",
+    "recruiting_window": "Opens Feb–Apr (annual)"
+  },
+  "Access Holdings": {
+    "careers_url": "https://accessholdings.com/careers-new/access-holdings-positions/",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "Accuracy": {
+    "careers_url": "https://www.accuracy.com/careers",
+    "sector": "Consulting",
+    "recruiting_window": null
+  },
+  "Adams Street Partners": {
+    "careers_url": "https://www.adamsstreetpartners.com/careers/students/",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "Aegon": {
+    "careers_url": "https://www.aegon.co.uk/careers",
+    "sector": "Pensions / Insurance",
+    "recruiting_window": null
+  },
+  "Aeris Partners": {
+    "careers_url": "https://www.aerispartners.com/",
+    "sector": "Boutique IB (Tech M&A)",
+    "recruiting_window": "Opens Dec (annual)"
+  },
+  "Affinius Capital": {
+    "careers_url": "https://affiniuscapital.com/careers/",
+    "sector": "Real Estate PE",
+    "recruiting_window": "Opens late May (annual)"
+  },
+  "AgWest Farm Credit": {
+    "careers_url": "https://www.agwestfc.com/careers",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "Agentis Capital": {
+    "careers_url": "https://www.agentiscapital.com/",
+    "sector": "Boutique IB (Infrastructure)",
+    "recruiting_window": "Opens late Mar (annual)"
+  },
+  "Akuna Capital": {
+    "careers_url": "https://akunacapital.com/careers/",
+    "sector": "Trading / Quant",
+    "recruiting_window": "Opened Mar 2026 (2027 cycle)"
+  },
+  "Alantra": {
+    "careers_url": "https://www.alantra.com/careers/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "AlixPartners": {
+    "careers_url": "https://www.alixpartners.com/careers/",
+    "sector": "Consulting",
+    "recruiting_window": "Opened Jun 2026 (2027 cycle)"
+  },
+  "Allia C&C": {
+    "careers_url": "https://allia.org.uk/opportunities/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "AllianceBernstein": {
+    "careers_url": "https://www.alliancebernstein.com/corporate/en/careers/students.html",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "Allianz Insurance": {
+    "careers_url": "https://careers.allianz.com/global/en",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Allied World": {
+    "careers_url": "https://alliedworldinsurance.com/products/working-at-allied-world/",
+    "sector": "Pensions / Insurance",
+    "recruiting_window": null
+  },
+  "Alpha FMC": {
+    "careers_url": "https://alphafmc.com/careers-global-awm/graduates/",
+    "sector": "Consulting",
+    "recruiting_window": null
+  },
+  "AlphaSights": {
+    "careers_url": "https://www.alphasights.com/careers/students-and-interns/",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Alpine Investors": {
+    "careers_url": "https://alpineinvestors.com/careers/",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "Altana Wealth": {
+    "careers_url": "https://www.altanawealth.com/careers",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "Altman Solon": {
+    "careers_url": "https://www.altmansolon.com/careers/on-campus",
+    "sector": "Consulting",
+    "recruiting_window": null
+  },
+  "Alvarez & Marsal": {
+    "careers_url": "https://careers.alvarezandmarsal.com/",
+    "sector": "Consulting",
+    "recruiting_window": "Opened Aug 2025 (2027 cycle)"
+  },
+  "Alvine Capital": {
+    "careers_url": "https://www.alvinecapital.com/",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "Amazon": {
+    "careers_url": "https://www.amazon.jobs/content/en-gb/career-programs/university",
+    "sector": "Other",
+    "recruiting_window": "Opened Jun 2026 (2027 cycle)"
+  },
+  "American Express": {
+    "careers_url": "https://www.americanexpress.com/en-us/careers/student-programs/uk/",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "AmplifyME": {
+    "careers_url": "https://amplifyme.com/",
+    "sector": "Other",
+    "recruiting_window": "Opened Jun 2026 (2027 cycle)"
+  },
+  "Analysys Mason": {
+    "careers_url": "https://www.analysysmason.com/careers",
+    "sector": "Consulting",
+    "recruiting_window": null
+  },
+  "Ankura": {
+    "careers_url": "https://ankura.com/careers",
+    "sector": "Consulting",
+    "recruiting_window": null
+  },
+  "Anthelion Capital": {
+    "careers_url": "https://www.anthelioncap.com/careers",
+    "sector": "Trading / Quant",
+    "recruiting_window": "Opened Jul 2026 (2027 cycle)"
+  },
+  "Aon": {
+    "careers_url": "https://www.aon.com/careers/uk/internships-3.html",
+    "sector": "Pensions / Insurance",
+    "recruiting_window": null
+  },
+  "Apogem Capital": {
+    "careers_url": "https://apogemcapital.com/careers",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Feb 2026 (2027 cycle)"
+  },
+  "Apollo": {
+    "careers_url": "https://www.apollo.com/careers",
+    "sector": "Private Equity / Credit",
+    "recruiting_window": "Opens late Feb (annual)"
+  },
+  "Apollo Global Management": {
+    "careers_url": "https://www.apollo.com/careers",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Apr 2026 (2027 cycle)"
+  },
+  "Apple": {
+    "careers_url": "https://www.apple.com/careers/uk/",
+    "sector": "Other",
+    "recruiting_window": "Opened Feb 2026 (2027 cycle)"
+  },
+  "Aquatic Capital Management": {
+    "careers_url": "https://aquatic.com/",
+    "sector": "Trading / Quant",
+    "recruiting_window": "Opened Apr 2026 (2027 cycle)"
+  },
+  "Aqumon": {
+    "careers_url": "https://www.aqumon.com/en/about/career",
+    "sector": "Trading / Quant",
+    "recruiting_window": "Opened Jul 2026 (2027 cycle)"
+  },
+  "Arbuthnot Latham": {
+    "careers_url": "https://careers.arbuthnotlatham.co.uk/working-for-us/early-careers.aspx",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "Arch Insurance International": {
+    "careers_url": "https://www.archgroup.com/careers/",
+    "sector": "Pensions / Insurance",
+    "recruiting_window": null
+  },
+  "Ardea Partners": {
+    "careers_url": "https://ardeapartners.com/careers/",
+    "sector": "Bank - Elite Boutique",
+    "recruiting_window": "Opened Dec 2025 (2027 cycle)"
+  },
+  "Ardian": {
+    "careers_url": "https://careers.ardian.com/en-GB",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Feb 2026 (2027 cycle)"
+  },
+  "Arena Investors": {
+    "careers_url": "https://www.arenaco.com/careers/",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "Ares Management": {
+    "careers_url": "https://www.ares.com/careers",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "ArkMalibu": {
+    "careers_url": "https://arkmalibu.com/who-we-are/careers",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Jun 2026 (2027 cycle)"
+  },
+  "Arkle Finance": {
+    "careers_url": "https://arklefinance.co.uk/careers/",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Armanino": {
+    "careers_url": "https://www.armanino.com/careers/",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Arrowstreet Capital": {
+    "careers_url": "https://www.arrowstreetcapital.com/student-careers",
+    "sector": "Trading / Quant",
+    "recruiting_window": "Opened Jul 2026 (2027 cycle)"
+  },
+  "Aspect Capital": {
+    "careers_url": "https://www.aspectcapital.com/careers/",
+    "sector": "Trading / Quant",
+    "recruiting_window": null
+  },
+  "AstraZeneca": {
+    "careers_url": "https://careers.astrazeneca.com/search-jobs",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Atlanta Wealth": {
+    "careers_url": "https://altanawealth.com/careers/",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "Atlas Holdings": {
+    "careers_url": "https://www.atlasholdingsllc.com/contact/careers",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Aug 2026 (2027 cycle)"
+  },
+  "Audax Group": {
+    "careers_url": "https://www.audaxgroup.com/",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "Audit Scotland": {
+    "careers_url": "https://audit.scot/about-us/work-with-us",
+    "sector": "Accounting / Audit",
+    "recruiting_window": null
+  },
+  "AustralianSuper": {
+    "careers_url": "https://www.australiansuper.com/careers",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "Aventum Group": {
+    "careers_url": "https://aventumhr.my.salesforce-sites.com/Recruit/fRecruit__ApplyJobList",
+    "sector": "Pensions / Insurance",
+    "recruiting_window": null
+  },
+  "Azets": {
+    "careers_url": "https://www.azets.com/en-uk/careers",
+    "sector": "Accounting / Audit",
+    "recruiting_window": null
+  },
+  "BAE Systems": {
+    "careers_url": "https://www.baesystems.com/en/careers/careers-in-the-uk/early-careers",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "BBVA": {
+    "careers_url": "https://www.bbva.com/en/careers/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "BCG": {
+    "careers_url": "https://careers.bcg.com/global/en/early-careers",
+    "sector": "Consulting",
+    "recruiting_window": null
+  },
+  "BDO Global": {
+    "careers_url": "https://careers.bdo.com/",
+    "sector": "Boutique IB (BDO Capital)",
+    "recruiting_window": "Opens Nov (annual)"
+  },
+  "BGF": {
+    "careers_url": "https://www.bgf.co.uk/careers/https:/www.bgf.co.uk/careers/",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "BGM": {
+    "careers_url": "https://www.bgm.co.uk/careers/overview",
+    "sector": "Accounting / Audit",
+    "recruiting_window": null
+  },
+  "BMLL": {
+    "careers_url": "https://www.bmlltech.com/company/careers",
+    "sector": "Trading / Quant",
+    "recruiting_window": null
+  },
+  "BMO Capital Markets": {
+    "careers_url": "https://jobs.bmo.com/ca/en/campus",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Nov 2025 (2027 cycle)"
+  },
+  "BNP Paribas": {
+    "careers_url": "https://group.bnpparibas/en/careers",
+    "sector": "Bank",
+    "recruiting_window": "Opens late May (annual)"
+  },
+  "BNY Mellon": {
+    "careers_url": "https://www.bny.com/content/bnymellon/global/en/about-us/careers/students.html",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "BP": {
+    "careers_url": "https://www.bp.com/en/global/corporate/careers.html",
+    "sector": "Trading / Quant",
+    "recruiting_window": "Opened Jun 2026 (2027 cycle)"
+  },
+  "BRG": {
+    "careers_url": "https://www.thinkbrg.com/careers/global-careers/",
+    "sector": "Consulting",
+    "recruiting_window": "Opened Feb 2026 (2027 cycle)"
+  },
+  "BST": {
+    "careers_url": "https://www.bstco.com/your-bst-career",
+    "sector": "Accounting / Audit",
+    "recruiting_window": null
+  },
+  "BTG Pactual": {
+    "careers_url": "https://btgpactual.eu/en/careers",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Aug 2026 (2027 cycle)"
+  },
+  "BTIG": {
+    "careers_url": "https://www.btig.com/careers/career-opportunities/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "Bain & Company": {
+    "careers_url": "https://www.bain.com/careers/work-with-us/students/",
+    "sector": "Consulting",
+    "recruiting_window": "Opened Jul 2026 (2027 cycle)"
+  },
+  "Bain Capital": {
+    "careers_url": "https://www.baincapital.com/careers",
+    "sector": "Private Equity",
+    "recruiting_window": "Opens late May (annual)"
+  },
+  "Baird": {
+    "careers_url": "https://www.bairdcareers.com/",
+    "sector": "Boutique IB / Research",
+    "recruiting_window": "Opens mid June (annual)"
+  },
+  "Baker Hughes": {
+    "careers_url": "https://careers.bakerhughes.com/global/en/early-careers-bh",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Baker Tilly": {
+    "careers_url": "https://bakertilly.wd5.myworkdayjobs.com/BTCareers",
+    "sector": "Accounting / Audit",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "Balyasny": {
+    "careers_url": "https://www.bam.com/careers/",
+    "sector": "Hedge Fund (Multi-strat)",
+    "recruiting_window": "Opens late May (annual)"
+  },
+  "Balyasny Asset Management": {
+    "careers_url": "https://www.bamfunds.com/careers/internships",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Jun 2026 (2027 cycle)"
+  },
+  "Bank of America": {
+    "careers_url": "https://careers.bankofamerica.com/en-us/students/campus-experience",
+    "sector": "Bank - Bulge Bracket",
+    "recruiting_window": "Opened Jul 2026 (2027 cycle)"
+  },
+  "Bank of China": {
+    "careers_url": "https://www.bankofchina.com/uk/aboutus/ab6/202111/t20211115_20478040.html",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "Bank of England": {
+    "careers_url": "https://www.bankofengland.co.uk/error/404.html?item=%2Fcareers%2Fearly-careers%2Four-programmes",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Barclays": {
+    "careers_url": "https://search.jobs.barclays/early-careers",
+    "sector": "Bank - Bulge Bracket",
+    "recruiting_window": "Opened Jul 2026 (2027 cycle)"
+  },
+  "Baringa": {
+    "careers_url": "https://www.baringa.com/en/careers/early-careers/",
+    "sector": "Consulting",
+    "recruiting_window": null
+  },
+  "Barings": {
+    "careers_url": "https://www.barings.com/en-gb/guest/about/careers",
+    "sector": "Asset Management",
+    "recruiting_window": "Opened Feb 2026 (2027 cycle)"
+  },
+  "Barnett Waddingham": {
+    "careers_url": "https://www.barnett-waddingham.co.uk/careers/early-careers/",
+    "sector": "Pensions / Insurance",
+    "recruiting_window": null
+  },
+  "Bastion Trading": {
+    "careers_url": "https://bastiontrading.com/careers",
+    "sector": "Trading / Quant",
+    "recruiting_window": "Opened May 2026 (2027 cycle)"
+  },
+  "Battery": {
+    "careers_url": "https://www.battery.com/",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "Bennett Thrasher": {
+    "careers_url": "https://www.btcpa.net/careers",
+    "sector": "Accounting / Audit",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "Berenberg": {
+    "careers_url": "https://careers.berenberg.com/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "Berkeley Research Group": {
+    "careers_url": "https://www.thinkbrg.com/careers/",
+    "sector": "Consulting",
+    "recruiting_window": "Opened Apr 2026 (2027 cycle)"
+  },
+  "Bessemer Venture Partners": {
+    "careers_url": "https://www.bvp.com/",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Dec 2025 (2027 cycle)"
+  },
+  "BlackEdge Capital": {
+    "careers_url": "https://www.blackedge.com/",
+    "sector": "Trading / Quant",
+    "recruiting_window": "Opened Jul 2026 (2027 cycle)"
+  },
+  "BlackRock": {
+    "careers_url": "https://careers.blackrock.com/students-and-graduates",
+    "sector": "Asset Management",
+    "recruiting_window": "Opened Jun 2026 (2027 cycle)"
+  },
+  "Blackfinch Group": {
+    "careers_url": "https://blackfinch.com/careers/",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "Blackstone": {
+    "careers_url": "https://www.blackstone.com/careers/students/",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "Blockchain.com": {
+    "careers_url": "https://www.blockchain.com/careers",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Bloomberg": {
+    "careers_url": "https://www.bloomberg.com/company/early-careers/",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Blue Owl Capital": {
+    "careers_url": "https://www.blueowl.com/careers",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "Bracebridge Capital": {
+    "careers_url": "https://www.bracebridgecapital.com/careers/students-recent-grads/",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "Brevan Howard": {
+    "careers_url": "https://www.brevanhoward.com/careers/",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "Bridgepoint Investment Banking": {
+    "careers_url": "https://www.bridgepointgroup.com/about-us/joining-the-team",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened May 2026 (2027 cycle)"
+  },
+  "Bridgewater Associates": {
+    "careers_url": "https://www.bridgewater.com/working-at-bridgewater/",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "BrightTower": {
+    "careers_url": "https://brighttower.com/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Apr 2026 (2027 cycle)"
+  },
+  "Brinley Partners": {
+    "careers_url": "https://brinleypartners.com/about-brinley-parners-financial-asset-management-services/",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "Brio Real Estate": {
+    "careers_url": "https://www.briore.com/careers",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Apr 2026 (2027 cycle)"
+  },
+  "British Airways": {
+    "careers_url": "https://careers.ba.com/emerging-talent",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "British Business Bank": {
+    "careers_url": "https://www.british-business-bank.co.uk/about/careers",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "British Land": {
+    "careers_url": "https://www.britishland.com/careers/early-careers/",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "Brown Edwards": {
+    "careers_url": "https://becpas.com/careers/",
+    "sector": "Accounting / Audit",
+    "recruiting_window": "Opened Jul 2026 (2027 cycle)"
+  },
+  "Brown Gibbons Lang & Company": {
+    "careers_url": "https://www.bglco.com/careers/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "Burford Capital": {
+    "careers_url": "https://www.burfordcapital.com/about-us/careers/",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "CBIZ": {
+    "careers_url": "https://www.cbiz.com/careers/students-recent-graduates",
+    "sector": "Accounting / Audit",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "CBRE": {
+    "careers_url": "https://www.cbre.com/careers",
+    "sector": "Real Estate",
+    "recruiting_window": null
+  },
+  "CCK Strategies": {
+    "careers_url": "https://cckcpa.com/careers",
+    "sector": "Accounting / Audit",
+    "recruiting_window": "Opened Nov 2025 (2027 cycle)"
+  },
+  "CD&R": {
+    "careers_url": "https://www.cdr.com/",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "CF Private Equity": {
+    "careers_url": "https://www.cfprivateequity.com/careers",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Jul 2026 (2027 cycle)"
+  },
+  "CFC": {
+    "careers_url": "https://www.cfc.com/en-gb/careers/",
+    "sector": "Pensions / Insurance",
+    "recruiting_window": null
+  },
+  "CFO Insights": {
+    "careers_url": "https://job-boards.greenhouse.io/cfoinsights",
+    "sector": "Consulting",
+    "recruiting_window": null
+  },
+  "CIBC": {
+    "careers_url": "https://www.cibc.com/en/about-cibc/careers/students-and-graduates.html",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "CICC": {
+    "careers_url": "https://en.cicc.com/join-cicc/index.html",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "CIFC Asset Management": {
+    "careers_url": "https://cifc.com/about/careers-at-cifc",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Feb 2026 (2027 cycle)"
+  },
+  "CITIC CLSA": {
+    "careers_url": "https://www.clsa.com/careers/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "CMB Wing Lung Bank": {
+    "careers_url": "https://www.cmbwinglungbank.com/wlb_corporate/en/about-us/careers/index.html",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "CMD Global Partners": {
+    "careers_url": "https://www.cmdglobal.com/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "CT: Accountants Advisers": {
+    "careers_url": "https://ct.me/join-us/early-careers",
+    "sector": "Accounting / Audit",
+    "recruiting_window": null
+  },
+  "Cabot Properties": {
+    "careers_url": "https://www.cabotprop.com/careers/",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "Caledonia Investments": {
+    "careers_url": "https://www.caledonia.com/",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "Calibre CPA Group": {
+    "careers_url": "https://calibrecpa.com/careers/open-positions",
+    "sector": "Accounting / Audit",
+    "recruiting_window": "Opened Jun 2026 (2027 cycle)"
+  },
+  "Cambridge Associates": {
+    "careers_url": "https://www.cambridgeassociates.com/en-eu/careers/",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "Campbell Lutyens": {
+    "careers_url": "https://www.campbell-lutyens.com/careers/graduate-programme/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "Canada Life": {
+    "careers_url": "https://life-careers.com/",
+    "sector": "Pensions / Insurance",
+    "recruiting_window": null
+  },
+  "Canary Wharf Group": {
+    "careers_url": "https://group.canarywharf.com/careers/student-opportunities/",
+    "sector": "Real Estate",
+    "recruiting_window": null
+  },
+  "Cantor Fitzgerald": {
+    "careers_url": "https://www.cantor.com/careers/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "Capgemini": {
+    "careers_url": "https://www.capgemini.com/gb-en/careers/join-us/",
+    "sector": "Consulting",
+    "recruiting_window": null
+  },
+  "Capital Group": {
+    "careers_url": "https://www.capitalgroup.com/corporate/careers.html",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "Capital One": {
+    "careers_url": "https://www.capitalonecareers.com/",
+    "sector": "Bank — Analytics",
+    "recruiting_window": "Opens late June (annual)"
+  },
+  "Capital Southwest": {
+    "careers_url": "https://www.capitalsouthwest.com/",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Feb 2026 (2027 cycle)"
+  },
+  "Capstone": {
+    "careers_url": "https://www.capstoneco.com/careers/",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "Capstone Partners": {
+    "careers_url": "https://www.capstonepartners.com/about/careers",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Mar 2026 (2027 cycle)"
+  },
+  "Capula Investment Management": {
+    "careers_url": "https://careers.capulaglobal.com/interns/",
+    "sector": "Trading / Quant",
+    "recruiting_window": "Opened Apr 2026 (2027 cycle)"
+  },
+  "Cargill": {
+    "careers_url": "https://careers.cargill.com/en",
+    "sector": "Trading / Quant",
+    "recruiting_window": "Opened Aug 2026 (2027 cycle)"
+  },
+  "Carr, Riggs & Ingram": {
+    "careers_url": "https://www.criadv.com/careers",
+    "sector": "Accounting / Audit",
+    "recruiting_window": "Opened Apr 2026 (2027 cycle)"
+  },
+  "Carter Jonas": {
+    "careers_url": "https://jobs.carterjonas.co.uk/",
+    "sector": "Real Estate",
+    "recruiting_window": null
+  },
+  "Cascadia Capital": {
+    "careers_url": "https://www.cascadiacapital.com/careers/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Mar 2026 (2027 cycle)"
+  },
+  "Castleton Commodities International": {
+    "careers_url": "https://www.cci.com/careers/students/",
+    "sector": "Trading / Quant",
+    "recruiting_window": "Opened Jul 2026 (2027 cycle)"
+  },
+  "Caxton Associates": {
+    "careers_url": "https://www.caxton.com/careers/",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "Cboe Global Markets": {
+    "careers_url": "https://careers.cboe.com/us/en/",
+    "sector": "Trading / Quant",
+    "recruiting_window": null
+  },
+  "Centerview Partners": {
+    "careers_url": "https://www.centerviewpartners.com/careers.aspx",
+    "sector": "Bank - Elite Boutique",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "Centrica": {
+    "careers_url": "https://www.centrica.com/careers/",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Charities Aid Foundation": {
+    "careers_url": "https://www.cafonline.org/about-us/careers",
+    "sector": "Accounting / Audit",
+    "recruiting_window": null
+  },
+  "Charles River Associates": {
+    "careers_url": "https://www.crai.com/cra-careers",
+    "sector": "Consulting",
+    "recruiting_window": null
+  },
+  "Chatham Financial": {
+    "careers_url": "http://cf.com/careers",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "Chicago Trading Company": {
+    "careers_url": "https://www.chicagotrading.com/careers",
+    "sector": "Trading / Quant",
+    "recruiting_window": "Opened Jul 2026 (2027 cycle)"
+  },
+  "China Construction Bank (Asia)": {
+    "careers_url": "",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Chinook Capital Advisors": {
+    "careers_url": "https://chinookadvisors.com/careers",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Mar 2026 (2027 cycle)"
+  },
+  "Citadel": {
+    "careers_url": "https://www.citadel.com/careers/",
+    "sector": "Hedge Fund",
+    "recruiting_window": "Opens mid May (annual)"
+  },
+  "Citadel Securities": {
+    "careers_url": "https://www.citadelsecurities.com/careers",
+    "sector": "Trading / Quant",
+    "recruiting_window": "Opened May 2026 (2027 cycle)"
+  },
+  "Citco": {
+    "careers_url": "https://www.citco.com/careers",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Citi": {
+    "careers_url": "https://careers.citigroup.com/students-and-graduates/",
+    "sector": "Bank - Bulge Bracket",
+    "recruiting_window": "Opened Jul 2026 (2027 cycle)"
+  },
+  "Citizens Financial Group": {
+    "careers_url": "https://jobs.citizensbank.com/college-grad",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Mar 2026 (2027 cycle)"
+  },
+  "Clarksons": {
+    "careers_url": "https://www.clarksons.com/home/careers/",
+    "sector": "Trading / Quant",
+    "recruiting_window": null
+  },
+  "Cleveland Research Company": {
+    "careers_url": "https://www.clevelandresearch.com/careers/",
+    "sector": "Other",
+    "recruiting_window": "Opened Apr 2026 (2027 cycle)"
+  },
+  "CliftonLarsonAllen": {
+    "careers_url": "https://www.claconnect.com/en/careers",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Jul 2026 (2027 cycle)"
+  },
+  "Climate Investment": {
+    "careers_url": "https://www.climateinvestment.com/about-us/careers",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "Cohen & Company": {
+    "careers_url": "https://www.cohenco.com/careers",
+    "sector": "Accounting / Audit",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "CohnReznick": {
+    "careers_url": "https://www.cohnreznick.com/careers",
+    "sector": "Accounting / Audit",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "Coinbase": {
+    "careers_url": "https://www.coinbase.com/en-gb/careers/positions",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Colliers": {
+    "careers_url": "https://www.colliers.com/en-gb/careers",
+    "sector": "Consulting",
+    "recruiting_window": null
+  },
+  "Columbia Threadneedle Investments": {
+    "careers_url": "https://www.columbiathreadneedle.co.uk/en/intm/careers/",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "Compass Lexecon": {
+    "careers_url": "https://www.compasslexecon.com/careers/",
+    "sector": "Consulting",
+    "recruiting_window": null
+  },
+  "Compound Equity Group": {
+    "careers_url": "https://www.compoundequitygroup.com/",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "Computershare": {
+    "careers_url": "",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Connor Group": {
+    "careers_url": "https://www.connorgp.com/career/students-and-interns",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Convex Insurance": {
+    "careers_url": "https://convexin.com/life-at-convex/careers/",
+    "sector": "Pensions / Insurance",
+    "recruiting_window": null
+  },
+  "Copper.co": {
+    "careers_url": "https://copper.co/en/company/careers",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Corient": {
+    "careers_url": "https://corient.com/us/en/careers",
+    "sector": "Asset Management",
+    "recruiting_window": "Opened Jul 2026 (2027 cycle)"
+  },
+  "Crédit Agricole": {
+    "careers_url": "https://groupecreditagricole.jobs/en/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "Cushman & Wakefield": {
+    "careers_url": "https://www.cushmanwakefield.com/en/united-kingdom/careers",
+    "sector": "Real Estate",
+    "recruiting_window": null
+  },
+  "Cygnum Capital": {
+    "careers_url": "https://www.cygnumcapital.com/careers",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "D.A. Davidson": {
+    "careers_url": "https://www.dadavidson.com/Careers",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "D.E. Shaw": {
+    "careers_url": "https://www.deshaw.com/careers",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Apr 2026 (2027 cycle)"
+  },
+  "DBS Bank": {
+    "careers_url": "",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "DC Advisory": {
+    "careers_url": "https://www.dcadvisory.com/careers/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "DRW": {
+    "careers_url": "https://www.drw.com/work-at-drw",
+    "sector": "Trading / Quant",
+    "recruiting_window": "Opened Jul 2026 (2027 cycle)"
+  },
+  "DV Trading": {
+    "careers_url": "https://dvtrading.co/join-dv/",
+    "sector": "Trading / Quant",
+    "recruiting_window": "Opened May 2026 (2027 cycle)"
+  },
+  "DWS": {
+    "careers_url": "https://www.dws-earlycareers.groupgti.com/",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "Da Vinci Trading": {
+    "careers_url": "https://davincitrading.com/careers/?_sft_locations=amsterdam",
+    "sector": "Trading / Quant",
+    "recruiting_window": "Opened Jul 2026 (2027 cycle)"
+  },
+  "Dare": {
+    "careers_url": "https://careers.dare.global/",
+    "sector": "Trading / Quant",
+    "recruiting_window": null
+  },
+  "Davenport & Co.": {
+    "careers_url": "https://www.investdavenport.com/careers",
+    "sector": "Asset Management",
+    "recruiting_window": "Opened Jul 2026 (2027 cycle)"
+  },
+  "Davidson Kempner": {
+    "careers_url": "https://www.davidsonkempner.com/careers",
+    "sector": "Hedge Fund",
+    "recruiting_window": "Opens mid June (annual)"
+  },
+  "DealGlobe": {
+    "careers_url": "https://en.dealglobe.com/careers/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "Deloitte": {
+    "careers_url": "https://www.deloitte.com/uk/en/careers/early-careers/early-careers-programmes.html",
+    "sector": "Big 4",
+    "recruiting_window": null
+  },
+  "Deutsche Bank": {
+    "careers_url": "https://careers.db.com/students-graduates/",
+    "sector": "Bank - Bulge Bracket",
+    "recruiting_window": null
+  },
+  "Dimensional Fund Advisors": {
+    "careers_url": "https://careers.dimensional.com/",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "Dodge & Cox": {
+    "careers_url": "https://bit.ly/3O5l3jt",
+    "sector": "Asset Management",
+    "recruiting_window": "Opened Dec 2025 (2027 cycle)"
+  },
+  "Dow Jones": {
+    "careers_url": "https://www.dowjones.com/careers/",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Ducera Partners": {
+    "careers_url": "https://ducerapartners.com/careers/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "E.ON": {
+    "careers_url": "https://www.eon.com/en/about-us/careers.html",
+    "sector": "Trading / Quant",
+    "recruiting_window": null
+  },
+  "EBRD": {
+    "careers_url": "https://jobs.ebrd.com/",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "EDF Trading": {
+    "careers_url": "https://www.edftrading.com/careers/graduates-interns",
+    "sector": "Trading / Quant",
+    "recruiting_window": "Opened Jul 2026 (2027 cycle)"
+  },
+  "EFG International": {
+    "careers_url": "https://www.efginternational.com/us/about/careers.html",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "EQ": {
+    "careers_url": "https://careers.sumer.co.uk/",
+    "sector": "Accounting / Audit",
+    "recruiting_window": null
+  },
+  "EQT": {
+    "careers_url": "https://eqtgroup.com/about/life-at-eqt/",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "EY": {
+    "careers_url": "https://www.ey.com/en_uk/careers/students/programmes",
+    "sector": "Big 4",
+    "recruiting_window": null
+  },
+  "EY-Parthenon": {
+    "careers_url": "https://www.ey.com/en_gl/careers/parthenon",
+    "sector": "Consulting",
+    "recruiting_window": null
+  },
+  "Eastdil Secured": {
+    "careers_url": "https://www.eastdilsecured.com/student-recent-college-graduate-programs/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "Enstar Group": {
+    "careers_url": "https://careers.enstargroup.com/vacancies/",
+    "sector": "Pensions / Insurance",
+    "recruiting_window": null
+  },
+  "Enterprise Mobility": {
+    "careers_url": "https://www.enterprisemobility.com/en/careers.html",
+    "sector": "Accounting / Audit",
+    "recruiting_window": "Opened Mar 2026 (2027 cycle)"
+  },
+  "Equinor": {
+    "careers_url": "https://www.equinor.com/careers/graduates",
+    "sector": "Trading / Quant",
+    "recruiting_window": null
+  },
+  "Equiteq": {
+    "careers_url": "https://www.equiteq.com/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Apr 2026 (2027 cycle)"
+  },
+  "Equitix": {
+    "careers_url": "https://equitix.com/about/careers/",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "Ethical Capital Partners": {
+    "careers_url": "https://www.ethicalcapitalpartners.com/careers",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "Evercore": {
+    "careers_url": "https://www.evercore.com/careers/the-evercore-difference/",
+    "sector": "Bank - Elite Boutique",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "Everest": {
+    "careers_url": "https://www.everestglobal.com/us-en/career-opportunities/early-talent/internship",
+    "sector": "Pensions / Insurance",
+    "recruiting_window": null
+  },
+  "Evergreen Services Group": {
+    "careers_url": "https://www.evergreensg.com/careers",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "ExodusPoint": {
+    "careers_url": "https://www.exoduspoint.com/",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "FMI Capital Advisors": {
+    "careers_url": "https://fmicorp.com/careers",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Jul 2026 (2027 cycle)"
+  },
+  "FT Partners": {
+    "careers_url": "https://www.fulcrumasset.com/about-us/careers/",
+    "sector": "Bank - Elite Boutique",
+    "recruiting_window": "Opened Dec 2025 (2027 cycle)"
+  },
+  "FTI Consulting": {
+    "careers_url": "https://www.fticonsulting.com/careers",
+    "sector": "Consulting",
+    "recruiting_window": "Opened Jul 2026 (2027 cycle)"
+  },
+  "FactSet": {
+    "careers_url": "https://www.factset.com/careers",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Federated Insurance": {
+    "careers_url": "https://www.federatedinsurance.com/careers",
+    "sector": "Pensions / Insurance",
+    "recruiting_window": "Opened Apr 2026 (2027 cycle)"
+  },
+  "Fenchurch Advisory": {
+    "careers_url": "https://fenchurchadvisory.com/careers/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "Fide Partners": {
+    "careers_url": "https://fidepartners.com/careers/",
+    "sector": "Consulting",
+    "recruiting_window": null
+  },
+  "Fidelity International": {
+    "careers_url": "https://careers.fidelityinternational.com/early-careers-overview/",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "Fidelity Investments": {
+    "careers_url": "https://jobs.fidelity.com/en/",
+    "sector": "Asset Management",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "Fifth Third Bank": {
+    "careers_url": "https://www.53.com/content/fifth-third/en/careers/early-careers.html",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Mar 2026 (2027 cycle)"
+  },
+  "Financial Conduct Authority": {
+    "careers_url": "https://www.fca.org.uk/careers/early-careers",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "First Actuarial": {
+    "careers_url": "https://firstactuarial.co.uk/careers/",
+    "sector": "Pensions / Insurance",
+    "recruiting_window": null
+  },
+  "First Bank of Nigeria": {
+    "careers_url": "https://www.firstbanknigeria.com/home/careers",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "First Wealth": {
+    "careers_url": "https://www.firstwealth.co.uk/about-us/careers",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "Five Rings": {
+    "careers_url": "https://fiverings.com/campus-recruiting/",
+    "sector": "Trading / Quant",
+    "recruiting_window": "Opened Jul 2026 (2027 cycle)"
+  },
+  "Flow Traders": {
+    "careers_url": "https://www.flowtraders.com/careers/trading",
+    "sector": "Trading / Quant",
+    "recruiting_window": null
+  },
+  "Flowdesk": {
+    "careers_url": "https://www.flowdesk.co/careers",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "Forvis Mazars": {
+    "careers_url": "https://www.forvismazars.us/careers",
+    "sector": "Accounting / Audit",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "Franklin Templeton": {
+    "careers_url": "https://www.franklintempletoncareers.com/new-to-career",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "Frazier & Deeter": {
+    "careers_url": "https://www.frazierdeeter.com/careers/",
+    "sector": "Accounting / Audit",
+    "recruiting_window": "Opened Aug 2025 (2027 cycle)"
+  },
+  "Frontier Economics": {
+    "careers_url": "https://www.frontier-economics.com/uk/en/careers/working-with-us/",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Future Planet Capital": {
+    "careers_url": "https://futureplanetcapital.com/",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "G-Research": {
+    "careers_url": "https://www.gresearch.com/students-graduates/graduates/",
+    "sector": "Trading / Quant",
+    "recruiting_window": "Opened Jul 2026 (2027 cycle)"
+  },
+  "GCM Grosvenor": {
+    "careers_url": "https://www.gcmgrosvenor.com/careers/",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Feb 2026 (2027 cycle)"
+  },
+  "GEP": {
+    "careers_url": "https://www.gep.com/careers",
+    "sector": "Consulting",
+    "recruiting_window": null
+  },
+  "GIC": {
+    "careers_url": "https://www.gic.com.sg/careers/",
+    "sector": "Sovereign Wealth",
+    "recruiting_window": "Opens late May–June (annual)"
+  },
+  "GID": {
+    "careers_url": "https://gid.com/company/careers",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Feb 2026 (2027 cycle)"
+  },
+  "GLC Advisors": {
+    "careers_url": "https://www.glca.com/",
+    "sector": "Boutique IB (Restructuring)",
+    "recruiting_window": "Opens early June (annual)"
+  },
+  "GLC Advisors & Co": {
+    "careers_url": "https://glca.com/careers/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "GLG": {
+    "careers_url": "https://glginsights.com/careers/",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "GP Bullhound": {
+    "careers_url": "https://www.gpbullhound.com/careers/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "GPFS": {
+    "careers_url": "https://gpfs.com/careers",
+    "sector": "Accounting / Audit",
+    "recruiting_window": null
+  },
+  "GSA Capital": {
+    "careers_url": "https://www.gsacapital.com/join-us",
+    "sector": "Trading / Quant",
+    "recruiting_window": "Opened Jul 2026 (2027 cycle)"
+  },
+  "GTCR": {
+    "careers_url": "https://www.gtcr.com/",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "GTS": {
+    "careers_url": "https://gtsx.com/careers",
+    "sector": "Trading / Quant",
+    "recruiting_window": "Opened Mar 2026 (2027 cycle)"
+  },
+  "Galaxy": {
+    "careers_url": "https://www.galaxy.com/careers",
+    "sector": "Trading / Quant",
+    "recruiting_window": null
+  },
+  "Gartner": {
+    "careers_url": "https://jobs.gartner.com/early-careers/",
+    "sector": "Accounting / Audit",
+    "recruiting_window": null
+  },
+  "Geffen Mesher": {
+    "careers_url": "https://gmco.com/careers",
+    "sector": "Accounting / Audit",
+    "recruiting_window": "Opened Apr 2026 (2027 cycle)"
+  },
+  "General Atlantic": {
+    "careers_url": "https://www.generalatlantic.com/careers/",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "General Electric": {
+    "careers_url": "https://invent.ge/4d5a3MP",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Genesis Quant Capital": {
+    "careers_url": "https://www.genesisquantcapital.co.uk/careers",
+    "sector": "Trading / Quant",
+    "recruiting_window": null
+  },
+  "Gleacher Shacklock": {
+    "careers_url": "https://www.gleachershacklock.com/work-with-us/careers/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "Global Atlantic": {
+    "careers_url": "https://www.globalatlantic.com/careers",
+    "sector": "Pensions / Insurance",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "Global Gate": {
+    "careers_url": "https://www.globalgatecapital.com/english/careers/apply-now",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "Global Infrastructure Advisors": {
+    "careers_url": "https://www.global-infra.com/careers/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "Gneiss Energy": {
+    "careers_url": "https://gneiss.energy/about-us/careers",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "Goldman Sachs": {
+    "careers_url": "https://www.goldmansachs.com/careers/students",
+    "sector": "Bank - Bulge Bracket",
+    "recruiting_window": "Opened Jul 2026 (2027 cycle)"
+  },
+  "Google": {
+    "careers_url": "https://www.google.com/about/careers/applications/students/",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Government Economic Service": {
+    "careers_url": "https://www.gov.uk/government/organisations/civil-service-government-economic-service",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Graham Partners": {
+    "careers_url": "https://www.grahampartners.net/careers/",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Aug 2025 (2027 cycle)"
+  },
+  "Grant Thornton": {
+    "careers_url": "https://www.grantthornton.co.uk/careers/",
+    "sector": "Accounting / Audit",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "Greenhill": {
+    "careers_url": "https://greenhill.freshminds.co.uk/",
+    "sector": "Bank - Elite Boutique",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "Greystar": {
+    "careers_url": "https://jobs.greystar.com/early-careers",
+    "sector": "Real Estate",
+    "recruiting_window": null
+  },
+  "Grosvenor": {
+    "careers_url": "https://www.grosvenor.com/careers-4276124c1fa00ffc16d3b57e9d03acc4",
+    "sector": "Real Estate",
+    "recruiting_window": null
+  },
+  "Guggenheim Partners": {
+    "careers_url": "https://www.guggenheimpartners.com/firm/careers",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "Guidehouse": {
+    "careers_url": "https://guidehouse.com/careers/students",
+    "sector": "Consulting",
+    "recruiting_window": null
+  },
+  "Gunvor": {
+    "careers_url": "https://gunvorgroup.com/careers/",
+    "sector": "Trading / Quant",
+    "recruiting_window": null
+  },
+  "HDI Global": {
+    "careers_url": "https://ukcareers.hdi.global/",
+    "sector": "Pensions / Insurance",
+    "recruiting_window": null
+  },
+  "HKEX": {
+    "careers_url": "",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "HSBC": {
+    "careers_url": "https://www.hsbc.com/careers/students-and-graduates/find-a-programme",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Jul 2026 (2027 cycle)"
+  },
+  "Hamilton Insurance Group": {
+    "careers_url": "https://www.hamiltongroup.com/careers/",
+    "sector": "Pensions / Insurance",
+    "recruiting_window": null
+  },
+  "Hamilton Lane": {
+    "careers_url": "https://www.hamiltonlane.com/en-us/careers/entry-level-programs",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "Handelsbanken": {
+    "careers_url": "https://jobs.handelsbanken.co.uk/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "HarbourVest": {
+    "careers_url": "https://www.harbourvest.com/careers/",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Feb 2026 (2027 cycle)"
+  },
+  "Harris Associates": {
+    "careers_url": "https://harrisassoc.com/careers/positions/",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Sep 2025 (2027 cycle)"
+  },
+  "Harris Williams": {
+    "careers_url": "https://www.harriswilliams.com/careers",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "Harrison Street": {
+    "careers_url": "https://www.harrisonst.com/careers/",
+    "sector": "Asset Management",
+    "recruiting_window": "Opened Jul 2026 (2027 cycle)"
+  },
+  "Hayfin Capital Management": {
+    "careers_url": "https://hayfin.com/",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "Hennepin Partners": {
+    "careers_url": "https://hennepinpartners.com/careers/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "Hilti Group": {
+    "careers_url": "https://careers.hilti.group/en-gb/jobs",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Hiscox": {
+    "careers_url": "https://www.hiscoxgroup.com/careers",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Houlihan Lokey": {
+    "careers_url": "https://hl.com/about-us/careers/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Nov 2025 (2027 cycle)"
+  },
+  "Howden": {
+    "careers_url": "https://www.howdengroup.com/uk-en/culture-and-careers",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "Hudson River Trading": {
+    "careers_url": "https://www.hudsonrivertrading.com/campus-recruiting/",
+    "sector": "Trading / Quant",
+    "recruiting_window": "Opened Jul 2026 (2027 cycle)"
+  },
+  "Huntington National Bank": {
+    "careers_url": "https://www.huntington.com/careers",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Feb 2026 (2027 cycle)"
+  },
+  "Hymans Robertson": {
+    "careers_url": "https://www.hymans.co.uk/careers/graduates-and-school-leavers/",
+    "sector": "Pensions / Insurance",
+    "recruiting_window": null
+  },
+  "ICE": {
+    "careers_url": "https://www.ice.com/careers",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "IMC Trading": {
+    "careers_url": "https://www.imc.com/eu",
+    "sector": "Trading / Quant",
+    "recruiting_window": null
+  },
+  "ING": {
+    "careers_url": "https://careers.ing.com/en/global/careers.htm",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened May 2026 (2027 cycle)"
+  },
+  "IQT": {
+    "careers_url": "https://www.iqt.org/careers",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "InfraRed Capital Partners": {
+    "careers_url": "https://www.ircp.com/talent/",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "Insight Partners": {
+    "careers_url": "https://www.insightpartners.com/careers/",
+    "sector": "Growth Equity / VC",
+    "recruiting_window": "Opens Nov–Jan (annual)"
+  },
+  "Insurance Advisory Partners": {
+    "careers_url": "https://www.insuranceap.com/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "Interpath Advisory": {
+    "careers_url": "http://interpath.com/",
+    "sector": "Consulting",
+    "recruiting_window": null
+  },
+  "Intriva": {
+    "careers_url": "https://www.intriva.com/",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "Inverto": {
+    "careers_url": "https://inverto.com/en/careers/",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Investec": {
+    "careers_url": "https://www.investec.com/en_gb/welcome-to-investec/Careers.html",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "Isio": {
+    "careers_url": "https://careers.isio.com/pages/early-careers",
+    "sector": "Pensions / Insurance",
+    "recruiting_window": null
+  },
+  "Ithaca Energy": {
+    "careers_url": "https://www.ithacaenergy.com/careers",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "J.P. Morgan": {
+    "careers_url": "https://www.jpmorganchase.com/careers/explore-opportunities/students-and-graduates?search=&tags=location__EuropeMiddleEastandAfrica__UnitedKingdom",
+    "sector": "Bank - Bulge Bracket",
+    "recruiting_window": "Opened Jun 2026 (2027 cycle)"
+  },
+  "JLL": {
+    "careers_url": "https://www.jll.com/en-uk/careers/early-careers",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "JMI Equity": {
+    "careers_url": "https://www.jmi.com/careers/",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "Jane Street": {
+    "careers_url": "https://www.janestreet.com/join-jane-street/open-roles/",
+    "sector": "Quant Trading",
+    "recruiting_window": "Opens Mar (WiSE) & June (FTTP)"
+  },
+  "Javelin Global Commodities": {
+    "careers_url": "https://www.javelincommodities.com/contact/careers",
+    "sector": "Trading / Quant",
+    "recruiting_window": null
+  },
+  "Jefferies": {
+    "careers_url": "https://www.jefferies.com/Careers/Campus-Recruiting/2cr/826",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Jun 2026 (2027 cycle)"
+  },
+  "Johnson Lambert": {
+    "careers_url": "https://www.johnsonlambert.com/open-positions",
+    "sector": "Accounting / Audit",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "Johnston Carmichael": {
+    "careers_url": "https://johnstoncarmichael.com/careers",
+    "sector": "Accounting / Audit",
+    "recruiting_window": null
+  },
+  "Julius Baer": {
+    "careers_url": "https://www.juliusbaer.com/en/careers",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "Jump Trading": {
+    "careers_url": "https://www-webflow.jumptrading.com/careers",
+    "sector": "Trading / Quant",
+    "recruiting_window": null
+  },
+  "Just": {
+    "careers_url": "http://www.workatjust.co.uk/",
+    "sector": "Pensions / Insurance",
+    "recruiting_window": null
+  },
+  "K1 Investment Management": {
+    "careers_url": "https://k1.com/careers/",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "KKR": {
+    "careers_url": "https://www.kkr.com/our-firm/careers",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "KPMG": {
+    "careers_url": "https://www.kpmgcareers.co.uk/",
+    "sector": "Big 4",
+    "recruiting_window": null
+  },
+  "KR8 Advisory": {
+    "careers_url": "https://careers.k3capitalgroup.com/jobs",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "KWC CPAs": {
+    "careers_url": "https://www.kwccpa.com/careers/recruiting",
+    "sector": "Accounting / Audit",
+    "recruiting_window": "Opened Mar 2026 (2027 cycle)"
+  },
+  "KeyBank": {
+    "careers_url": "https://www.key.com/about/careers/students-graduates.html",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Feb 2026 (2027 cycle)"
+  },
+  "Kline Hill Partners": {
+    "careers_url": "https://klinehill.com/",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Apr 2026 (2027 cycle)"
+  },
+  "Knight Frank": {
+    "careers_url": "https://knightfrankearlycareers.com/",
+    "sector": "Consulting",
+    "recruiting_window": null
+  },
+  "Koch": {
+    "careers_url": "https://koch.avature.net/en_US/careers/SearchJobs",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Mar 2026 (2027 cycle)"
+  },
+  "Korn Ferry": {
+    "careers_url": "https://www.kornferry.com/careers",
+    "sector": "Consulting",
+    "recruiting_window": null
+  },
+  "L'Oréal": {
+    "careers_url": "https://careers.loreal.com/en_US/content/UKIntern",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "L.E.K. Consulting": {
+    "careers_url": "https://www.lek.com/careers",
+    "sector": "Consulting",
+    "recruiting_window": null
+  },
+  "LCP": {
+    "careers_url": "https://careers.lcp.com/early-careers",
+    "sector": "Pensions / Insurance",
+    "recruiting_window": null
+  },
+  "LLR Partners": {
+    "careers_url": "https://www.llrpartners.com/jobs/",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "LMR Partners": {
+    "careers_url": "https://www.lmrpartners.com/careers",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "LaSalle": {
+    "careers_url": "https://www.lasalle.com/working-at-lasalle/careers/",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "Lazard": {
+    "careers_url": "https://www.lazard.com/careers/students",
+    "sector": "Bank - Elite Boutique",
+    "recruiting_window": "Opened Dec 2025 (2027 cycle)"
+  },
+  "Lazard Asset Management": {
+    "careers_url": "https://www.lazardassetmanagement.com/us/en_us/about/careers",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "Lead Edge Capital": {
+    "careers_url": "https://www.leadedge.com/",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Mar 2026 (2027 cycle)"
+  },
+  "Leerink Partners": {
+    "careers_url": "https://www.leerink.com/firm/careers/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Nov 2025 (2027 cycle)"
+  },
+  "Legal & General": {
+    "careers_url": "https://careers.legalandgeneral.com/",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "Lendable": {
+    "careers_url": "https://careers.lendable.com/",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Lenovo": {
+    "careers_url": "https://jobs.lenovo.com/en_US/careers",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Leo-Crown Estates": {
+    "careers_url": "https://www.thecrownestate.co.uk/careers",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "Level Equity": {
+    "careers_url": "https://www.levelequity.com/",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Jun 2026 (2027 cycle)"
+  },
+  "Liberty Global": {
+    "careers_url": "https://careers.libertyglobal.com/gb/en/home",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Lincoln International": {
+    "careers_url": "https://www.lincolninternational.com/careers-and-culture/careers/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Nov 2025 (2027 cycle)"
+  },
+  "LionTree": {
+    "careers_url": "https://liontree.com/",
+    "sector": "Bank - Elite Boutique",
+    "recruiting_window": "Opened Nov 2025 (2027 cycle)"
+  },
+  "Liquidnet": {
+    "careers_url": "https://www.liquidnet.com/careers",
+    "sector": "Trading / Quant",
+    "recruiting_window": null
+  },
+  "Lloyds Banking Group": {
+    "careers_url": "https://www.lloydsbankinggrouptalent.com/early-careers-hub/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Feb 2026 (2027 cycle)"
+  },
+  "Lockton": {
+    "careers_url": "https://careers.lockton.com/gb/en/early-careers",
+    "sector": "Pensions / Insurance",
+    "recruiting_window": null
+  },
+  "Loizou & Co": {
+    "careers_url": "https://loizouco.com/careers",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "London Stock Exchange Group": {
+    "careers_url": "https://www.lseg.com/en/careers",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Long Ridge": {
+    "careers_url": "https://long-ridge.com/",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Jun 2026 (2027 cycle)"
+  },
+  "Loop Capital": {
+    "careers_url": "https://www.loopcapital.com/careers/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "Lumsden McCormick CPA": {
+    "careers_url": "https://lumsdencpa.com/careers",
+    "sector": "Accounting / Audit",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "M&G": {
+    "careers_url": "https://group.mandg.com/",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "M&T Bank": {
+    "careers_url": "https://www.mtb.com/careers",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Jul 2026 (2027 cycle)"
+  },
+  "M. Klein & Company": {
+    "careers_url": "https://mkleinandcompany.com/",
+    "sector": "Bank - Elite Boutique",
+    "recruiting_window": null
+  },
+  "M31 Capital": {
+    "careers_url": "https://m31.capital/academy",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "MFS": {
+    "careers_url": "https://www.mfs.com/corporate/en/about-mfs/careers.html?tabname=inPageNavigation-tab4",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "MKI Global Partners": {
+    "careers_url": "https://mkpadvisors.com/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "MMB+CO": {
+    "careers_url": "https://www.mmbaccounting.com/current-open-job-positions",
+    "sector": "Accounting / Audit",
+    "recruiting_window": "Opened Mar 2026 (2027 cycle)"
+  },
+  "MTS Partners": {
+    "careers_url": "https://www.mtspartners.com/careers/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "MUFG": {
+    "careers_url": "https://mufgcampus.com/our-programmes/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "Macquarie Group": {
+    "careers_url": "https://www.macquarie.com/de/en/careers/graduates-and-interns.html",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "Macro Hive": {
+    "careers_url": "https://macrohive.com/",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Mako Trading": {
+    "careers_url": "https://www.mako.com/early-careers",
+    "sector": "Trading / Quant",
+    "recruiting_window": null
+  },
+  "Man Group": {
+    "careers_url": "https://www.man.com/students-and-graduates",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "Marathon Capital": {
+    "careers_url": "https://marathoncapital.com/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "Markel": {
+    "careers_url": "https://www.markel.com/about-us/careers",
+    "sector": "Pensions / Insurance",
+    "recruiting_window": null
+  },
+  "MarketAxess": {
+    "careers_url": "https://www.marketaxess.com/careers",
+    "sector": "Trading / Quant",
+    "recruiting_window": null
+  },
+  "Marsh McLennan": {
+    "careers_url": "https://careers.marsh.com/global/en/student-opportunities",
+    "sector": "Accounting / Audit",
+    "recruiting_window": null
+  },
+  "MarshBerry": {
+    "careers_url": "https://www.marshberry.com/about/careers",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Jun 2026 (2027 cycle)"
+  },
+  "Marshall Wace": {
+    "careers_url": "https://www.mwam.com/join-us/",
+    "sector": "Trading / Quant",
+    "recruiting_window": null
+  },
+  "Maven Securities": {
+    "careers_url": "https://www.mavensecurities.com/work-at-maven/",
+    "sector": "Trading / Quant",
+    "recruiting_window": "Opened Aug 2026 (2027 cycle)"
+  },
+  "Maxwell Locke & Ritter": {
+    "careers_url": "https://www.mlrpc.com/careers/",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "McKinsey & Company": {
+    "careers_url": "https://www.mckinsey.com/careers/students",
+    "sector": "Consulting",
+    "recruiting_window": null
+  },
+  "Menzies": {
+    "careers_url": "https://www.menzies.co.uk/careers/",
+    "sector": "Accounting / Audit",
+    "recruiting_window": null
+  },
+  "Mercer": {
+    "careers_url": "https://www.mercer.com/en-gb/careers/mercer-careers/",
+    "sector": "Pensions / Insurance",
+    "recruiting_window": null
+  },
+  "Mercuria": {
+    "careers_url": "https://mercuria.com/careers",
+    "sector": "Trading / Quant",
+    "recruiting_window": "Opened Jul 2026 (2027 cycle)"
+  },
+  "Mesirow": {
+    "careers_url": "https://www.mesirow.com/careers",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Apr 2026 (2027 cycle)"
+  },
+  "Midland Heart": {
+    "careers_url": "https://jobs.midlandheartgroup.org.uk/jobs/home",
+    "sector": "Accounting / Audit",
+    "recruiting_window": null
+  },
+  "Millennium": {
+    "careers_url": "https://www.mlp.com/careers/",
+    "sector": "Hedge Fund (Multi-strat)",
+    "recruiting_window": "Opens mid May (annual)"
+  },
+  "Millennium Management": {
+    "careers_url": "https://www.mlp.com/careers/students/",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Aug 2026 (2027 cycle)"
+  },
+  "Mizuho": {
+    "careers_url": "https://www.mizuhogroup.com/emea/careers",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "Moelis & Co": {
+    "careers_url": "https://www.moelis.com/careers/",
+    "sector": "Bank - Elite Boutique",
+    "recruiting_window": null
+  },
+  "Moody's": {
+    "careers_url": "https://careers.moodys.com/students-early-careers/",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Moore Colson": {
+    "careers_url": "https://moorecolson.com/careers",
+    "sector": "Accounting / Audit",
+    "recruiting_window": "Opened Apr 2026 (2027 cycle)"
+  },
+  "Morgan Stanley": {
+    "careers_url": "https://www.morganstanley.com/careers/career-opportunities-search",
+    "sector": "Bank",
+    "recruiting_window": "Opens mid June (annual)"
+  },
+  "Munich Re": {
+    "careers_url": "https://careers.munichre.com/en/search-jobs",
+    "sector": "Pensions / Insurance",
+    "recruiting_window": null
+  },
+  "Musket": {
+    "careers_url": "https://www.musketcorp.com/en/careers/interns-graduate-opportunities",
+    "sector": "Trading / Quant",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "NASDAQ": {
+    "careers_url": "https://www.nasdaq.com/about/careers",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "NCB": {
+    "careers_url": "https://www.ncb.com.hk/nanyang_bank/eng/html/1b.html",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "NCR Atleos": {
+    "careers_url": "https://www.ncratleos.com/careers",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "NERA": {
+    "careers_url": "https://bit.ly/40URmHp",
+    "sector": "Consulting",
+    "recruiting_window": null
+  },
+  "NFU Mutual": {
+    "careers_url": "https://www.nfumutual.co.uk/about-us/careers/",
+    "sector": "Pensions / Insurance",
+    "recruiting_window": null
+  },
+  "NatWest Markets": {
+    "careers_url": "https://jobs.natwestgroup.com/pages/early-careers",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "National Bank of Canada": {
+    "careers_url": "https://www.nbc.ca/personal/advice/career.html",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "Nationwide": {
+    "careers_url": "https://nationwide-jobs.co.uk/",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Natrium Capital": {
+    "careers_url": "https://www.natriumcapital.com/careers/",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Naval Nuclear Laboratory": {
+    "careers_url": "https://navalnuclearlab.energy.gov/careers",
+    "sector": "Accounting / Audit",
+    "recruiting_window": "Opened Feb 2026 (2027 cycle)"
+  },
+  "Near Future": {
+    "careers_url": "",
+    "sector": "Consulting",
+    "recruiting_window": null
+  },
+  "Network Rail": {
+    "careers_url": "https://www.networkrail.co.uk/careers/early-careers",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Neuberger Berman": {
+    "careers_url": "https://www.nb.com/who-we-are/careers",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "Newton": {
+    "careers_url": "https://newtonimpact.com/careers/early-careers/graduate-consultant-role/",
+    "sector": "Consulting",
+    "recruiting_window": null
+  },
+  "NextWave Consulting": {
+    "careers_url": "https://www.nxwave.com/careers",
+    "sector": "Consulting",
+    "recruiting_window": null
+  },
+  "Nomura": {
+    "careers_url": "https://www.nomura.com/careers/",
+    "sector": "Bank",
+    "recruiting_window": "Opens Nov (annual)"
+  },
+  "Nonantum Capital Partners": {
+    "careers_url": "https://nonantumcapital.com/",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "Norges Bank": {
+    "careers_url": "https://www.nbim.no/en/about-us/career/",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "Northborne Partners": {
+    "careers_url": "https://northborne.com/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "Northern Trust": {
+    "careers_url": "https://ntrs.wd1.myworkdayjobs.com/en-US/northerntrust",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "Northwestern Mutual": {
+    "careers_url": "https://careers.northwesternmutual.com/",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Jul 2026 (2027 cycle)"
+  },
+  "Novelty Hill Capital": {
+    "careers_url": "https://www.noveltyhill.com/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened May 2026 (2027 cycle)"
+  },
+  "Nuveen": {
+    "careers_url": "https://careers.tiaa.org/nuveen",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "OC&C": {
+    "careers_url": "https://www.occstrategy.com/en/careers/careers-at-occ/",
+    "sector": "Consulting",
+    "recruiting_window": "Opened Jul 2026 (2027 cycle)"
+  },
+  "Oak Hill Advisors": {
+    "careers_url": "https://careers-oakhilladvisors.icims.com/",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "Oliver Wyman": {
+    "careers_url": "https://www.oliverwyman.com/uk-ireland/careers/recruiting-events-uk-and-ireland.html",
+    "sector": "Consulting",
+    "recruiting_window": "Opened Aug 2026 (2027 cycle)"
+  },
+  "Oppenheimer & Co": {
+    "careers_url": "https://www.oppenheimer.com/careers/students-graduates",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Feb 2026 (2027 cycle)"
+  },
+  "Optiver": {
+    "careers_url": "https://optiver.com/working-at-optiver/",
+    "sector": "Trading / Quant",
+    "recruiting_window": "Opened Jul 2026 (2027 cycle)"
+  },
+  "Oracle": {
+    "careers_url": "https://www.oracle.com/careers/students-grads/",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Orbis": {
+    "careers_url": "https://www.orbis.com/careers/careers/opportunities/intern-with-us",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "Orion Group": {
+    "careers_url": "https://orionservicesgroup.com/careers",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Feb 2026 (2027 cycle)"
+  },
+  "Oxera": {
+    "careers_url": "https://www.oxera.com/careers",
+    "sector": "Consulting",
+    "recruiting_window": null
+  },
+  "Oxford Properties Group": {
+    "careers_url": "https://www.oxfordproperties.com/careers",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Jul 2026 (2027 cycle)"
+  },
+  "P&G": {
+    "careers_url": "https://www.pgcareers.com/global/en/finance-and-accounting",
+    "sector": "Accounting / Audit",
+    "recruiting_window": null
+  },
+  "PGIM": {
+    "careers_url": "https://www.pgim.com/gb/en/institutional/about/careers?originalReferer=https%3A%2F%2Fbit.ly%2F3SYQaz6",
+    "sector": "Asset Management",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "PIMCO": {
+    "careers_url": "https://www.pimco.co.uk/en-gb/our-firm/careers/students",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "PJT Partners": {
+    "careers_url": "https://pjtpartners.com/careers",
+    "sector": "Bank - Elite Boutique",
+    "recruiting_window": null
+  },
+  "PKF Littlejohn": {
+    "careers_url": "https://careers.pkf-l.com/early-careers/graduates/",
+    "sector": "Accounting / Audit",
+    "recruiting_window": null
+  },
+  "PKF Smith Cooper": {
+    "careers_url": "https://pkfsmithcooper.teamtailor.com/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "PMCF Investment Banking": {
+    "careers_url": "https://pmcf.com/careers/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Oct 2025 (2027 cycle)"
+  },
+  "PNC": {
+    "careers_url": "https://careers.pnc.com/global/en/students",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Apr 2026 (2027 cycle)"
+  },
+  "PSG Equity": {
+    "careers_url": "https://careers.psgequity.com/",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Mar 2026 (2027 cycle)"
+  },
+  "PSP Investments": {
+    "careers_url": "https://www.investpsp.com/en/work/careers/",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "PSRS/PEERS": {
+    "careers_url": "https://www.psrs-peers.org/About-Us/Careers",
+    "sector": "Asset Management",
+    "recruiting_window": "Opened Aug 2026 (2027 cycle)"
+  },
+  "Panmure Liberum": {
+    "careers_url": "https://panmureliberum.com/people/careers/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "Partners Group": {
+    "careers_url": "https://www.partnersgroup.com/en/careers/",
+    "sector": "Private Markets",
+    "recruiting_window": "Opens early May (annual)"
+  },
+  "Peak Re": {
+    "careers_url": "",
+    "sector": "Pensions / Insurance",
+    "recruiting_window": null
+  },
+  "Peel Hunt": {
+    "careers_url": "https://www.peelhunt.com/careers/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "Pension Insurance Corporation": {
+    "careers_url": "https://www.pensioncorporation.com/careers",
+    "sector": "Pensions / Insurance",
+    "recruiting_window": null
+  },
+  "Perella Weinberg Partners": {
+    "careers_url": "https://pwpartners.com/careers/intern-graduate-recruitment/",
+    "sector": "Bank - Elite Boutique",
+    "recruiting_window": "Opened Nov 2025 (2027 cycle)"
+  },
+  "Perkins & Co": {
+    "careers_url": "https://perkinsaccounting.com/careers",
+    "sector": "Accounting / Audit",
+    "recruiting_window": "Opened Mar 2026 (2027 cycle)"
+  },
+  "Pharus": {
+    "careers_url": "https://pharus.com/careers/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "Pictet Asset Management": {
+    "careers_url": "https://www.pimco.co.uk/en-gb/our-firm/careers/students",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "PineBridge Investments": {
+    "careers_url": "https://www.pinebridge.com/en/careers",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "Pinion": {
+    "careers_url": "https://careers.pinionglobal.com/campus",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Piper Sandler": {
+    "careers_url": "https://www.pipersandler.com/careers/students",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "Platinum Peak Holdings Ltd": {
+    "careers_url": "",
+    "sector": "Consulting",
+    "recruiting_window": null
+  },
+  "Plural Strategy": {
+    "careers_url": "https://www.pluralstrategy.com/careers/",
+    "sector": "Consulting",
+    "recruiting_window": null
+  },
+  "Point72": {
+    "careers_url": "https://careers.point72.com/",
+    "sector": "Hedge Fund",
+    "recruiting_window": "Opens early May (annual)"
+  },
+  "Polymer Capital": {
+    "careers_url": "",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "Prairie Capital Advisors": {
+    "careers_url": "https://www.prairiecap.com/careers",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Jul 2026 (2027 cycle)"
+  },
+  "Principal Asset Management": {
+    "careers_url": "https://www.principal.com/about-us/careers",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "Private Equity Insights": {
+    "careers_url": "https://pe-insights.com/careers",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Protiviti": {
+    "careers_url": "https://www.protiviti.com/uk-en/careers",
+    "sector": "Consulting",
+    "recruiting_window": "Opened Nov 2025 (2027 cycle)"
+  },
+  "Provident Healthcare Partners": {
+    "careers_url": "https://www.providenthp.com/careers",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened May 2026 (2027 cycle)"
+  },
+  "Proxima": {
+    "careers_url": "https://proximagroup.com/careers",
+    "sector": "Consulting",
+    "recruiting_window": null
+  },
+  "Putnam": {
+    "careers_url": "https://www.putassoc.com/join-putnam",
+    "sector": "Consulting",
+    "recruiting_window": null
+  },
+  "PwC": {
+    "careers_url": "https://www.pwc.co.uk/careers/early-careers.html",
+    "sector": "Big 4",
+    "recruiting_window": null
+  },
+  "Q Advisors": {
+    "careers_url": "https://www.qllc.com/careers",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "Qatalyst": {
+    "careers_url": "https://www.qatalyst.com/",
+    "sector": "Boutique IB (Tech M&A)",
+    "recruiting_window": "Opens late Apr (annual)"
+  },
+  "Qatalyst Partners": {
+    "careers_url": "https://qatalyst.com/",
+    "sector": "Bank - Elite Boutique",
+    "recruiting_window": "Opened Dec 2025 (2027 cycle)"
+  },
+  "Quadrature": {
+    "careers_url": "https://quadrature.ai/careers/join-us/",
+    "sector": "Trading / Quant",
+    "recruiting_window": null
+  },
+  "Quantbot Technologies": {
+    "careers_url": "https://www.quantbot.com/careers",
+    "sector": "Trading / Quant",
+    "recruiting_window": null
+  },
+  "Quantuma": {
+    "careers_url": "https://www.k3capitalgroup.com/careers/quantuma-early-careers/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "Qube RT": {
+    "careers_url": "https://www.qube-rt.com/careers/",
+    "sector": "Trading / Quant",
+    "recruiting_window": null
+  },
+  "RBC Capital Markets": {
+    "careers_url": "https://www.rbccm.com/en/careers",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Nov 2025 (2027 cycle)"
+  },
+  "RSM": {
+    "careers_url": "https://careers.rsmuk.com/uk/en",
+    "sector": "Accounting / Audit",
+    "recruiting_window": null
+  },
+  "RSM US": {
+    "careers_url": "https://rsmus.com/careers.html",
+    "sector": "Accounting / Audit",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "RWE": {
+    "careers_url": "https://www.rwe.com/en/rwe-careers-portal/",
+    "sector": "Trading / Quant",
+    "recruiting_window": null
+  },
+  "Rabobank": {
+    "careers_url": "https://www.rabobank.co.uk/about-us/careers",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Feb 2026 (2027 cycle)"
+  },
+  "Raine Group": {
+    "careers_url": "https://jobs.lever.co/raine",
+    "sector": "Bank - Elite Boutique",
+    "recruiting_window": "Opened Sep 2025 (2027 cycle)"
+  },
+  "Raymond James": {
+    "careers_url": "https://www.raymondjames.com/careers/students-and-recent-grads",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Dec 2025 (2027 cycle)"
+  },
+  "Readystate": {
+    "careers_url": "https://www.readyx.com/careers/",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "Redburn": {
+    "careers_url": "https://www.redburn.com/",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "Rede Partners": {
+    "careers_url": "https://www.rede-partners.com/join-us/graduate-scheme/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "Regions Bank": {
+    "careers_url": "https://careers.regions.com/us/en/interns-and-graduates",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Feb 2026 (2027 cycle)"
+  },
+  "Retail Insights": {
+    "careers_url": "https://job-boards.greenhouse.io/retailinsights",
+    "sector": "Consulting",
+    "recruiting_window": null
+  },
+  "Revolut": {
+    "careers_url": "https://www.revolut.com/careers/",
+    "sector": "Other",
+    "recruiting_window": "Opened May 2026 (2027 cycle)"
+  },
+  "Ripple": {
+    "careers_url": "https://ripple.com/careers/early-careers/",
+    "sector": "Trading / Quant",
+    "recruiting_window": null
+  },
+  "Roark Capital Group": {
+    "careers_url": "https://www.roarkcapital.com/",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Dec 2025 (2027 cycle)"
+  },
+  "Rockefeller Capital Management": {
+    "careers_url": "https://bit.ly/4dmrAl8",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "Rokos Capital Management": {
+    "careers_url": "https://www.rokoscapital.com/home",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "Roland Berger": {
+    "careers_url": "https://www.rolandberger.com/en/Join/Join-Us/Career-Starter/",
+    "sector": "Consulting",
+    "recruiting_window": null
+  },
+  "Rothesay": {
+    "careers_url": "https://www.rothesay.com/about-us/working-here/careers/",
+    "sector": "Asset Management",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "Rothschild & Co.": {
+    "careers_url": "https://www.rothschildandco.com/en/careers/students-and-graduates/",
+    "sector": "Bank - Elite Boutique",
+    "recruiting_window": null
+  },
+  "Royal London": {
+    "careers_url": "https://jobs.royallondon.com/",
+    "sector": "Pensions / Insurance",
+    "recruiting_window": null
+  },
+  "Ryan": {
+    "careers_url": "https://ryan.com/careers/",
+    "sector": "Accounting / Audit",
+    "recruiting_window": null
+  },
+  "Ryan Specialty": {
+    "careers_url": "https://ryanspecialty.com/careers",
+    "sector": "Pensions / Insurance",
+    "recruiting_window": null
+  },
+  "Rystad Energy": {
+    "careers_url": "https://www.rystadenergy.com/career",
+    "sector": "Consulting",
+    "recruiting_window": null
+  },
+  "S&P Global": {
+    "careers_url": "https://www.spglobal.com/en/explore-s-p-global/careers",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "S&W": {
+    "careers_url": "https://www.swgroup.com/careers/early-careers/",
+    "sector": "Accounting / Audit",
+    "recruiting_window": null
+  },
+  "SBF Advisors": {
+    "careers_url": "https://sbfadvisors.com/careers/",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "SMBC": {
+    "careers_url": "https://www.smbcgroup.com/emea/Careers",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "STJ Advisors": {
+    "careers_url": "https://www.stjadvisors.com/careers",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "Saffery": {
+    "careers_url": "https://www.saffery.com/careers/early-careers/",
+    "sector": "Accounting / Audit",
+    "recruiting_window": null
+  },
+  "Saltgate": {
+    "careers_url": "https://saltgate.com/careers/",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Sands Capital": {
+    "careers_url": "https://www.sandscapital.com/careers-and-staff-benefits/",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "Santander": {
+    "careers_url": "https://www.santander.com/en/careers/where-you-want-to-create-an-impact/corporate---investment-banking",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "Savills": {
+    "careers_url": "https://bit.ly/476n06W",
+    "sector": "Real Estate",
+    "recruiting_window": null
+  },
+  "Schneider Downs": {
+    "careers_url": "https://www.schneiderdowns.com/careers",
+    "sector": "Accounting / Audit",
+    "recruiting_window": "Opened Apr 2026 (2027 cycle)"
+  },
+  "Schonfeld": {
+    "careers_url": "https://www.schonfeld.com/careers/",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "Schroders": {
+    "careers_url": "https://www.schroders.com/en/global/individual/careers/internships-and-placements/",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "Scotiabank": {
+    "careers_url": "https://www.scotiabank.com/careers/en/careers/careers-students-and-new-grads.html",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "Sculptor Capital Management": {
+    "careers_url": "https://www.sculptor.com/careers/internships",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Dec 2025 (2027 cycle)"
+  },
+  "Sensiba": {
+    "careers_url": "https://sensiba.com/careers/student-opportunities",
+    "sector": "Accounting / Audit",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "Severn Trent": {
+    "careers_url": "https://www.severntrent.com/careers/graduates-undergraduates-and-apprentices/",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Shea & Company": {
+    "careers_url": "https://sheaco.com/careers/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "Shell": {
+    "careers_url": "https://www.shell.com/careers.html",
+    "sector": "Trading / Quant",
+    "recruiting_window": null
+  },
+  "SilverTide": {
+    "careers_url": "https://www.silvertidefinancial.com/",
+    "sector": "Trading / Quant",
+    "recruiting_window": null
+  },
+  "Silversmith Capital Partners": {
+    "careers_url": "https://www.silversmith.com/careers",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Dec 2025 (2027 cycle)"
+  },
+  "Simon-Kucher": {
+    "careers_url": "https://www.simon-kucher.com/en/careers",
+    "sector": "Consulting",
+    "recruiting_window": "Opened Aug 2026 (2027 cycle)"
+  },
+  "Sixth Street": {
+    "careers_url": "https://sixthstreet.com/careers",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "Skagen Capital": {
+    "careers_url": "https://www.skagencapital.com/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "Sky": {
+    "careers_url": "https://careers.sky.com/earlycareers",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Smith": {
+    "careers_url": "https://smithweb.com/company/careers",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Société Générale": {
+    "careers_url": "https://careers.societegenerale.com/en/students-graduates",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Dec 2025 (2027 cycle)"
+  },
+  "Solomon Partners": {
+    "careers_url": "https://bit.ly/4bc87Bt",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Dec 2025 (2027 cycle)"
+  },
+  "Sona Asset Management": {
+    "careers_url": "https://bit.ly/4fYs5Sa",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "Soros Fund Management": {
+    "careers_url": "https://bit.ly/3NVa3F7",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "SouthState Bank": {
+    "careers_url": "https://careers.southstatebank.com/us/en/home",
+    "sector": "Other",
+    "recruiting_window": "Opened Aug 2026 (2027 cycle)"
+  },
+  "Squarepoint Capital": {
+    "careers_url": "https://bit.ly/3yoemEK",
+    "sector": "Trading / Quant",
+    "recruiting_window": "Opened Jul 2026 (2027 cycle)"
+  },
+  "Standard Chartered": {
+    "careers_url": "https://www.sc.com/en/global-careers/early-careers/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "Starwood": {
+    "careers_url": "https://www.starwoodcapital.com/careers/",
+    "sector": "Real Estate / PE",
+    "recruiting_window": "Opens mid June (annual)"
+  },
+  "Starwood Capital Group": {
+    "careers_url": "https://www.starwoodcapital.com/careers/",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Feb 2026 (2027 cycle)"
+  },
+  "State Street": {
+    "careers_url": "https://careers.statestreet.com/global/en/state-street-early-careers",
+    "sector": "Trading / Quant",
+    "recruiting_window": null
+  },
+  "Stellex": {
+    "careers_url": "https://www.stellexcapital.com/careers/",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "StepStone Group": {
+    "careers_url": "https://www.stepstonegroup.com/who-we-are/working-at-stepstone-culture/",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened May 2026 (2027 cycle)"
+  },
+  "Stephens": {
+    "careers_url": "https://www.stephens.com/careers/students-and-graduates",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "Stifel": {
+    "careers_url": "https://www.stifel.com/careers",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Nov 2025 (2027 cycle)"
+  },
+  "Stone Point Capital": {
+    "careers_url": "https://www.stonepoint.com/join-our-team/",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Nov 2025 (2027 cycle)"
+  },
+  "StoneX": {
+    "careers_url": "https://uk-stonex.icims.com/",
+    "sector": "Trading / Quant",
+    "recruiting_window": null
+  },
+  "Stout": {
+    "careers_url": "https://www.stout.com/en/careers",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Nov 2025 (2027 cycle)"
+  },
+  "Summit Partners": {
+    "careers_url": "https://www.summitpartners.com/summit-careers",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "Superbet": {
+    "careers_url": "https://www.super.xyz/careers/",
+    "sector": "Trading / Quant",
+    "recruiting_window": null
+  },
+  "Susquehanna Growth Equity": {
+    "careers_url": "https://www.sgep.com/",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "Susquehanna International Group": {
+    "careers_url": "https://sig.com/careers/interns-co-ops/",
+    "sector": "Trading / Quant",
+    "recruiting_window": "Opened Jun 2026 (2027 cycle)"
+  },
+  "Sweeney Conrad": {
+    "careers_url": "https://www.sweeneyconrad.com/careers",
+    "sector": "Accounting / Audit",
+    "recruiting_window": "Opened Apr 2026 (2027 cycle)"
+  },
+  "Swiss Re": {
+    "careers_url": "https://www.swissre.com/careers.html",
+    "sector": "Pensions / Insurance",
+    "recruiting_window": null
+  },
+  "Synpulse": {
+    "careers_url": "",
+    "sector": "Consulting",
+    "recruiting_window": null
+  },
+  "Synthesis": {
+    "careers_url": "https://www.linkedin.com/company/synthesisim",
+    "sector": "Trading / Quant",
+    "recruiting_window": null
+  },
+  "T. Rowe Price": {
+    "careers_url": "https://www.troweprice.com/en/us/careers",
+    "sector": "Asset Management",
+    "recruiting_window": "Opened Mar 2026 (2027 cycle)"
+  },
+  "TCW": {
+    "careers_url": "https://www.tcw.com/our-firm/careers/internship-recruitment",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "TD Securities": {
+    "careers_url": "https://careers.td.com/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "TP ICAP": {
+    "careers_url": "https://tpicap.com/tpicap/careers",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Talos": {
+    "careers_url": "https://www.talos.com/working/open-roles",
+    "sector": "Trading / Quant",
+    "recruiting_window": null
+  },
+  "Temasek": {
+    "careers_url": "https://www.temasek.com.sg/en/about-us/careers",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "Tencent": {
+    "careers_url": "https://careers.tencent.com/en-us/jobopportunity.html",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Teneo": {
+    "careers_url": "https://www.teneo.com/careers/open-positions/",
+    "sector": "Consulting",
+    "recruiting_window": "Opened Jul 2026 (2027 cycle)"
+  },
+  "Tesco": {
+    "careers_url": "https://www.tesco-careers.com/",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Texas Capital Bank": {
+    "careers_url": "https://www.texascapitalbank.com/who-we-are/careers",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Dec 2025 (2027 cycle)"
+  },
+  "Teza Technologies": {
+    "careers_url": "https://www.teza.com/careers/",
+    "sector": "Trading / Quant",
+    "recruiting_window": null
+  },
+  "The Bank of East Asia (BEA)": {
+    "careers_url": "",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "The Carlyle Group": {
+    "careers_url": "https://www.carlyle.com/careers",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "The Dot Group": {
+    "careers_url": "https://www.thedotgroup.com/",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "The Riverside Company": {
+    "careers_url": "https://www.riversidecompany.com/who-we-are/careers/",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Sep 2025 (2027 cycle)"
+  },
+  "The Wall Street Journal": {
+    "careers_url": "https://wsj.jobs/jobs/",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "The Walt Disney Company": {
+    "careers_url": "https://www.disneycareers.com/en/students-and-recent-graduates",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Third Bridge": {
+    "careers_url": "https://www.thirdbridge.com/en-us/vacancies",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Tidal Partners": {
+    "careers_url": "https://www.tidalpartners.com/careers/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "Tide Insurance": {
+    "careers_url": "https://tideinsurance.com/",
+    "sector": "Pensions / Insurance",
+    "recruiting_window": null
+  },
+  "TikTok": {
+    "careers_url": "https://careers.tiktok.com/campus",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Tokio Marine Kiln": {
+    "careers_url": "https://www.tmkiln.com/careers/",
+    "sector": "Pensions / Insurance",
+    "recruiting_window": null
+  },
+  "Tower Research Capital": {
+    "careers_url": "https://tower-research.com/careers/",
+    "sector": "Trading / Quant",
+    "recruiting_window": "Opened Jul 2026 (2027 cycle)"
+  },
+  "Tradeweb": {
+    "careers_url": "https://www.tradeweb.com/who-we-are/careers/",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "TransMarket Group": {
+    "careers_url": "https://www.transmarketgroup.com/careers",
+    "sector": "Trading / Quant",
+    "recruiting_window": "Opened Jun 2026 (2027 cycle)"
+  },
+  "Trillium": {
+    "careers_url": "https://www.trilliumtrading.com/",
+    "sector": "Prop Trading",
+    "recruiting_window": "Opens mid Apr (annual)"
+  },
+  "Trillium Trading": {
+    "careers_url": "https://www.trlm.com/careers/",
+    "sector": "Trading / Quant",
+    "recruiting_window": "Opened Jul 2026 (2027 cycle)"
+  },
+  "Truist": {
+    "careers_url": "https://careers.truist.com/us/en",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "Turn/River Capital": {
+    "careers_url": "https://turnriver.com/careers/",
+    "sector": "Growth Equity / PE",
+    "recruiting_window": "Opens mid May (annual)"
+  },
+  "Turner & Townsend": {
+    "careers_url": "https://www.turnerandtownsend.com/en/careers/early-careers/",
+    "sector": "Consulting",
+    "recruiting_window": null
+  },
+  "Two Sigma": {
+    "careers_url": "https://www.twosigma.com/careers/internships/",
+    "sector": "Trading / Quant",
+    "recruiting_window": "Opened Jul 2026 (2027 cycle)"
+  },
+  "U.S. Bank": {
+    "careers_url": "https://careers.usbank.com/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened May 2026 (2027 cycle)"
+  },
+  "UBS": {
+    "careers_url": "https://www.ubs.com/global/en/careers.html",
+    "sector": "Bank",
+    "recruiting_window": "Opens late May (annual)"
+  },
+  "UVIMCO": {
+    "careers_url": "https://uvimco.org/join-us/",
+    "sector": "Asset Management",
+    "recruiting_window": "Opened Jan 2026 (2027 cycle)"
+  },
+  "Uber": {
+    "careers_url": "https://jobs.uber.com/en/",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Uline": {
+    "careers_url": "https://www.uline.jobs/",
+    "sector": "Other",
+    "recruiting_window": "Opened Aug 2026 (2027 cycle)"
+  },
+  "Union Square Advisors": {
+    "careers_url": "https://careers.truist.com/us/en",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Dec 2025 (2027 cycle)"
+  },
+  "University Partners": {
+    "careers_url": "https://www.universitypartners.com/careers",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened May 2026 (2027 cycle)"
+  },
+  "Vanguard": {
+    "careers_url": "https://www.vanguardjobs.com/students-and-recent-graduates/",
+    "sector": "Asset Management",
+    "recruiting_window": "Opened Jun 2026 (2027 cycle)"
+  },
+  "VantEdge Partners": {
+    "careers_url": "http://www.vantedge.partners/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "Varney & Associates": {
+    "careers_url": "https://www.varney.com/careers",
+    "sector": "Accounting / Audit",
+    "recruiting_window": "Opened Sep 2025 (2027 cycle)"
+  },
+  "Verition Fund Management": {
+    "careers_url": "https://www.verition.com/careers",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "Virtu Financial": {
+    "careers_url": "https://www.virtu.com/careers/",
+    "sector": "Trading / Quant",
+    "recruiting_window": "Opened Jun 2026 (2027 cycle)"
+  },
+  "Visa": {
+    "careers_url": "https://www.visa.co.uk/careers.html",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Vista Equity Partners": {
+    "careers_url": "https://www.vistaequitypartners.com/careers/",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Dec 2025 (2027 cycle)"
+  },
+  "Voloridge Investment Management": {
+    "careers_url": "https://www.voloridge.com/join-our-team",
+    "sector": "Trading / Quant",
+    "recruiting_window": "Opened May 2026 (2027 cycle)"
+  },
+  "W. P. Carey": {
+    "careers_url": "https://www.wpcarey.com/careers",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "WTW": {
+    "careers_url": "https://careers.wtwco.com/",
+    "sector": "Pensions / Insurance",
+    "recruiting_window": null
+  },
+  "Walleye Capital": {
+    "careers_url": "https://walleyecapital.com/careers",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened Jun 2026 (2027 cycle)"
+  },
+  "Walter Scott": {
+    "careers_url": "https://www.walterscott.com/careers/",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "Warburg Pincus": {
+    "careers_url": "https://warburgpincus.com/careers/",
+    "sector": "Private Equity",
+    "recruiting_window": "Opens Oct–Jan (annual)"
+  },
+  "Waterfall Asset Management": {
+    "careers_url": "https://www.waterfallam.com/careers/",
+    "sector": "Buy-Side",
+    "recruiting_window": "Opened May 2026 (2027 cycle)"
+  },
+  "Waters Corporation": {
+    "careers_url": "https://www.waters.com/nextgen/gb/en/about-waters/careers.html?srsltid=AfmBOopAeGQ-ydDEOk00GHw-Wgb4P0uk3sjXSG4BDbasHNyfUJgRsh7e",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "WeChat Pay": {
+    "careers_url": "https://www.linkedin.com/jobs/wechat-jobs?originalSubdomain=uk",
+    "sector": "Other",
+    "recruiting_window": null
+  },
+  "Wealthspire Advisors": {
+    "careers_url": "https://www.wealthspire.com/contact/careers/",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "Weatherbys Private Bank": {
+    "careers_url": "https://www.weatherbys.bank/about-us/careers/internships/",
+    "sector": "Asset Management",
+    "recruiting_window": null
+  },
+  "Wedbush Securities": {
+    "careers_url": "https://www.wedbush.com/about-wedbush/career-opportunities/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "Weiss Asset Management": {
+    "careers_url": "https://www.weissasset.com/culture/",
+    "sector": "Trading / Quant",
+    "recruiting_window": "Opened Mar 2026 (2027 cycle)"
+  },
+  "Wells Fargo": {
+    "careers_url": "https://www.wellsfargojobs.com/en/career-areas/early-careers/",
+    "sector": "Bank — CIB",
+    "recruiting_window": "Opens late June (annual)"
+  },
+  "Welltower": {
+    "careers_url": "https://welltower.com/careers/",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "Westgrove": {
+    "careers_url": "https://westgrove.com/",
+    "sector": "Buy-Side",
+    "recruiting_window": null
+  },
+  "William Blair": {
+    "careers_url": "https://www.williamblair.com/Careers",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Dec 2025 (2027 cycle)"
+  },
+  "Wincent": {
+    "careers_url": "https://www.wincent.com/careers",
+    "sector": "Trading / Quant",
+    "recruiting_window": "Opened Jun 2026 (2027 cycle)"
+  },
+  "Wintermute": {
+    "careers_url": "https://wintermute.com/about",
+    "sector": "Trading / Quant",
+    "recruiting_window": null
+  },
+  "Wipfli": {
+    "careers_url": "https://careers.wipfli.com/",
+    "sector": "Accounting / Audit",
+    "recruiting_window": "Opened Sep 2025 (2027 cycle)"
+  },
+  "Wood Mackenzie": {
+    "careers_url": "https://www.woodmac.com/careers/overview/",
+    "sector": "Consulting",
+    "recruiting_window": null
+  },
+  "XTX Markets": {
+    "careers_url": "https://www.xtxmarkets.com/",
+    "sector": "Trading / Quant",
+    "recruiting_window": null
+  },
+  "Xantium": {
+    "careers_url": "https://www.xantium.com/join-our-team.html",
+    "sector": "Trading / Quant",
+    "recruiting_window": null
+  },
+  "Y-Intercept": {
+    "careers_url": "",
+    "sector": "Trading / Quant",
+    "recruiting_window": null
+  },
+  "ZS": {
+    "careers_url": "https://www.zs.com/careers",
+    "sector": "Consulting",
+    "recruiting_window": null
+  },
+  "Zachary Scott": {
+    "careers_url": "https://zacharyscott.com/careers",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened Feb 2026 (2027 cycle)"
+  },
+  "Zeus Capital": {
+    "careers_url": "https://zeuscapital.co.uk/about-us/careers/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": null
+  },
+  "Ziegler": {
+    "careers_url": "https://www.ziegler.com/who-we-are/careers/",
+    "sector": "Bank - Middle Market",
+    "recruiting_window": "Opened May 2026 (2027 cycle)"
+  },
+  "Zurich Insurance": {
+    "careers_url": "http://zurich.com/en/careers",
+    "sector": "Pensions / Insurance",
+    "recruiting_window": null
+  }
 }

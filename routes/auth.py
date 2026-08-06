@@ -3,8 +3,29 @@ from flask_login import login_user, logout_user, login_required, current_user
 from models.database import db
 from models.user import User
 from datetime import datetime
+from urllib.parse import urlparse, urljoin
 
 auth_bp = Blueprint('auth', __name__)
+
+
+def is_safe_url(target):
+    """
+    Validate that a redirect URL is safe (prevents open redirect attacks)
+
+    Returns True only if the URL is relative or points to the same host
+    """
+    if not target:
+        return False
+
+    ref_url = urlparse(request.host_url)
+    test_url = urlparse(urljoin(request.host_url, target))
+
+    # Only allow http/https schemes
+    if test_url.scheme not in ('http', 'https', ''):
+        return False
+
+    # Must be same host or no host (relative URL)
+    return test_url.netloc == ref_url.netloc or test_url.netloc == ''
 
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
@@ -28,7 +49,13 @@ def login():
             user.last_login = datetime.utcnow()
             db.session.commit()
 
+            # Validate redirect URL to prevent open redirect attacks
             next_page = request.args.get('next')
+            if next_page and not is_safe_url(next_page):
+                # Log potential attack attempt
+                flash('Invalid redirect URL detected', 'error')
+                next_page = None
+
             return redirect(next_page or url_for('web.index'))
         else:
             flash('Invalid username or password', 'error')

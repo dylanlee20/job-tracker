@@ -59,6 +59,11 @@ class Job(db.Model):
     is_rolling = db.Column(db.Boolean, default=False, nullable=False)  # "Rolling ASAP" 滚动招聘（无固定截止日）
     recruiting_window = db.Column(db.String(120), nullable=True)  # 该公司该岗位每年通常开放的时间窗口
 
+    # Trackr（三大 summer internship tracker）字段
+    region = db.Column(db.String(40), nullable=True, index=True)  # Hong Kong / US / UK / Other
+    process = db.Column(db.String(200), nullable=True)  # 面试流程，例如 "HV > VI > AC"
+    current_stage = db.Column(db.String(100), nullable=True)  # 当前阶段，例如 "First Round" / "Offers Out"
+
     # 时间戳
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)

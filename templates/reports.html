@@ -1,0 +1,306 @@
+{% extends "layout.html" %}
+
+{% block title %}Reports & Analytics - Job Tracker{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-4 py-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="mb-1 fw-bold" style="color: var(--primary-color);">
+                <i class="bi bi-bar-chart me-2"></i>Reports & Analytics
+            </h2>
+            <p class="text-muted mb-0">Track your job search progress and market trends</p>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="bi bi-filter me-2"></i>Report Filters
+        </div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Start Date</label>
+                    <input type="date" class="form-control" id="report-start-date">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">End Date</label>
+                    <input type="date" class="form-control" id="report-end-date">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Company</label>
+                    <select class="form-select" id="report-company">
+                        <option value="">All Companies</option>
+                        {% for company in companies %}
+                        <option value="{{ company }}">{{ company }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Industry</label>
+                    <select class="form-select" id="report-industry">
+                        <option value="">All Industries</option>
+                        {% for industry in industries %}
+                        <option value="{{ industry }}">{{ industry }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-12">
+                    <button class="btn btn-primary" onclick="loadReport()">
+                        <i class="bi bi-bar-chart me-1"></i>Generate Report
+                    </button>
+                    <button class="btn btn-outline-secondary" onclick="resetReportFilters()">
+                        <i class="bi bi-arrow-counterclockwise me-1"></i>Reset
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon bg-primary-subtle">
+                    <i class="bi bi-briefcase text-primary"></i>
+                </div>
+                <div>
+                    <div class="stat-value" id="total-positions">-</div>
+                    <div class="stat-label">Total Positions</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon bg-info-subtle">
+                    <i class="bi bi-send-check text-info"></i>
+                </div>
+                <div>
+                    <div class="stat-value" id="total-applications">-</div>
+                    <div class="stat-label">Applications</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon bg-success-subtle">
+                    <i class="bi bi-check-circle text-success"></i>
+                </div>
+                <div>
+                    <div class="stat-value text-success" id="accepted-count">-</div>
+                    <div class="stat-label">Accepted</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon bg-warning-subtle">
+                    <i class="bi bi-percent text-warning"></i>
+                </div>
+                <div>
+                    <div class="stat-value text-warning" id="success-rate">-</div>
+                    <div class="stat-label">Success Rate</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-building me-2"></i>Positions by Company (Top 10)
+                </div>
+                <div class="card-body">
+                    <canvas id="company-chart" style="max-height: 300px;"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-pie-chart me-2"></i>Positions by Industry
+                </div>
+                <div class="card-body">
+                    <canvas id="industry-chart" style="max-height: 300px;"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-graph-up me-2"></i>Application Status Breakdown
+                </div>
+                <div class="card-body">
+                    <canvas id="application-chart" style="max-height: 300px;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+<script>
+let companyChart, industryChart, applicationChart;
+
+function loadReport() {
+    const params = {};
+
+    const startDate = $('#report-start-date').val();
+    const endDate = $('#report-end-date').val();
+    const company = $('#report-company').val();
+    const industry = $('#report-industry').val();
+
+    if (startDate) params.start_date = startDate;
+    if (endDate) params.end_date = endDate;
+    if (company) params.company = company;
+    if (industry) params.industry = industry;
+
+    // Load positions report
+    $.ajax({
+        url: '/api/reports/positions',
+        data: params,
+        success: function(response) {
+            if (response.success) {
+                updatePositionsReport(response.data);
+            } else {
+                showNotification('Failed to load report: ' + response.error, 'error');
+            }
+        },
+        error: function() {
+            showNotification('Failed to load positions report', 'error');
+        }
+    });
+
+    // Load applications report
+    $.ajax({
+        url: '/api/reports/applications',
+        success: function(response) {
+            if (response.success) {
+                updateApplicationsReport(response.data);
+            } else {
+                showNotification('Failed to load report: ' + response.error, 'error');
+            }
+        },
+        error: function() {
+            showNotification('Failed to load applications report', 'error');
+        }
+    });
+}
+
+function updatePositionsReport(data) {
+    $('#total-positions').text(data.total_positions);
+
+    // Company chart (horizontal bar - top 10)
+    if (companyChart) companyChart.destroy();
+    const topCompanies = data.by_company.slice(0, 10);
+    companyChart = new Chart($('#company-chart'), {
+        type: 'bar',
+        data: {
+            labels: topCompanies.map(c => c.name),
+            datasets: [{
+                label: 'Positions',
+                data: topCompanies.map(c => c.count),
+                backgroundColor: '#1e40af',
+                borderColor: '#1e40af',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    ticks: {
+                        precision: 0
+                    }
+                }
+            }
+        }
+    });
+
+    // Industry chart (pie)
+    if (industryChart) industryChart.destroy();
+    const industryColors = ['#1e40af', '#16a34a', '#9333ea', '#dc2626', '#ea580c', '#0891b2', '#6b7280', '#8b5cf6', '#64748b'];
+    industryChart = new Chart($('#industry-chart'), {
+        type: 'pie',
+        data: {
+            labels: data.by_industry.map(i => i.name),
+            datasets: [{
+                data: data.by_industry.map(i => i.count),
+                backgroundColor: industryColors
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'right'
+                }
+            }
+        }
+    });
+}
+
+function updateApplicationsReport(data) {
+    $('#total-applications').text(data.total_applications);
+    $('#accepted-count').text(data.accepted);
+    $('#success-rate').text(data.success_rate + '%');
+
+    // Application status chart (doughnut)
+    if (applicationChart) applicationChart.destroy();
+    applicationChart = new Chart($('#application-chart'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Pending', 'Accepted', 'Rejected', 'No Response'],
+            datasets: [{
+                data: [data.pending, data.accepted, data.rejected, data.no_response],
+                backgroundColor: ['#fbbf24', '#16a34a', '#dc2626', '#6b7280'],
+                borderWidth: 2,
+                borderColor: '#fff'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+}
+
+function resetReportFilters() {
+    $('#report-start-date, #report-end-date').val('');
+    $('#report-company, #report-industry').val('');
+    loadReport();
+}
+
+// Load on page load
+$(document).ready(function() {
+    // Set default date range to last 30 days
+    const endDate = new Date();
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - 30);
+
+    $('#report-end-date').val(endDate.toISOString().split('T')[0]);
+    $('#report-start-date').val(startDate.toISOString().split('T')[0]);
+
+    loadReport();
+});
+</script>
+{% endblock %}

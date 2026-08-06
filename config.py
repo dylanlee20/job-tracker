@@ -1,4 +1,6 @@
 import os
+import secrets
+import sys
 
 class Config:
     """应用配置类"""
@@ -35,8 +37,22 @@ class Config:
     LOG_FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 
     # Flask 配置
-    SECRET_KEY = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-production')
     DEBUG = os.environ.get('FLASK_DEBUG', 'False').lower() == 'true'
+
+    # SECRET_KEY Security: Must be set via environment variable in production
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+    if not SECRET_KEY:
+        if DEBUG:
+            # Development only: auto-generate (will be different each restart)
+            SECRET_KEY = secrets.token_hex(32)
+            print("WARNING: Using auto-generated SECRET_KEY in development mode")
+            print("Set SECRET_KEY environment variable for production!")
+        else:
+            # Production: REQUIRE SECRET_KEY to be set
+            print("ERROR: SECRET_KEY environment variable must be set in production!")
+            print("Generate one with: python -c 'import secrets; print(secrets.token_hex(32))'")
+            sys.exit(1)
+
     HOST = os.environ.get('HOST', '0.0.0.0')  # 0.0.0.0 for cloud deployment
     PORT = int(os.environ.get('PORT', os.environ.get('FLASK_PORT', 5000)))  # Railway uses PORT
 

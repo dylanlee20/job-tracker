@@ -1,0 +1,49 @@
+name: Daily Trackr sync + Interview Stages Summary email
+
+on:
+  schedule:
+    # 21:30 UTC = 05:30 HKT next morning; the email lands before the daily
+    # WeChat-update SOP starts.
+    - cron: "30 21 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: trackr-daily
+  cancel-in-progress: false
+
+jobs:
+  sync-and-email:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Sync megasheet from trackr
+        run: python3 scripts/trackr_sync.py
+
+      - name: Send Interview Stages Summary email
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: python3 scripts/daily_stage_email.py
+
+      - name: Commit refreshed data
+        run: |
+          git config user.name "trackr-bot"
+          git config user.email "actions@github.com"
+          git add data/megasheet data/trackr_snapshot.json
+          if git diff --cached --quiet; then
+            echo "No data changes to commit."
+          else
+            git commit -m "chore: daily trackr sync $(date -u +%F)"
+            git push
+          fi

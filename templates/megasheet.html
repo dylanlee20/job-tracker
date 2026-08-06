@@ -39,9 +39,9 @@
     <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
         <div>
             <h2 class="mb-1 fw-bold" style="color: var(--primary-color, #1e3a8a);">
-                <i class="bi bi-table me-2"></i>2026–2027 Full-Time Megasheet
+                <i class="bi bi-table me-2"></i>2027 Internship Megasheet
             </h2>
-            <p class="text-muted mb-0">Curated full-time analyst &amp; graduate programs — hedge funds, PE, banks &amp; boutiques you won't find in the auto-scraper.</p>
+            <p class="text-muted mb-0">Hong Kong · US · UK finance summer internships (synced from Trackr) plus legacy curated full-time programs.</p>
         </div>
         <span class="badge bg-primary fs-6 align-self-start mt-2"><i class="bi bi-briefcase me-1"></i>{{ total }} roles</span>
     </div>
@@ -73,8 +73,15 @@
     </div>
     {% endif %}
 
-    <!-- Main megasheet table -->
+    <!-- Megasheet tables, one card per region -->
+    {% for group in region_groups %}
     <div class="card shadow-sm mb-4">
+        <div class="card-header bg-light d-flex justify-content-between align-items-center">
+            <span class="fw-bold">
+                <i class="bi bi-geo-alt-fill me-2"></i>{{ group.region }}
+            </span>
+            <span class="badge bg-secondary">{{ group.jobs|length }} roles</span>
+        </div>
         <div class="table-responsive">
             <table class="table table-hover align-middle mb-0 ms-table">
                 <thead>
@@ -82,13 +89,14 @@
                         <th>ID</th>
                         <th class="text-center">Applied?</th>
                         <th>Bank</th>
-                        <th>Added &rarr; Deadline</th>
+                        <th>Added &rarr; Closing Date</th>
                         <th>Position</th>
+                        <th>Process / Stage</th>
                         <th class="text-center">View</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for j in jobs %}
+                    {% for j in group.jobs %}
                     <tr class="{{ 'row-expired' if j.deadline_status == 'expired' else '' }}">
                         <td class="ms-id">{{ j.external_id or j.id }}</td>
                         <td class="text-center">
@@ -122,7 +130,18 @@
                         </td>
                         <td class="ms-pos">
                             {{ j.title }}
-                            {% if j.location and j.location != 'Various' %}<span class="text-muted small">· {{ j.location }}</span>{% endif %}
+                            {% if j.location and j.location != 'Various' and j.location != j.region %}<span class="text-muted small">· {{ j.location }}</span>{% endif %}
+                        </td>
+                        <td>
+                            {% if j.current_stage %}
+                                <span class="badge bg-primary">{{ j.current_stage }}</span>
+                            {% endif %}
+                            {% if j.process %}
+                                <div class="ms-sector mt-1">{{ j.process }}</div>
+                            {% endif %}
+                            {% if not j.current_stage and not j.process %}
+                                <span class="text-muted">—</span>
+                            {% endif %}
                         </td>
                         <td class="ms-view text-center">
                             <a href="{{ j.job_url }}" target="_blank" rel="noopener" class="btn btn-sm btn-outline-primary">
@@ -135,6 +154,7 @@
             </table>
         </div>
     </div>
+    {% endfor %}
 
     <!-- Annual recruiting timeline -->
     <div class="card shadow-sm">

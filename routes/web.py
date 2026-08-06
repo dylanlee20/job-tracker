@@ -16,11 +16,16 @@ _MONTH_ORDER = {
 }
 
 
+_REGION_ORDER = ['Hong Kong', 'US', 'UK', 'Other']
+
+
 @web_bp.route('/megasheet')
 @login_required
 def megasheet():
-    """Curated full-time-program megasheet: 6-column table with deadline
-    status, expiry notifications, and the annual recruiting timeline."""
+    """Curated megasheet: trackr summer internships (HK / US / UK) plus
+    legacy hand-curated full-time programs, grouped by region, with process
+    and current-stage columns, deadline status, expiry notifications, and
+    the annual recruiting timeline."""
     try:
         jobs = (Job.query
                 .filter_by(source_website='megasheet')
@@ -29,6 +34,15 @@ def megasheet():
 
         closing_soon = [j for j in jobs if j.deadline_status == 'closing_soon']
         expired = [j for j in jobs if j.deadline_status == 'expired']
+
+        # Group by region in fixed display order; unknown regions go to Other.
+        region_groups = []
+        for region in _REGION_ORDER:
+            grouped = [j for j in jobs
+                       if (j.region or 'Other') == region
+                       or (region == 'Other' and (j.region or 'Other') not in _REGION_ORDER)]
+            if grouped:
+                region_groups.append({'region': region, 'jobs': grouped})
 
         # Annual recruiting timeline — one row per firm, ordered by the month
         # its 2027-class role was first observed opening.
@@ -48,6 +62,7 @@ def megasheet():
         return render_template(
             'megasheet.html',
             jobs=jobs,
+            region_groups=region_groups,
             total=len(jobs),
             closing_soon=closing_soon,
             expired=expired,
